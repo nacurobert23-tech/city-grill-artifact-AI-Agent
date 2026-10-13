@@ -1,9 +1,14 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>City Grill Customer Analyst</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: brand header with the question as headline → ask bar → filters → two venue ledgers → answer + primary module → supporting charts → findings/actions → evidence → method */
+/* Layout follows Old Town Reviews Desk v2: masthead → two venue ledgers → ask the analyst → source switch →
+   ratings by half-year · stars → sub-ratings · themes → dishes · Google writing → findings → trends · recommendations → review sample → method */
 :root{
   --bg:#F6F4F1; --surface:#FFFFFF; --ink:#211F1E; --muted:#625C58; --line:#E2DDD7; --line2:#EEEAE5;
   --red:#A31D24; --red-soft:#F6E3E1; --on-red:#FFFFFF;
@@ -25,321 +30,285 @@
   --good:#6CC085; --bad:#EE7A6C; --warn:#E3B04A; --mid:#6E6762; color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--body);margin:0}
-.wrap{max-width:1180px;margin:0 auto;padding-inline:20px;padding-block:0 56px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px 56px}
 h1,h2,h3,h4{font-family:var(--display);font-weight:700;margin:0;line-height:1.2;text-wrap:balance}
-h1{font-size:clamp(1.45rem,3.4vw,2.1rem)}
-h2{font-size:1.15rem}
+h1{font-size:clamp(1.5rem,3.6vw,2.2rem)}
+h2{font-size:1.2rem}
 h3{font-size:1rem}
-.num{font-variant-numeric:tabular-nums}
-.mono{font-family:var(--mono)}
-.eyebrow{font:500 .7rem/1.2 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
-.muted{color:var(--muted)}
-.small{font-size:.82rem}
-button{font:inherit;cursor:pointer}
+.num,.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.eyebrow{font:500 .7rem/1.3 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.muted{color:var(--muted)} .small{font-size:.82rem}
+button{font:inherit;cursor:pointer;color:inherit}
+a{color:inherit}
 button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--red);outline-offset:2px}
-/* header */
 .brandbar{height:4px;background:var(--red)}
-header.top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap;padding-block:18px 14px}
-header.top .t{display:grid;gap:6px;min-width:0;flex:1 1 520px}
-.brand{font:600 .72rem/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--red)}
-.sub{color:var(--muted);font-size:.86rem;margin:0}
-.btn{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:4px;padding:7px 12px;font-weight:500;font-size:.88rem}
-.btn:hover{border-color:var(--ink)}
-.btn.primary{background:var(--red);border-color:var(--red);color:var(--on-red)}
-.btn.primary:hover{filter:brightness(1.08)}
-.btn:disabled{opacity:.5;cursor:default}
-/* ask bar */
-.ask{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px 14px;display:grid;gap:10px}
-.askrow{display:flex;gap:8px;flex-wrap:wrap}
-.askrow textarea{flex:1 1 260px;min-width:0;font:inherit;font-size:.93rem;padding:8px 10px;border:1px solid var(--line);border-radius:4px;background:var(--bg);color:var(--ink);resize:vertical;min-height:40px}
-.groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
-.group{display:grid;gap:5px;align-content:start}
-.chip{text-align:left;background:transparent;color:var(--ink);border:1px solid var(--line);border-radius:4px;padding:5px 9px;font-size:.8rem;line-height:1.35}
-.chip:hover{border-color:var(--red);color:var(--red)}
-.chip.on{border-color:var(--red);background:var(--red-soft);color:var(--red)}
-/* filters */
-.filters{display:flex;gap:10px 16px;flex-wrap:wrap;align-items:end;margin-block:14px}
-.f{display:grid;gap:3px}
-.f label{font:500 .66rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
-select,input[type=search]{font:inherit;font-size:.86rem;padding:6px 8px;border:1px solid var(--line);border-radius:4px;background:var(--surface);color:var(--ink)}
-.seg{display:inline-flex;border:1px solid var(--line);border-radius:4px;overflow:hidden}
-.seg button{background:var(--surface);border:0;padding:6px 10px;font-size:.84rem;color:var(--muted)}
-.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
-.seg button:disabled{opacity:.45;cursor:default}
-/* venue ledgers */
-.ledgers{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:12px}
+header.mast{display:grid;gap:6px;padding:20px 0 14px}
+header .brand{font:600 .72rem/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--red)}
+header .lede{color:var(--muted);margin:2px 0 0;max-width:80ch;font-size:.93rem}
+/* ledgers */
+.ledgers{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:12px}
 .ledger{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--c);border-radius:6px;padding:12px 14px;display:grid;gap:8px;min-width:0}
-.ledger.dim{opacity:.45}
 .lhead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
 .lhead span{font:400 .74rem var(--mono);color:var(--muted)}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.stat{display:grid;gap:1px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.stat{display:grid;gap:1px;align-content:start}
 .stat b{font:500 1.3rem/1.1 var(--mono);color:var(--c)}
-.stat span{font-size:.72rem;color:var(--muted)}
-.cov{display:flex;gap:4px;flex-wrap:wrap;align-items:center}
-.cov i{font:500 .7rem var(--mono);font-style:normal;padding:2px 6px;border-radius:3px;background:var(--line2);color:var(--ink)}
-.cov i.none{background:repeating-linear-gradient(45deg,var(--line2),var(--line2) 3px,transparent 3px,transparent 6px);color:var(--muted)}
-/* panels */
-.grid{display:grid;gap:14px}
-.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:14px}
-.box{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:14px 16px;min-width:0}
+.stat span{font-size:.72rem;color:var(--muted);line-height:1.3}
+.stat.sample b{color:var(--ink)}
+.ledger p{margin:0;font-size:.84rem;color:var(--muted)}
+/* boxes */
+.box{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:14px 16px;min-width:0;transition:box-shadow .3s}
+.box.focus{box-shadow:0 0 0 2px var(--red)}
 .box > h2,.box > h3{margin-bottom:2px}
-.box .cap{font-size:.8rem;color:var(--muted);margin:0 0 10px}
+.cap{font-size:.8rem;color:var(--muted);margin:0 0 10px}
 .section{margin-top:14px}
-.legend{display:flex;gap:12px;font-size:.76rem;color:var(--muted);flex-wrap:wrap}
+.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:14px}
+.legend{display:flex;gap:12px;font-size:.76rem;color:var(--muted);flex-wrap:wrap;margin-bottom:8px}
 .legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
-/* answer */
-.answer{display:grid;gap:10px}
-.thread{display:grid;gap:10px;max-height:460px;overflow-y:auto;padding-right:4px}
+.legend i.hatch{background:repeating-linear-gradient(45deg,var(--muted),var(--muted) 2px,transparent 2px,transparent 4px)!important}
+/* ask */
+.ask{border-top:3px solid var(--red)}
+.askhead{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline}
+.status{font:500 .7rem var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:3px;border:1px solid var(--line);color:var(--muted)}
+.status.on{border-color:var(--good);color:var(--good)}
+.status.off{border-color:var(--warn);color:var(--warn)}
+.groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin:10px 0}
+.group{display:grid;gap:5px;align-content:start}
+.chip{text-align:left;background:transparent;border:1px solid var(--line);border-radius:4px;padding:5px 9px;font-size:.8rem;line-height:1.35}
+.chip:hover{border-color:var(--red);color:var(--red)}
+.askrow{display:flex;gap:8px;flex-wrap:wrap}
+.askrow textarea{flex:1 1 260px;min-width:0;font:inherit;font-size:.93rem;padding:8px 10px;border:1px solid var(--line);border-radius:4px;background:var(--bg);color:var(--ink);resize:vertical;min-height:42px}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:4px;padding:7px 12px;font-weight:500;font-size:.88rem}
+.btn:hover{border-color:var(--ink)}
+.btn.primary{background:var(--red);border-color:var(--red);color:var(--on-red)}
+.btn:disabled{opacity:.5;cursor:default}
+.thread{display:grid;gap:14px;margin-top:12px}
 .q{justify-self:end;background:var(--ink);color:var(--bg);padding:6px 11px;border-radius:6px 6px 0 6px;font-size:.88rem;max-width:80ch}
-.a{border-left:3px solid var(--red);padding:2px 0 2px 12px;max-width:86ch;min-width:0}
-.a p{margin:.3rem 0}.a ul,.a ol{margin:.3rem 0;padding-left:1.2rem}.a li{margin:.15rem 0}.a h4{font-size:.92rem;margin:.6rem 0 .2rem}
+.a{border-left:3px solid var(--red);padding:2px 0 2px 12px;min-width:0;display:grid;gap:10px}
+.a h4{font-size:.95rem}
+.prose p{margin:.3rem 0}.prose ul,.prose ol{margin:.3rem 0;padding-left:1.2rem}.prose li{margin:.15rem 0}.prose h4{margin:.7rem 0 .2rem;font-size:.92rem}
 .who{font:500 .66rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .badge{font:500 .64rem var(--mono);letter-spacing:.06em;padding:1px 6px;border-radius:3px;border:1px solid var(--line);color:var(--muted);text-transform:uppercase}
 .badge.ai{border-color:var(--red);color:var(--red)}
 .fus{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
-/* rank lists */
-.ranks{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
-.rcol{display:grid;gap:8px;align-content:start;min-width:0}
-.rcol h3{display:flex;align-items:center;gap:8px}
-.vdot{width:10px;height:10px;border-radius:2px;background:var(--c);display:inline-block}
-.ritem{display:grid;grid-template-columns:28px 1fr;gap:10px;padding:10px 0;border-top:1px solid var(--line2)}
-.ritem:first-of-type{border-top:0}
-.rk{font:600 1.05rem/1 var(--display);color:var(--c);padding-top:2px}
-.rt{display:flex;justify-content:space-between;gap:8px;align-items:baseline;flex-wrap:wrap}
-.rt b{font-weight:600}
-.rmeter{height:6px;background:var(--line2);border-radius:3px;margin:6px 0 5px;overflow:hidden}
-.rmeter span{display:block;height:100%;background:var(--c);border-radius:3px}
-.rmeta{display:flex;gap:4px 12px;flex-wrap:wrap;font-size:.76rem;color:var(--muted)}
-.rmeta b{color:var(--ink);font-weight:500;font-family:var(--mono)}
-.pill{font:500 .66rem var(--mono);letter-spacing:.04em;padding:1px 6px;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
-.pill.bad{color:var(--bad)}.pill.warn{color:var(--warn)}.pill.good{color:var(--good)}.pill.mut{color:var(--muted)}
-.drv{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px}
-.drv span{font-size:.72rem;padding:1px 6px;border-radius:3px;background:var(--line2);color:var(--ink)}
-.link{background:none;border:0;padding:0;color:var(--red);font-size:.76rem;text-decoration:underline;text-underline-offset:2px}
-.rest{font-size:.78rem;color:var(--muted);border-top:1px dashed var(--line);padding-top:8px}
-/* theme bars */
-.tbars{display:grid;gap:4px}
-.trow{display:grid;grid-template-columns:minmax(7.5rem,9.5rem) 1fr 1fr 2.6rem;gap:6px;align-items:center;font-size:.8rem}
-.trow.head{font:500 .64rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-.tl{color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.side{display:flex;align-items:center;gap:4px;height:14px}
-.side.neg{flex-direction:row-reverse}
-.side span{height:12px;border-radius:2px;min-width:0}
-.side.neg span{background:var(--bad)}.side.pos span{background:var(--good)}
-.side em{font:500 .7rem var(--mono);font-style:normal;color:var(--muted)}
-.net{text-align:right;font:500 .74rem var(--mono)}
-.net.p{color:var(--good)}.net.n{color:var(--bad)}.net.z{color:var(--muted)}
-.chartbox{position:relative}
-.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--bg);font-size:.76rem;line-height:1.35;padding:6px 8px;border-radius:4px;max-width:240px;z-index:5;transform:translate(-50%,calc(-100% - 10px))}
-svg text{fill:var(--muted);font:11px var(--mono)}
-svg .lab{fill:var(--ink);font:11px var(--body)}
-/* year / tables */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.kpi{border:1px solid var(--line2);border-radius:4px;padding:7px 10px;display:grid;gap:2px;border-left:3px solid var(--c,var(--line))}
+.kpi b{font:500 1.1rem var(--mono)}
+.kpi span{font-size:.72rem;color:var(--muted);line-height:1.3}
+/* switch */
+.switchbar{display:flex;gap:10px 16px;flex-wrap:wrap;align-items:center;margin:16px 0 12px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.seg button{background:var(--surface);border:0;padding:6px 12px;font-size:.85rem;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+/* bars */
+.rows{display:grid;gap:9px}
+.brow{display:grid;grid-template-columns:6rem 1fr;gap:8px;align-items:center;font-size:.8rem}
+.bpair{display:grid;gap:3px}
+.btrack{width:calc(100% - 92px)}
+.bar{height:12px;border-radius:2px;background:var(--c);position:relative;min-width:2px}
+.bar.g{background:repeating-linear-gradient(45deg,var(--c),var(--c) 3px,color-mix(in srgb,var(--c) 55%,transparent) 3px,color-mix(in srgb,var(--c) 55%,transparent) 6px)}
+.bar em{position:absolute;left:calc(100% + 6px);top:-2px;font:500 .7rem var(--mono);font-style:normal;color:var(--ink);white-space:nowrap}
+.bar.nodata{background:repeating-linear-gradient(45deg,var(--line),var(--line) 3px,transparent 3px,transparent 6px);width:100%!important}
+.bar.nodata em{left:6px;color:var(--muted)}
+/* tables */
 .scroll{overflow-x:auto}
 table{border-collapse:collapse;width:100%;font-size:.84rem}
 th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line2);vertical-align:top}
 th{font:500 .64rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 td.n{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
-.heat{display:inline-block;min-width:3.6rem;padding:1px 6px;border-radius:3px;font:500 .74rem var(--mono)}
+.net{display:inline-block;min-width:3rem;text-align:center;border-radius:3px;padding:1px 6px;font:500 .76rem var(--mono)}
+.net.p{background:color-mix(in srgb,var(--good) 16%,transparent);color:var(--good)}
+.net.n{background:color-mix(in srgb,var(--bad) 16%,transparent);color:var(--bad)}
+.net.z{background:color-mix(in srgb,var(--muted) 14%,transparent);color:var(--muted)}
 .v{font:600 .68rem var(--mono);padding:1px 6px;border-radius:3px;white-space:nowrap}
 .v.ccb{background:var(--ccb-soft);color:var(--ccb)}.v.hlm{background:var(--hlm-soft);color:var(--hlm)}
 .tag{display:inline-block;font:500 .66rem var(--mono);padding:1px 6px;border-radius:3px;margin:1px 3px 1px 0;border:1px solid var(--line);color:var(--muted)}
 .tag.pos{border-color:color-mix(in srgb,var(--good) 45%,transparent);color:var(--good)}
 .tag.neg{border-color:color-mix(in srgb,var(--bad) 45%,transparent);color:var(--bad)}
-.tag.hit{background:color-mix(in srgb,var(--bad) 14%,transparent)}
-.tag.pos.hit{background:color-mix(in srgb,var(--good) 14%,transparent)}
 .stars{font-family:var(--mono);white-space:nowrap;letter-spacing:-1px}
 .stars s{text-decoration:none;color:var(--line)}
-/* bars generic */
-.rows{display:grid;gap:8px}
-.brow{display:grid;grid-template-columns:5.5rem 1fr;gap:8px;align-items:center;font-size:.8rem}
-.bpair{display:grid;gap:3px}
-.btrack{width:calc(100% - 64px)}
-.bar{height:12px;border-radius:2px;background:var(--c);position:relative;min-width:2px}
-.bar em{position:absolute;left:calc(100% + 6px);top:-2px;font:500 .7rem var(--mono);font-style:normal;color:var(--ink);white-space:nowrap}
-.bar.nodata{background:repeating-linear-gradient(45deg,var(--line),var(--line) 3px,transparent 3px,transparent 6px);width:100%!important}
-.bar.nodata em{left:6px;color:var(--muted)}
-.stack{display:flex;height:14px;border-radius:2px;overflow:hidden;background:var(--line2)}
-.stack span{height:100%}
+.src{font:500 .62rem var(--mono);padding:1px 5px;border-radius:3px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
 /* findings */
 .finding{display:grid;grid-template-columns:4px 1fr;gap:12px;padding:10px 0;border-top:1px solid var(--line2)}
 .finding:first-child{border-top:0;padding-top:2px}
 .stripe{border-radius:2px;background:var(--s)}
-.finding p{margin:.2rem 0 0;color:var(--muted);font-size:.86rem;max-width:78ch}
+.finding p{margin:.2rem 0 0;color:var(--muted);font-size:.86rem;max-width:80ch}
 .fmeta{display:flex;gap:4px 12px;flex-wrap:wrap;font-size:.74rem;color:var(--muted);margin-top:4px}
 .fmeta b{color:var(--ink);font-weight:500}
-.recs{display:grid;gap:0}
-.rec{display:grid;grid-template-columns:28px 1fr;gap:10px;padding:9px 0;border-top:1px solid var(--line2)}
-.rec:first-child{border-top:0;padding-top:2px}
-.rec p{margin:.15rem 0 0;font-size:.8rem;color:var(--muted)}
-.next{margin:10px 0 0;padding-left:1.1rem;font-size:.84rem;display:grid;gap:4px}
-/* missing */
-.missing{border:1px dashed var(--line);border-radius:6px;padding:12px 14px;background:repeating-linear-gradient(135deg,transparent,transparent 10px,var(--line2) 10px,var(--line2) 11px)}
+.pill{font:500 .64rem var(--mono);padding:1px 6px;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
+.pill.bad{color:var(--bad)}.pill.warn{color:var(--warn)}.pill.good{color:var(--good)}
+.recs{margin:0;padding-left:1.2rem;display:grid;gap:9px}
+.recs li{max-width:76ch}
+.recs .ev{display:block;font-size:.78rem;color:var(--muted)}
+.missing{border:1px dashed var(--line);border-radius:6px;padding:10px 12px;background:repeating-linear-gradient(135deg,transparent,transparent 10px,var(--line2) 10px,var(--line2) 11px)}
 .missing b{display:block;margin-bottom:2px}
 .missing p{margin:0;font-size:.84rem;color:var(--muted)}
-/* briefing */
+.note{font-size:.8rem;color:var(--muted)}
+.filters{display:flex;gap:8px;flex-wrap:wrap;align-items:end;margin:8px 0}
+.f{display:grid;gap:3px}
+.f label{font:500 .64rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+select,input[type=search]{font:inherit;font-size:.86rem;padding:6px 8px;border:1px solid var(--line);border-radius:4px;background:var(--surface);color:var(--ink)}
 .brief{border-top:3px solid var(--red)}
-.brief .body{max-width:88ch}
-.brief .body p{margin:.35rem 0}.brief .body ul,.brief .body ol{margin:.3rem 0;padding-left:1.2rem}.brief .body h4{font-size:.95rem;margin:.8rem 0 .2rem}
-.method{font-size:.8rem;color:var(--muted);max-width:92ch}
-.method a{color:inherit}
+.method{font-size:.8rem;color:var(--muted);max-width:96ch;margin-top:16px}
 .method p{margin:.35rem 0}
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
-.kpi{border:1px solid var(--line2);border-radius:4px;padding:8px 10px;display:grid;gap:2px}
-.kpi b{font:500 1.15rem var(--mono)}
-.kpi span{font-size:.72rem;color:var(--muted)}
-@media (max-width:560px){.trow{grid-template-columns:6.5rem 1fr 1fr 2.2rem}.stats{gap:6px}.stat b{font-size:1.1rem}.brow{grid-template-columns:4.2rem 1fr}}
-@media (prefers-reduced-motion:no-preference){.bar,.rmeter span,.side span{transition:width .35s ease}}
+.tip{position:fixed;pointer-events:none;background:var(--ink);color:var(--bg);font-size:.76rem;line-height:1.35;padding:6px 8px;border-radius:4px;max-width:260px;z-index:20;display:none}
+@media (max-width:560px){.stats{grid-template-columns:repeat(2,1fr)}.brow{grid-template-columns:4.6rem 1fr}.btrack{width:calc(100% - 84px)}}
+@media (prefers-reduced-motion:no-preference){.bar{transition:width .35s ease}}
 </style>
-
+</head>
+<body>
 <div class="brandbar"></div>
-<div id="root"><div class="wrap"><p class="sub" style="padding-top:20px">Loading the City Grill Customer Analyst…</p></div></div>
+<div class="wrap">
+  <header class="mast">
+    <span class="brand">City Grill · Customer Reviews Analyst · Jan 2025 – Oct 2026</span>
+    <h1>Caru' cu Bere &amp; Hanu' lui Manuc</h1>
+    <p class="lede" id="lede">What guests say about Bucharest's two most-visited heritage restaurants, both run by City Grill Group.</p>
+  </header>
+  <div class="ledgers" id="ledgers"></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
-<script src="https://unpkg.com/htm@3.1.1/dist/htm.umd.js"></script>
+  <section class="box ask section" id="ask" aria-labelledby="askTitle">
+    <div class="askhead">
+      <h2 id="askTitle">Ask the analyst</h2>
+      <span class="status" id="aiStatus">Connecting to Claude…</span>
+    </div>
+    <p class="cap" style="margin:4px 0 0">Answers use the Google Maps and Tripadvisor review data and the platform figures on this page. The page counts and filters the reviews; Claude interprets the results. Pick a suggested question or write your own, in English or Romanian.</p>
+    <div class="groups" id="groups"></div>
+    <form class="askrow" id="askForm">
+      <textarea id="askInput" rows="1" placeholder="e.g. Ce reclamă clienții cel mai des la Hanu' lui Manuc?" aria-label="Your question"></textarea>
+      <button class="btn primary" id="askBtn" type="submit">Ask</button>
+      <button class="btn" id="briefBtn" type="button">Management briefing</button>
+    </form>
+    <div class="thread" id="thread" aria-live="polite"></div>
+  </section>
+
+  <section class="box brief section" id="briefing" hidden></section>
+
+  <div class="switchbar">
+    <span class="eyebrow">Data source for charts and reviews:</span>
+    <div class="seg" id="srcSeg" role="group" aria-label="Data source">
+      <button type="button" data-src="g" aria-pressed="true">Google Maps</button>
+      <button type="button" data-src="t" aria-pressed="false">Tripadvisor</button>
+      <button type="button" data-src="all" aria-pressed="false">Both</button>
+    </div>
+    <span class="note" id="srcNote"></span>
+  </div>
+
+  <div class="g2">
+    <div class="box" id="box-half">
+      <h3>Average rating by half-year</h3>
+      <p class="cap">Stars out of 5, by half-year of visit. History comes from the Tripadvisor sample (2025 onwards); Google data covers Aug–Oct 2026 only. The number of ratings is shown on each bar.</p>
+      <div id="half"></div>
+    </div>
+    <div class="box" id="box-stars">
+      <h3>Star distribution</h3>
+      <p class="cap">Share of reviews at each rating.</p>
+      <div id="stars"></div>
+    </div>
+  </div>
+  <div class="g2 section">
+    <div class="box" id="box-subs">
+      <h3>Sub-ratings</h3>
+      <p class="cap">Food, service, value and atmosphere scores reviewers gave on Tripadvisor (where given). Google reviews do not carry sub-ratings.</p>
+      <div id="subs"></div>
+    </div>
+    <div class="box" id="box-themes">
+      <h3>What reviews talk about</h3>
+      <p class="cap">Text reviews mentioning each theme. Praise = review rated 4–5★, complaint = 1–2★ (Tripadvisor: coded per theme). Net = praise minus complaints; below zero means the theme hurts more than it helps.</p>
+      <div class="scroll" id="themes"></div>
+    </div>
+  </div>
+  <div class="g2 section">
+    <div class="box" id="box-dishes">
+      <h3>Most mentioned dishes and drinks</h3>
+      <p class="cap">Text reviews naming each item (multilingual matching). Hover a bar for the average rating of those reviews.</p>
+      <div id="dishes"></div>
+    </div>
+    <div class="box" id="box-google">
+      <h3>How Google reviews are written</h3>
+      <p class="cap">Google Maps sample only. Waiter names and owner replies.</p>
+      <div class="scroll" id="gwrite"></div>
+      <p class="note" id="gwriteNote" style="margin:8px 0 0"></p>
+    </div>
+  </div>
+
+  <div class="box section" id="box-findings">
+    <h3>Key findings</h3>
+    <p class="cap">From the Google Maps sample, the coded Tripadvisor sample and platform summaries, calculated on this page. Stripe colour: green = strength, red = risk, amber = watch.</p>
+    <div id="findings"></div>
+  </div>
+
+  <div class="g2 section">
+    <div class="box" id="box-trends">
+      <h3>Trends 2025 → 2026</h3>
+      <p class="cap">Tripadvisor sample by half-year of visit, plus the Google sample by month (calculated on this page). Directional: the samples are not representative (see method).</p>
+      <div class="scroll" id="trends"></div>
+    </div>
+    <div class="box" id="box-recs">
+      <h3>Recommendations</h3>
+      <p class="cap">Ranked by expected impact on rating. Proposals from the review desk, each shown with the evidence counted on this page.</p>
+      <ol class="recs" id="recs"></ol>
+    </div>
+  </div>
+
+  <div class="box section" id="box-reviews">
+    <h3>Review sample</h3>
+    <p class="cap" id="revCap"></p>
+    <div class="filters">
+      <div class="f"><label for="fVenue">Venue</label><select id="fVenue"><option value="all">Both venues</option><option value="ccb">Caru' cu Bere</option><option value="hlm">Hanu' lui Manuc</option></select></div>
+      <div class="f"><label for="fRating">Rating</label><select id="fRating"><option value="all">All ratings</option><option value="hi">4–5★</option><option value="mid">3★</option><option value="lo">1–2★</option></select></div>
+      <div class="f"><label for="fYear">Year</label><select id="fYear"><option value="all">2025–2026</option><option>2025</option><option>2026</option></select></div>
+      <div class="f"><label for="fTheme">Theme</label><select id="fTheme"><option value="">All themes</option></select></div>
+      <div class="f" style="flex:1;min-width:180px"><label for="fText">Keyword</label><input type="search" id="fText" placeholder="Tripadvisor text, dish, waiter, language…"></div>
+    </div>
+    <p class="note" id="revCount" style="margin:6px 0"></p>
+    <div class="scroll"><table><thead><tr><th>Date</th><th>Venue</th><th>Rating</th><th>What the guest said</th><th>Themes</th></tr></thead><tbody id="revBody"></tbody></table></div>
+    <div style="margin-top:8px"><button class="btn" id="more" type="button">Show more</button></div>
+  </div>
+
+  <div class="method" id="method"></div>
+</div>
+<div class="tip" id="tip" role="tooltip"></div>
+
+<script src="data/reviews.js"></script>
 <script>
-/*ANALYTICS-START*/
-// Coded review sample carried over from the Old Town Reviews Desk page.
-// [venue, visit YYYY-MM, stars, sub-ratings {f,s,v,a}|null, theme codes (+ praise / - complaint), paraphrase, party]
-const R = [
-["ccb","2026-08",2,null,["food-","complaint-","value-"],"Meat fine but a local dish was far too salty; the manager called it normal without tasting. Felt pushed by staff to post a review.","Friends"],
-["ccb","2024-10",5,{f:5,s:3,v:5,a:5},["atmosphere+","food+","show+","service-"],"Spectacular Gothic Revival interior, huge delicious pork knuckle, lively folk dance. Service only average because the room was so busy.","Friends"],
-["ccb","2026-08",5,{f:5,s:5,v:5,a:4},["group+","service+","food+","show+"],"Hosted a party of 60 on five tables; pre-set menu of 12+ dishes, attentive named staff, hot food, guests on the dance floor.","Group"],
-["ccb","2026-08",2,null,["reservation-","wait-","billing-"],"Booked ahead but no table on arrival; food took over an hour; charged for butter and a mystery 59 RON 'beer cart' line.","Family"],
-["ccb","2026-06",5,null,["value+","show+","reservation+","service+"],"About $182 for four with dessert and leftovers; Bacchus balcony was perfect for the show. Book two weeks ahead.","Family"],
-["ccb","2026-08",4,{f:4,s:3,v:3,a:4},["reservation-","value-"],"Must-visit landmark, but despite a reservation got a poorly located table. A bit expensive for the quality.","Family"],
-["ccb","2026-07",5,{f:5,s:5,v:4,a:5},["show+","service+","food+","reservation+"],"Requested a table with a view of the 19:30 dancing and got it; friendly named server; portions big enough to justify the price.","Family"],
-["ccb","2026-07",5,{f:5,s:5,v:5,a:5},["food+","atmosphere+","value+"],"Pork knuckle for two with sensational crispy skin, stained glass, relaxed unrushed meal.","Couples"],
-["ccb","2026-08",4,{f:5,s:5,v:3,a:4},["food+","service+","value-"],"Ciolan, schnitzel with tarragon sauce and fresh house beer all great; exceptional named server. Touristy and pricey.","Couples"],
-["ccb","2026-09",1,{f:3,s:1,v:1,a:1},["complaint-","service-","noise-","value-"],"Bean dish arrived cold; waiter said it had to be paid once touched; manager argued for minutes; very noisy and expensive.","Friends"],
-["ccb","2026-07",5,null,["show+","service+","food+","value-"],"Live trio, short waits, attentive named waiter; around €90 for two, above normal prices but worth it once.","Couples"],
-["ccb","2026-08",3,{f:3,s:4,v:3,a:3},["food-","service-"],"Stunning room and quick service, but dry ribs and an unsmiling waiter. TikTok hype set expectations too high.","Family"],
-["ccb","2026-05",4,null,["lunchmenu+","value+","service-"],"Weekday lunch menu under 40 RON for soup, salad and main; only offered on request. Service feels like mass processing.","Solo"],
-["ccb","2026-07",2,null,["lunchmenu-","billing-"],"English speakers only get the main menu at lunchtime; the cheaper lunch menu must be asked for. Felt like a scam.","Couples"],
-["ccb","2026-08",1,{f:3,s:1,v:2,a:3},["service-","tip-","wait-"],"Drinks arrived at the end of the meal; server insisted on a 10/12/15% tip at the terminal and was rude about the PIN.","Family"],
-["ccb","2024-02",3,null,["food-","value-","dessert+"],"Nice typical setting but the set menu was thin; desserts exquisite though expensive. Beer cheaper than water.","Family"],
-["ccb","2025-06",4,{f:4,s:4,v:4,a:5},["food+","menu-","value-"],"Excellent meat mains; menu print too small to read in dim terrace light. Not cheap by Romanian standards.","Friends"],
-["ccb","2025-05",5,{f:5,s:5,v:4,a:5},["atmosphere+","service+","show+"],"Quaint, timeless furnishings, unobtrusive entertainment, courteous named waiter. Prices above Bucharest average.","Couples"],
-["ccb","2024-11",4,{f:3,s:5,v:4,a:4},["service+","food+","food-"],"Waiter steered away from the goulash to excellent sausages; fries were lukewarm and stale.","Solo"],
-["ccb","2025-07",3,null,["food-","value-","atmosphere+"],"Mains oily and heavy, skipped dessert; good music and balanced sound in the basement. Ate cheaper and better elsewhere.","Couples"],
-["ccb","2025-02",5,null,["show+","atmosphere+","reservation+"],"Valentine's dinner on the balcony booked well ahead; good food, dancing and theatrical shows.","Couples"],
-["ccb","2025-10",4,{f:4,s:5,v:4,a:5},["atmosphere+","show+","value-"],"Festive lunch with classical Romanian music; food good, a little expensive; short wait.","Solo"],
-["ccb","2024-10",4,{f:4,s:4,v:4,a:4},["food+","wait-","show+"],"House pork shank enough for two; 30+ minute wait, flagged by the waiter, eased by a string quartet. About €60.","Couples"],
-["ccb","2025-02",4,null,["reservation-","atmosphere+"],"Famous and worth it, but book well in advance or face endless queues.","Couples"],
-["ccb","2024-12",3,{f:3,s:3,v:3,a:2},["service-","access-"],"Service unprofessional, ordinary food, poor accessibility.","Family"],
-["ccb","2026-05",5,{f:5,s:5,v:5,a:5},["lunchmenu+","group+","value+"],"Table of 11 squeezed in at lunch; lunch menu 2–3 courses under €8 each. Ask for it, it is not offered by default.","Friends"],
-["ccb","2025-01",5,null,["service+","food+","show+"],"Expected a tourist trap, came back the same evening. Attentive named waitress brought a candle and fizz for a birthday.","Friends"],
-["ccb","2024-12",1,null,["wait-","service-","food-","billing-"],"Seated 21:00 with a month-old booking; at 21:30 told the kitchen was closing and rushed. Poor food, €5 water.","Couples"],
-["ccb","2024-12",1,null,["service-","food-","billing-"],"Same night: rushed by the manager, raw side dishes, hard polenta, €5 water, show only three minutes.","Couples"],
-["ccb","2025-04",5,null,["food+","atmosphere+","dessert+"],"Beautiful and characterful; ciorbă, sarmale and papanași all delicious.","Family"],
-["ccb","2026-10",5,null,["service+","food+","atmosphere+"],"Delicious food and a named waitress who was warm, attentive and always smiling.","Couples"],
-["ccb","2026-10",5,null,["food+","service-","atmosphere+"],"Elegant wood interior and good food, although the welcome from the hostesses was cool.","Couples"],
-["ccb","2026-10",5,null,["show+","service+","food+"],"Excellent food and service; professional dancers' show included in the price.","Couples"],
-["hlm","2026-08",4,{f:4,s:4,v:3,a:4},["atmosphere+","service+","value-","reservation-"],"Inner courtyard with live music, fast service, big portions; prices a bit high. Reserve a day ahead.","Family"],
-["hlm","2026-08",5,null,["food+","service+","group+","comfort-"],"Group of six very satisfied: pork ribs recommended, multilingual staff, dancing. Small uncomfortable wooden chairs.","Friends"],
-["hlm","2026-08",5,null,["food+","service+","show+"],"Delicious lamb stew and live traditional music; a named waiter explained the menu. Book beforehand.","Family"],
-["hlm","2026-06",2,null,["noise-","service-","tip-","value-"],"Music too loud to talk; QR-ordering confusion led to a rude, hostile waitress who pushed for a tip. Pricey.","Friends"],
-["hlm","2026-08",1,null,["food-","value-"],"Undercooked potatoes; Manuc platter small and tasteless. Left hungry, felt cooked for tourists.","Family"],
-["hlm","2026-05",5,null,["food+","show+","value+"],"Seated quickly without booking on a Thursday; incredible homemade bread, live entertainment, reasonable bill.","Couples"],
-["hlm","2026-05",4,null,["speed+","food-","show+","service-"],"Touristy but idyllic; service almost intrusive; food in five minutes; ribs small, papanași average; nightly show.","Solo"],
-["hlm","2026-04",2,{f:2,s:4,v:1,a:2},["group-","food-","value-"],"Group of 15 got leek soup and mixed meats, none of the classic dishes expected. Not worth it for four songs.","Friends"],
-["hlm","2026-06",4,null,["atmosphere+","speed+","food-","value-"],"Huge patio, plenty of staff, no wait; food came so fast it seemed reheated. Above-average prices justified by the show.","Couples"],
-["hlm","2026-05",3,null,["service-","wait-","food-","value-"],"Beautiful place, unpleasant slow servers, overcooked steak, frozen fries, about $20 a dish.","Couples"],
-["hlm","2026-06",5,{f:4,s:5,v:4,a:5},["service+","atmosphere+"],"Named waiter recommended dishes, extremely kind and attentive.","Family"],
-["hlm","2026-08",3,null,["food+","billing-"],"Quality food, but an aperitif described as free was charged at 27 lei per person.","Couples"],
-["hlm","2026-04",4,{f:4,s:4,v:4,a:5},["service+","complaint+","atmosphere+"],"Very busy but excellent service; cold lamb chops replaced within minutes. Cats in the courtyard.","Friends"],
-["hlm","2026-05",1,null,["food-","service-","value-"],"Pork served rare for a child, potatoes forgotten, dry reheated duck. Not cheap.","Family"],
-["hlm","2026-04",4,{f:5,s:5,v:3,a:5},["food+","atmosphere+","value-"],"Old institution with early-1900s music; authentic pickles; big desserts; prices on the high side.","Family"],
-["hlm","2024-08",3,{f:2,s:4,v:2,a:3},["reservation-","food-","value-"],"Booked table had no view of the show; expensive meat platter came cold.","Couples"],
-["hlm","2025-03",5,{f:5,s:5,v:5,a:5},["service+","food+"],"Named waiter talked them through Romanian wines; Monday lunch was calm.","Couples"],
-["hlm","2024-10",3,null,["food-"],"House lamb knee barely reheated and dry, potatoes lukewarm.","Business"],
-["hlm","2024-12",4,null,["food+","noise-","reservation-"],"Plentiful traditional dishes, live music makes talking hard; book ahead; no nearby parking.","Family"],
-["hlm","2024-09",4,null,["show+","value+","service-"],"Dancers involve guests without pressure; good bread, lower prices than similar places; staff not always smiling.","Family"],
-["hlm","2023-10",3,{f:3,s:1,v:2,a:4},["service-","food-","value-"],"Lovely courtyard but rude, unhelpful staff and tasteless, expensive dishes.","Couples"],
-["hlm","2024-11",3,null,["food-","value+","service+"],"Lovely setting, reasonable prices, friendly staff; food not hot enough and lamb stew fatty.","Couples"],
-["hlm","2024-12",5,null,["atmosphere+","service+","value+"],"Atmospheric wine cellar dinner, attentive waiter, reasonably priced drinks.","Couples"],
-["hlm","2023-08",5,{f:5,s:5,v:5,a:4},["food+","value+","speed+"],"Generous portions, good value, fast service at rush hour, pleasant waiter.","Family"],
-["hlm","2024-11",5,null,["service+"],"Exceptional named host, professional and warm.","Friends"],
-["hlm","2024-07",5,null,["service+","value+","show+"],"Solo diner: reasonable prices, live music, one of the best waiters of the trip.","Solo"],
-["hlm","2024-11",5,{f:5,s:5,v:5,a:5},["food+","speed+","service+"],"Huge appetizers, fast friendly service, decent all round.","Couples"],
-["hlm","2024-08",2,null,["food-","tip-","speed+"],"Fast service but terrible platters; a car parked behind the table; 10% tip practically mandatory.","Family"],
-["hlm","2024-10",5,{f:5,s:5,v:5,a:5},["show+","value+","food+"],"Dancers pulled guests in; good red wine; about €100 for four, an honest price.","Couples"],
-["hlm","2024-08",3,null,["service-","show+"],"Historic, lots of space and entertainment; waiters inattentive late in the evening.","Couples"]
-];
-const THEMES = {food:"Food quality",service:"Service & staff",value:"Value / prices",atmosphere:"Setting & atmosphere",show:"Show & music",wait:"Waiting time",reservation:"Reservations & seating",billing:"Bill transparency",tip:"Tip pressure",complaint:"Complaint handling",lunchmenu:"Lunch menu",speed:"Speed of service",noise:"Noise",group:"Group dining",dessert:"Desserts",menu:"Menu legibility",access:"Accessibility",comfort:"Seating comfort",cleanliness:"Cleanliness"};
+"use strict";
+/* ================= data ================= */
+const META = window.CG_META || {};
+const RAW = window.CG_ROWS || [];
 const VENUES = {
-  ccb:{name:"Caru' cu Bere",short:"Caru'",addr:"Str. Stavropoleos 5 · since 1879",google:"4.6",googleN:"~100.7k",ta:"4.1",taN:"20,185",taRank:"#89 of ~2,330",tags:"service varied · value pricey · wait long",concept:"Neo-gothic beer hall, pork knuckle and papanași, nightly folk show at 19:30."},
-  hlm:{name:"Hanu' lui Manuc",short:"Manuc",addr:"Str. Franceză 62-64 · since 1808",google:"4.7",googleN:"~63.9k",ta:"4.1",taN:"5,309",taRank:"#81 of ~2,340",tags:"service varied · value reasonable · wait unpredictable",concept:"Caravanserai courtyard, lamb dishes, wine cellar, live lăutari and dancers."}
+  ccb:{name:"Caru' cu Bere",short:"Caru'",addr:"Str. Stavropoleos 5 · since 1879",google:"4.6",googleN:"101k+ reviews",ta:"4.1",taN:"20,185",concept:"Neo-gothic beer hall, pork knuckle and papanași, nightly folk show at 19:30.",gSort:"most relevant"},
+  hlm:{name:"Hanu' lui Manuc",short:"Manuc",addr:"Str. Franceză 62-64 · since 1808",google:"4.7",googleN:"~63.9k reviews",ta:"4.1",taN:"5,309",concept:"Caravanserai courtyard, lamb dishes, wine cellar, live lăutari and dancers.",gSort:"newest"}
 };
-const YEARS = [2023,2024,2025,2026];
-const ROWS = R.map((r,i)=>({id:i,v:r[0],d:r[1],y:+r[1].slice(0,4),s:r[2],sub:r[3],tags:r[4],t:r[5],p:r[6]}));
+const VS = ["ccb","hlm"];
+const THEMES = {service:"Service & staff",food:"Food quality",atmosphere:"Setting & atmosphere",wait:"Waiting & speed",show:"Show & music",value:"Value / prices",drinks:"Drinks",reservation:"Reservations & seating",portion:"Portion size",billing:"Bill & tips",noise:"Noise",clean:"Cleanliness"};
+const ITEMS = {knuckle:"Pork knuckle (ciolan)",papanasi:"Papanași",sarmale:"Sarmale",mici:"Mici",soup:"Ciorbă / soup",polenta:"Mămăligă / polenta",lamb:"Lamb",ribs:"Ribs",platter:"Platters",duck:"Duck",schnitzel:"Schnitzel",fries:"Fries",bread:"Bread",beer:"Beer",wine:"Wine"};
+const SRC = {g:"Google",t:"Tripadvisor"};
+const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const PERIODS = ["2025 H1","2025 H2","2026 H1","2026 H2"];
 
+const ROWS = RAW.map((a,i)=>{
+  const r = {id:i,src:a[0]?"t":"g",v:a[1],d:a[2],y:+a[2].slice(0,4),mo:+a[2].slice(5,7),s:a[3],lang:a[4],waiter:a[6],reply:a[7],price:a[8],hasText:a[9],nameOnly:a[10],words:a[11],items:a[12]||[],t:a[13]||"",sub:a[14]||null};
+  r.h = r.y+" H"+(r.mo<=6?1:2);
+  r.tp = {};
+  if(r.src==="g"){ const pol = r.s>=4?1:r.s<=2?-1:0; (a[5]||[]).forEach(k=>r.tp[k]=pol); }
+  else (a[5]||[]).forEach(x=>r.tp[x.slice(1)] = x[0]==="+"?1:-1);
+  r.themes = Object.keys(r.tp);
+  return r;
+});
+
+/* ================= helpers ================= */
 const avg = a => a.length ? a.reduce((x,y)=>x+y,0)/a.length : null;
-const pct = (x,d=0) => (x*100).toFixed(d)+"%";
 const f1 = x => x==null ? "–" : x.toFixed(1);
 const f2 = x => x==null ? "–" : x.toFixed(2);
-
-function filterRows(rows, f){
-  return rows.filter(r=>(f.venue==="all"||r.v===f.venue)&&(f.year==="all"||r.y===+f.year)&&
-    (f.rating==="all"||(f.rating==="hi"&&r.s>=4)||(f.rating==="mid"&&r.s===3)||(f.rating==="lo"&&r.s<=2)));
-}
-const byVenue = (rows,v) => rows.filter(r=>r.v===v);
-
-function themeStats(rows){
-  const o={};
-  for(const r of rows) for(const t of r.tags){
-    const k=t.slice(0,-1), sg=t.slice(-1)==="+"?"pos":"neg";
-    o[k]=o[k]||{key:k,pos:[],neg:[]}; o[k][sg].push(r);
-  }
-  return o;
-}
-
-// Impact score (complaints) = mentions × (5 − average stars of the reviews carrying that complaint).
-// It weights how often a complaint appears by how far those reviews fall below a perfect score.
-function rankThemes(rows, sign, mode){
-  const st=themeStats(rows), n=rows.length;
-  const list=Object.values(st).filter(x=>x[sign].length).map(x=>{
-    const rs=x[sign], a=avg(rs.map(r=>r.s)), low=rs.filter(r=>r.s<=2).length, hi=rs.filter(r=>r.s>=4).length;
-    return {key:x.key,label:THEMES[x.key]||x.key,count:rs.length,share:n?rs.length/n:0,avgStars:a,low,hi,
-      lowShare:low/rs.length,hiShare:hi/rs.length,impact:rs.length*(5-a),opposite:x[sign==="neg"?"pos":"neg"].length,rows:rs};
-  });
-  const freq=(a,b)=>b.count-a.count||(sign==="neg"?a.avgStars-b.avgStars:b.avgStars-a.avgStars);
-  list.sort(mode==="impact"&&sign==="neg" ? (a,b)=>b.impact-a.impact||b.count-a.count : freq);
-  list.forEach((x,i)=>{ x.rank=i+1; x.tieWith=list.filter(y=>y!==x&&y.count===x.count).map(y=>y.label); });
-  return list;
-}
-
-// Sub-drivers: keyword matches on the paraphrased review text (indicative; one review can match several).
-const DRIVERS = {
-  food:[["Temperature / seemed reheated",/cold|lukewarm|reheated|not hot/i],["Undercooked or overcooked",/undercooked|overcooked|raw|rare for|hard polenta/i],["Taste, salt, oil or dryness",/salty|tasteless|oily|heavy|fatty|dry/i],["Small or limited portions",/small|thin|none of the classic/i],["Not fresh (stale, frozen)",/stale|frozen/i]],
-  service:[["Rude, cold or unsmiling staff",/rude|unsmiling|not always smiling|hostile|unprofessional|cool|unhelpful/i],["Rushed near kitchen close",/rushed|closing/i],["Slow, inattentive or intrusive",/slow|inattentive|drinks arrived|mass processing|average because|intrusive/i]],
-  value:[["Price named in the review",/€|\$|RON|lei/i],["Called expensive or pricey",/expensive|pricey|high side|a bit high|above|not cheap/i],["Not worth it / better elsewhere",/not worth|cheaper and better|for tourists|for the quality/i]],
-  billing:[["Paid water, bread or butter",/water|butter|bread/i],["Unexplained 'beer cart' line",/beer cart/i],["Item called free, then billed",/free/i],["Cheaper menu not offered",/lunch menu/i]],
-  wait:[["Long wait for food or drinks",/hour|minute|drinks arrived|slow/i],["Waited despite a booking",/booked|booking|seated/i]],
-  reservation:[["Poor table despite booking",/poorly located|no view|no table/i],["Must book far ahead",/well in advance|reserve|book/i]],
-  tip:[["Tip pushed at the terminal",/tip/i]],
-  complaint:[["Returned dish argued over",/manager|paid once touched|without tasting/i]],
-  noise:[["Too loud to talk",/loud|noisy|talking hard/i]]
-};
-function drivers(theme, rows){
-  const d=DRIVERS[theme]; if(!d) return [];
-  return d.map(([label,re])=>({label,count:rows.filter(r=>re.test(r.t)).length})).filter(x=>x.count).sort((a,b)=>b.count-a.count);
-}
-
-function coverage(rows,v){ const rs=byVenue(rows,v); return YEARS.map(y=>({y,n:rs.filter(r=>r.y===y).length})); }
-function subAvg(rows,k){ const rs=rows.filter(r=>r.sub); return {avg:avg(rs.map(r=>r.sub[k])),n:rs.length}; }
-function starDist(rows){ const n=rows.length; return [5,4,3,2,1].map(s=>({s,c:rows.filter(r=>r.s===s).length,share:n?rows.filter(r=>r.s===s).length/n:0})); }
-function yearStats(rows,v){ return YEARS.map(y=>{ const rs=rows.filter(r=>r.v===v&&r.y===y); return {y,n:rs.length,avg:avg(rs.map(r=>r.s)),lo:rs.filter(r=>r.s<=2).length,mid:rs.filter(r=>r.s===3).length,four:rs.filter(r=>r.s===4).length,five:rs.filter(r=>r.s===5).length}; }); }
-function themeByYear(rows,v,key,sign){ const ch=sign==="pos"?"+":"-"; return YEARS.map(y=>{ const rs=rows.filter(r=>r.v===v&&r.y===y); return {y,n:rs.length,c:rs.filter(r=>r.tags.includes(key+ch)).length}; }); }
-const PRICE_RE=/(€|\$)\s?\d+|\d+\s?(RON|lei)\b/i;
-function priceMentions(rows){ return rows.filter(r=>PRICE_RE.test(r.t)); }
-/*ANALYTICS-END*/
-</script>
-<script>
-const {useState,useMemo,useEffect,useRef} = React;
-const html = htm.bind(React.createElement);
-const esc = s => String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const pct = (x,d=0) => x==null||!isFinite(x) ? "–" : (x*100).toFixed(d)+"%";
+const fmtN = n => n.toLocaleString("en-US");
+const esc = s => String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const VN = v => VENUES[v].name;
+const $ = id => document.getElementById(id);
+const by = (rows,v) => rows.filter(r=>r.v===v);
+const ofSrc = (rows,src) => src==="all" ? rows : rows.filter(r=>r.src===src);
+const minmax = a => a.length ? [a.reduce((x,y)=>x<y?x:y), a.reduce((x,y)=>x>y?x:y)] : [null,null];
+function fmtDate(d){ if(!d) return "–"; const p=d.split("-"); return (p[2]?(+p[2])+" ":"")+MONTHS[+p[1]-1]+" "+p[0]; }
 function md(s){
   const lines=esc(s||"").split("\n"); let out="", list=null;
   const inline=l=>l.replace(/\*\*(.+?)\*\*/g,"<b>$1</b>");
@@ -352,696 +321,650 @@ function md(s){
   }
   if(list) out+=`</${list}>`; return out;
 }
-const VN = v => VENUES[v].name;
-const RATING_LABEL = {all:"All ratings",hi:"4–5★",mid:"3★",lo:"1–2★"};
+const starsHtml = s => `<span class="stars" aria-label="${s} stars">${"★".repeat(s)}<s>${"★".repeat(5-s)}</s></span>`;
 
-/* ---------- questions and routing ---------- */
-const INITIAL_Q = "What are the top 3 complaints at each restaurant?";
+/* ================= analytics ================= */
+function starDist(rows){ const n=rows.length; return [5,4,3,2,1].map(s=>{ const c=rows.filter(r=>r.s===s).length; return {s,c,share:n?c/n:null}; }); }
+function subAvg(rows,k){ const rs=rows.filter(r=>r.src==="t"&&r.sub); return {avg:avg(rs.map(r=>r.sub[k])),n:rs.length}; }
+function themeStats(rows){
+  const o={};
+  for(const r of rows) for(const k of r.themes){
+    const pol=r.tp[k]; const x=o[k]=o[k]||{key:k,label:THEMES[k]||k,m:0,p:0,n:0,z:0,pRows:[],nRows:[],rows:[]};
+    x.m++; x.rows.push(r);
+    if(pol>0){x.p++;x.pRows.push(r);} else if(pol<0){x.n++;x.nRows.push(r);} else x.z++;
+  }
+  return o;
+}
+// Complaint (sign -1) or praise (+1) ranking. share = reviews with that theme ÷ reviews in the same star band (Google) or ÷ all reviews (Tripadvisor coded)
+function rankThemes(rows,sign){
+  const st=themeStats(rows);
+  const base = sign<0 ? rows.filter(r=>r.src==="t"||r.s<=2) : rows.filter(r=>r.src==="t"||r.s>=4);
+  const list=Object.values(st).map(x=>{ const rs=sign<0?x.nRows:x.pRows; return {key:x.key,label:x.label,count:rs.length,base:base.length,share:base.length?rs.length/base.length:null,avgStars:avg(rs.map(r=>r.s)),rows:rs,opposite:sign<0?x.p:x.n}; }).filter(x=>x.count);
+  list.sort((a,b)=>b.count-a.count||(sign<0?a.avgStars-b.avgStars:b.avgStars-a.avgStars));
+  return list;
+}
+function itemStats(rows){
+  const o={};
+  for(const r of rows) for(const k of r.items){ const x=o[k]=o[k]||{key:k,label:ITEMS[k]||k,c:0,stars:[],hi:0,lo:0}; x.c++; x.stars.push(r.s); if(r.s>=4)x.hi++; if(r.s<=2)x.lo++; }
+  return Object.values(o).map(x=>({...x,avg:avg(x.stars)})).sort((a,b)=>b.c-a.c);
+}
+function googleWriting(v){
+  const g=ROWS.filter(r=>r.src==="g"&&r.v===v), text=g.filter(r=>r.hasText), named=text.filter(r=>r.waiter), only=g.filter(r=>r.nameOnly);
+  const organic=g.filter(r=>!r.nameOnly), lowMid=g.filter(r=>r.s<=3);
+  const langs={}; text.forEach(r=>{ const l=r.lang||"?"; langs[l]=(langs[l]||0)+1; });
+  const [from,to]=minmax(g.map(r=>r.d));
+  return {n:g.length,from,to,textN:text.length,namedN:named.length,onlyN:only.length,replyN:g.filter(r=>r.reply).length,
+    lowMidN:lowMid.length,lowMidReplyN:lowMid.filter(r=>r.reply).length,
+    avgAll:avg(g.map(r=>r.s)),avgOrganic:avg(organic.map(r=>r.s)),avgOnly:avg(only.map(r=>r.s)),avgNoText:avg(g.filter(r=>!r.hasText).map(r=>r.s)),
+    avgWords:avg(text.filter(r=>!r.nameOnly).map(r=>r.words)),priceN:g.filter(r=>r.price).length,
+    langs:Object.entries(langs).sort((a,b)=>b[1]-a[1]).slice(0,4)};
+}
+function periodStats(rows){ return {n:rows.length,avg:avg(rows.map(r=>r.s)),lo:rows.filter(r=>r.s<=2).length,five:rows.filter(r=>r.s===5).length}; }
+function halfYearStats(src,v){ return PERIODS.map(p=>({p,...periodStats(ROWS.filter(r=>r.src===src&&r.v===v&&r.h===p))})); }
+function googleMonths(v){ const g=ROWS.filter(r=>r.src==="g"&&r.v===v); const ms=[...new Set(g.map(r=>r.d.slice(0,7)))].sort(); return ms.map(m=>({m,...periodStats(g.filter(r=>r.d.startsWith(m)))})); }
+function sampleInfo(){
+  const o={};
+  for(const v of VS){ const g=ROWS.filter(r=>r.src==="g"&&r.v===v), t=ROWS.filter(r=>r.src==="t"&&r.v===v); const [gf,gt]=minmax(g.map(r=>r.d)); const [tf,tt]=minmax(t.map(r=>r.d));
+    o[v]={gN:g.length,gAvg:avg(g.map(r=>r.s)),gFrom:gf,gTo:gt,tN:t.length,tAvg:avg(t.map(r=>r.s)),tFrom:tf,tTo:tt}; }
+  return o;
+}
+const INFO = sampleInfo();
+const COUNTS = {g:ROWS.filter(r=>r.src==="g").length,t:ROWS.filter(r=>r.src==="t").length};
+
+/* ================= state ================= */
+const S = {src:"g", ev:{venue:"all",rating:"all",year:"all",theme:"",q:""}, page:1, busy:false, hist:[], sample:undefined, focus:[]};
+
+/* ================= tooltip ================= */
+const tipEl=$("tip");
+document.addEventListener("mouseover",e=>{ const t=e.target.closest("[data-tip]"); if(!t){ tipEl.style.display="none"; return; } tipEl.textContent=t.getAttribute("data-tip"); tipEl.style.display="block"; });
+document.addEventListener("mousemove",e=>{ if(tipEl.style.display==="block"){ const w=tipEl.offsetWidth; tipEl.style.left=Math.min(window.innerWidth-w-8,e.clientX+12)+"px"; tipEl.style.top=(e.clientY+14)+"px"; } });
+document.addEventListener("focusin",e=>{ const t=e.target.closest("[data-tip]"); if(t){ const b=t.getBoundingClientRect(); tipEl.textContent=t.getAttribute("data-tip"); tipEl.style.display="block"; tipEl.style.left=Math.max(8,b.left)+"px"; tipEl.style.top=(b.bottom+6)+"px"; } });
+document.addEventListener("focusout",()=>{ tipEl.style.display="none"; });
+
+/* ================= renderers ================= */
+function legend(extra){ return `<div class="legend">${VS.map(v=>`<span><i style="background:var(--${v})"></i>${VN(v)}</span>`).join("")}${extra||""}</div>`; }
+function bar(o){ // o: {v,val,max,label,tip,hatch,nodata}
+  if(o.nodata) return `<div class="btrack"><div class="bar nodata" data-tip="${esc(o.tip||"No data")}" tabindex="0"><em>${esc(o.label||"no data")}</em></div></div>`;
+  return `<div class="btrack"><div class="bar${o.hatch?" g":""}" style="--c:var(--${o.v});width:${Math.max(1,o.val/o.max*100)}%" data-tip="${esc(o.tip)}" tabindex="0"><em>${esc(o.label)}</em></div></div>`;
+}
+function renderLedgers(){
+  $("lede").innerHTML = `What guests say about Bucharest's two most-visited heritage restaurants, both run by City Grill Group. Now with <b class="num">${fmtN(COUNTS.g)}</b> Google Maps reviews alongside <b class="num">${COUNTS.t}</b> coded Tripadvisor reviews from 2025 onwards. Ask the analyst a question, or read the overview, insights and reviews below.`;
+  $("ledgers").innerHTML = VS.map(v=>{ const V=VENUES[v], I=INFO[v];
+    return `<section class="ledger" style="--c:var(--${v})">
+      <div class="lhead"><h2>${V.name}</h2><span>${V.addr}</span></div>
+      <div class="stats">
+        <div class="stat"><b>${V.google}</b><span>Google · ${V.googleN} · reported</span></div>
+        <div class="stat"><b>${V.ta}</b><span>Tripadvisor · ${V.taN} · reported</span></div>
+        <div class="stat sample"><b>${f2(I.gAvg)}</b><span>Google sample · n=${fmtN(I.gN)}</span></div>
+        <div class="stat sample"><b>${f2(I.tAvg)}</b><span>Tripadvisor sample · n=${I.tN}</span></div>
+      </div>
+      <p>${V.concept} Google sample: ${fmtDate(I.gFrom)} – ${fmtDate(I.gTo)} (${V.gSort}). Tripadvisor sample: visits ${fmtDate(I.tFrom)} – ${fmtDate(I.tTo)}.</p>
+    </section>`; }).join("");
+}
+function renderSrc(){
+  document.querySelectorAll("#srcSeg button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.src===S.src)));
+  $("srcNote").textContent = S.src==="all" ? `Pooled view: Google is ${pct(COUNTS.g/(COUNTS.g+COUNTS.t))} of rows, so it dominates the totals. Compare sources separately for averages.` : S.src==="g" ? `${fmtN(COUNTS.g)} Google reviews, Aug–Oct 2026.` : `${COUNTS.t} coded Tripadvisor reviews, visits 2025–2026.`;
+}
+function renderHalf(){
+  const srcs = S.src==="all" ? ["t","g"] : [S.src];
+  const legendExtra = srcs.length>1 ? `<span><i class="hatch"></i>Google (hatched)</span>` : "";
+  let h = legend(legendExtra)+`<div class="rows">`;
+  for(const p of PERIODS){
+    const bars=[];
+    for(const src of srcs) for(const v of VS){
+      const st=ROWS.filter(r=>r.src===src&&r.v===v&&r.h===p);
+      if(src==="g"&&!st.length) continue;
+      const a=avg(st.map(r=>r.s));
+      bars.push(st.length ? bar({v,val:a,max:5,hatch:src==="g",label:`${f2(a)} · n=${fmtN(st.length)}${src==="g"&&srcs.length>1?" G":""}`,tip:`${VN(v)} · ${SRC[src]} · ${p}: ${f2(a)}★ from ${fmtN(st.length)} review${st.length>1?"s":""}${st.length<5?" (very small, indicative only)":""}`})
+                         : bar({nodata:true,label:`no ${SRC[src]} reviews`,tip:`${VN(v)} · ${SRC[src]} · ${p}: no reviews in the sample`}));
+    }
+    h += `<div class="brow"><span class="muted">${p}${p==="2026 H2"?" YTD":""}</span><div class="bpair">${bars.join("")||bar({nodata:true,label:"no data"})}</div></div>`;
+  }
+  h += `</div>`;
+  if(S.src==="g") h += `<p class="note" style="margin:8px 0 0">Google reviews start in Aug 2026, so only 2026 H2 has Google data. Switch to Tripadvisor or Both for history.</p>`;
+  $("half").innerHTML = h;
+}
+function renderStars(){
+  const rows=ofSrc(ROWS,S.src);
+  let h = legend()+`<div class="rows">`;
+  const d={}; VS.forEach(v=>d[v]=starDist(by(rows,v)));
+  for(let i=0;i<5;i++){ const s=5-i;
+    h += `<div class="brow"><span class="muted">${"★".repeat(s)}</span><div class="bpair">${VS.map(v=>{ const x=d[v][i], n=by(rows,v).length; return n?bar({v,val:x.share*100,max:100,label:`${pct(x.share)} · ${fmtN(x.c)}`,tip:`${VN(v)}: ${fmtN(x.c)} of ${fmtN(n)} reviews at ${s}★ (${pct(x.share,1)})`}):bar({nodata:true}); }).join("")}</div></div>`;
+  }
+  $("stars").innerHTML = h+`</div><p class="note" style="margin:8px 0 0">n: ${VS.map(v=>`${VN(v)} ${fmtN(by(rows,v).length)}`).join(" · ")} (${S.src==="all"?"both sources pooled":SRC[S.src]}).</p>`;
+}
+function renderSubs(){
+  let h = legend()+`<div class="rows">`;
+  for(const [k,l] of [["f","Food"],["s","Service"],["v","Value"],["a","Atmosphere"]]){
+    h += `<div class="brow"><span class="muted">${l}</span><div class="bpair">${VS.map(v=>{ const x=subAvg(by(ROWS,v),k); return x.n?bar({v,val:x.avg,max:5,label:`${f2(x.avg)} · n=${x.n}`,tip:`${VN(v)} · ${l}: ${f2(x.avg)} average from ${x.n} Tripadvisor reviews that gave sub-ratings`}):bar({nodata:true,label:"no sub-ratings"}); }).join("")}</div></div>`;
+  }
+  h += `</div>`;
+  if(S.src==="g") h += `<p class="note" style="margin:8px 0 0">Shown from Tripadvisor whatever the source switch says: Google has no sub-ratings.</p>`;
+  $("subs").innerHTML = h;
+}
+function renderThemes(){
+  const rows=ofSrc(ROWS,S.src);
+  const st={}; VS.forEach(v=>st[v]=themeStats(by(rows,v)));
+  const keys=Object.keys(THEMES).filter(k=>VS.some(v=>st[v][k])).sort((a,b)=>VS.reduce((s,v)=>s+(st[v][b]?.m||0),0)-VS.reduce((s,v)=>s+(st[v][a]?.m||0),0));
+  const cell=(v,k)=>{ const o=st[v][k]; if(!o) return `<td class="n muted">—</td>`; const net=o.p-o.n, cls=net>0?"p":net<0?"n":"z";
+    const tip=`${VN(v)} · ${THEMES[k]}: ${fmtN(o.m)} mentions — ${fmtN(o.p)} praise, ${fmtN(o.n)} complaints${o.z?`, ${fmtN(o.z)} at 3★`:""}`;
+    return `<td class="n" data-tip="${esc(tip)}" tabindex="0"><span class="net ${cls}">${net>0?"+":""}${fmtN(net)}</span> <span class="muted">${fmtN(o.p)}↑ ${fmtN(o.n)}↓</span></td>`; };
+  $("themes").innerHTML = `<table><thead><tr><th>Theme</th><th>Caru' cu Bere</th><th>Hanu' lui Manuc</th></tr></thead><tbody>${keys.map(k=>`<tr><td>${THEMES[k]}</td>${cell("ccb",k)}${cell("hlm",k)}</tr>`).join("")}</tbody></table>
+    <p class="note" style="margin:6px 0 0">Text reviews in view: ${VS.map(v=>`${VN(v)} ${fmtN(by(rows,v).filter(r=>r.hasText).length)}`).join(" · ")}. One review can mention several themes.</p>`;
+}
+function renderDishes(){
+  const rows=ofSrc(ROWS,S.src);
+  const it={}; VS.forEach(v=>it[v]=itemStats(by(rows,v)));
+  const keys=[...new Set(VS.flatMap(v=>it[v].slice(0,8).map(x=>x.key)))];
+  keys.sort((a,b)=>VS.reduce((s,v)=>s+(it[v].find(x=>x.key===b)?.c||0),0)-VS.reduce((s,v)=>s+(it[v].find(x=>x.key===a)?.c||0),0));
+  const max=Math.max(1,...VS.flatMap(v=>it[v].map(x=>x.c)));
+  let h=legend()+`<div class="rows">`;
+  for(const k of keys.slice(0,10)){
+    h += `<div class="brow"><span class="muted" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${esc(ITEMS[k])}">${esc(ITEMS[k].replace(/ \(.*\)/,""))}</span><div class="bpair">${VS.map(v=>{ const x=it[v].find(y=>y.key===k); return x?bar({v,val:x.c,max,label:`${x.c} · ${f1(x.avg)}★`,tip:`${VN(v)} · ${ITEMS[k]}: named in ${x.c} review${x.c>1?"s":""}, average ${f2(x.avg)}★ (${x.hi} at 4–5★, ${x.lo} at 1–2★)`}):bar({nodata:true,label:"not named"}); }).join("")}</div></div>`;
+  }
+  h += `</div>`;
+  if(!keys.length) h=`<div class="missing"><b>No dishes named in this view</b><p>Switch the data source.</p></div>`;
+  $("dishes").innerHTML = h+`<p class="note" style="margin:8px 0 0">Matched in the original language before Google text was removed; counts are indicative.</p>`;
+}
+function renderGoogle(){
+  const G={}; VS.forEach(v=>G[v]=googleWriting(v));
+  const rowsDef=[
+    ["Reviews in sample", v=>fmtN(G[v].n), v=>`${fmtDate(G[v].from)} – ${fmtDate(G[v].to)}, sorted by ${VENUES[v].gSort}`],
+    ["With text", v=>`${pct(G[v].textN/G[v].n)} · ${fmtN(G[v].textN)}`, v=>`Reviews that are stars only: ${fmtN(G[v].n-G[v].textN)}`],
+    ["Name a waiter", v=>`${pct(G[v].namedN/G[v].textN)} · ${fmtN(G[v].namedN)}`, v=>`Share of text reviews naming at least one waiter`],
+    ["Only a waiter's name", v=>`${pct(G[v].onlyN/G[v].textN)} · ${fmtN(G[v].onlyN)}`, v=>`Text is a waiter's name plus at most two other words (e.g. "thank you"), share of text reviews`],
+    ["Avg ★ of name-only", v=>f2(G[v].avgOnly), v=>`Average rating of the ${fmtN(G[v].onlyN)} name-only reviews`],
+    ["Avg ★ without name-only", v=>f2(G[v].avgOrganic), v=>`Google sample average after removing name-only reviews (all: ${f2(G[v].avgAll)})`],
+    ["Owner replied", v=>`${pct(G[v].replyN/G[v].n)} · ${fmtN(G[v].replyN)}`, v=>`Reviews with an owner reply`],
+    ["Owner replied, 1–3★", v=>`${pct(G[v].lowMidN?G[v].lowMidReplyN/G[v].lowMidN:null)} · ${G[v].lowMidReplyN}/${G[v].lowMidN}`, v=>`Replies to the reviews that most need one`],
+    ["Typical length", v=>`${Math.round(G[v].avgWords||0)} words`, v=>`Average words in text reviews, excluding name-only`],
+    ["Top languages", v=>G[v].langs.map(([l,c])=>`${l==="?"?"undetected":l} ${pct(c/G[v].textN)}`).join(", "), v=>`Language of text reviews`]
+  ];
+  $("gwrite").innerHTML = `<table><thead><tr><th>Measure</th><th>Caru' cu Bere</th><th>Hanu' lui Manuc</th></tr></thead><tbody>${rowsDef.map(([l,f,t])=>`<tr><td>${l}</td>${VS.map(v=>`<td class="n" data-tip="${esc(VN(v)+": "+t(v))}" tabindex="0">${f(v)}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
+  const h=G.hlm, c=G.ccb;
+  $("gwriteNote").innerHTML = `Many reviews that are only a waiter's name suggest guests are asked at the table to leave a review: ${pct(h.onlyN/h.textN)} of Hanu' lui Manuc's text reviews (${fmtN(h.onlyN)}) against ${pct(c.onlyN/c.textN)} at Caru' cu Bere (${fmtN(c.onlyN)}). That likely lifts the Google average above organic levels (Tripadvisor: 4.1 for both). The two Google samples cover different periods and sort orders.`;
+}
+
+/* ---------- findings (computed) ---------- */
+function buildFindings(){
+  const out=[], G={}; VS.forEach(v=>G[v]=googleWriting(v));
+  for(const v of VS){ const I=INFO[v];
+    out.push({kind:"watch",venue:v,title:`${VN(v)}: Google and Tripadvisor tell different stories`,
+      body:`The Google sample averages ${f2(I.gAvg)}★ (n=${fmtN(I.gN)}) while the coded Tripadvisor sample averages ${f2(I.tAvg)}★ (n=${I.tN}); both platforms report a much closer gap (Google ${VENUES[v].google}, Tripadvisor ${VENUES[v].ta}).`,
+      n:I.gN+I.tN,period:"Google Aug–Oct 2026 · Tripadvisor 2025–2026",action:"Report Tripadvisor and an organic Google figure next to the headline Google score.",
+      limit:"The Tripadvisor sample is small and over-represents long, critical reviews; it shows themes, not the true average."});
+  }
+  out.push({kind:"risk",venue:"hlm",title:`Hanu' lui Manuc: ${pct(G.hlm.onlyN/G.hlm.textN)} of Google text reviews are just a waiter's name`,
+    body:`${fmtN(G.hlm.onlyN)} of ${fmtN(G.hlm.textN)} text reviews are a name plus at most two words, averaging ${f2(G.hlm.avgOnly)}★. At Caru' cu Bere the share is ${pct(G.ccb.onlyN/G.ccb.textN)} (${fmtN(G.ccb.onlyN)}). Without them, Hanu' lui Manuc's sample average moves from ${f2(G.hlm.avgAll)} to ${f2(G.hlm.avgOrganic)}.`,
+    n:G.hlm.onlyN,period:"Google, 11 Aug – 13 Oct 2026",action:"Track an organic rating and check whether staff are prompting reviews at the table.",
+    limit:"Name-only is detected from text patterns; the samples use different sort orders ('newest' vs 'most relevant')."});
+  for(const v of VS){
+    const g=ROWS.filter(r=>r.src==="g"&&r.v===v), low=g.filter(r=>r.s<=2), rk=rankThemes(g,-1);
+    if(rk[0]) out.push({kind:"risk",venue:v,title:`${VN(v)}: ${rk[0].label.toLowerCase()} leads the complaints`,
+      body:`${fmtN(rk[0].count)} of ${fmtN(low.length)} Google reviews rated 1–2★ mention ${rk[0].label.toLowerCase()} (${pct(rk[0].share)}), followed by ${rk.slice(1,3).map(x=>`${x.label.toLowerCase()} (${x.count})`).join(" and ")}. Low ratings are ${pct(low.length/g.length,1)} of the Google sample.`,
+      n:low.length,period:"Google, Aug–Oct 2026",action:v==="hlm"?"Pair the complaint recovery script with temperature checks at the pass.":"Use the complaint recovery script on busy nights; replace returned dishes without debate.",
+      limit:"Theme matching is keyword-based; a 1–2★ review mentioning a theme is counted as a complaint about it."});
+  }
+  for(const v of VS){ const g=ROWS.filter(r=>r.src==="g"&&r.v===v), pr=rankThemes(g,1), five=g.filter(r=>r.s===5&&r.hasText), named=five.filter(r=>r.waiter);
+    if(pr[0]) out.push({kind:"strength",venue:v,title:`${VN(v)}: ${pr[0].label.toLowerCase()} is the most praised theme`,
+      body:`${fmtN(pr[0].count)} Google reviews rated 4–5★ mention it, then ${pr.slice(1,3).map(x=>`${x.label.toLowerCase()} (${fmtN(x.count)})`).join(" and ")}. ${pct(named.length/five.length)} of 5★ text reviews name a waiter.`,
+      n:pr[0].count,period:"Google, Aug–Oct 2026",action:"Keep recognising named staff; protect the setting and show in operations decisions.",limit:"Praise for staff is inflated where reviews are prompted at the table."});
+  }
+  const rep=VS.map(v=>({v,r:G[v].lowMidN?G[v].lowMidReplyN/G[v].lowMidN:null}));
+  out.push({kind:"watch",venue:null,title:"Owner replies miss many of the reviews that need them",
+    body:rep.map(x=>`${VN(x.v)} replied to ${pct(x.r)} of 1–3★ Google reviews (${G[x.v].lowMidReplyN} of ${G[x.v].lowMidN}) and ${pct(G[x.v].replyN/G[x.v].n)} of all reviews`).join("; ")+".",
+    n:G.ccb.lowMidN+G.hlm.lowMidN,period:"Google, Aug–Oct 2026",action:"Reply to every 1–3★ review with specifics.",limit:"Reply quality is not measured, only whether a reply exists."});
+  return out;
+}
+function renderFindings(){
+  const color={risk:"var(--bad)",strength:"var(--good)",watch:"var(--warn)"}, word={risk:"Risk",strength:"Strength",watch:"Watch"}, cls={risk:"bad",strength:"good",watch:"warn"};
+  $("findings").innerHTML = buildFindings().map(f=>`<div class="finding" style="--s:${color[f.kind]}"><span class="stripe"></span><div>
+    <b>${esc(f.title)}</b> <span class="pill ${cls[f.kind]}">${word[f.kind]}</span>
+    <p>${esc(f.body)}</p>
+    <div class="fmeta"><span>n=<b>${fmtN(f.n)}</b></span><span>${esc(f.period)}</span><span>Next: <b>${esc(f.action)}</b></span></div>
+    <div class="fmeta"><span>Limitation: ${esc(f.limit)}</span></div></div></div>`).join("");
+}
+function renderTrends(){
+  const cell=st=>st.n?`<td class="n" data-tip="${esc(`n=${st.n}: ${st.lo} at 1–2★, ${st.five} at 5★`)}" tabindex="0">${f2(st.avg)}★ <span class="muted">n=${fmtN(st.n)} · 1–2★ ${pct(st.lo/st.n)}</span>${st.n<5?" ·":""}</td>`:`<td class="n muted">no reviews</td>`;
+  const T={}; VS.forEach(v=>T[v]=halfYearStats("t",v));
+  let h=`<table><thead><tr><th>Period</th><th>Caru' cu Bere</th><th>Hanu' lui Manuc</th></tr></thead><tbody>`;
+  PERIODS.forEach((p,i)=>{ h+=`<tr><td><span class="src">Tripadvisor</span> ${p}${p==="2026 H2"?" YTD":""}</td>${cell(T.ccb[i])}${cell(T.hlm[i])}</tr>`; });
+  const M={}; VS.forEach(v=>M[v]=googleMonths(v));
+  const months=[...new Set(VS.flatMap(v=>M[v].map(x=>x.m)))].sort();
+  months.forEach(m=>{ const [y,mo]=m.split("-"); h+=`<tr><td><span class="src">Google</span> ${MONTHS[+mo-1]} ${y}</td>${VS.map(v=>{ const x=M[v].find(z=>z.m===m); return x?cell(x):`<td class="n muted">not covered</td>`; }).join("")}</tr>`; });
+  h+=`</tbody></table><p class="note" style="margin:6px 0 0">"·" marks fewer than 5 reviews: read as indicative. October 2026 runs to the 13th. Hanu' lui Manuc has a single Tripadvisor review from 2025.</p>`;
+  $("trends").innerHTML=h;
+}
+function renderRecs(){
+  const G={}; VS.forEach(v=>G[v]=googleWriting(v));
+  const gl=v=>ROWS.filter(r=>r.src==="g"&&r.v===v);
+  const svcLow=VS.map(v=>{ const low=gl(v).filter(r=>r.s<=2); return `${VN(v)} ${low.filter(r=>r.tp.service!=null).length}/${low.length}`; }).join(" · ");
+  const bill=VS.map(v=>`${VN(v)} ${ROWS.filter(r=>r.v===v&&r.tp.billing<0).length}`).join(" · ");
+  const lunch=ROWS.filter(r=>r.src==="t"&&r.v==="ccb"&&/lunch menu/i.test(r.t));
+  const hlmFood=gl("hlm").filter(r=>r.s<=2&&r.tp.food!=null).length, hlmLow=gl("hlm").filter(r=>r.s<=2).length;
+  const taCold=ROWS.filter(r=>r.src==="t"&&r.v==="hlm"&&/cold|lukewarm|reheated|not hot/i.test(r.t)).length;
+  const items=[
+    ["Complaint recovery script:","taste-check or replace a returned dish without debate; manager comps on the spot. Removes the most common 1★ story.",`Service is mentioned in 1–2★ Google reviews: ${svcLow}.`],
+    ["Track an organic rating:","report Google excluding name-only reviews, and Tripadvisor, next to the headline Google score.",`Name-only share of Google text reviews: Caru' cu Bere ${pct(G.ccb.onlyN/G.ccb.textN)}, Hanu' lui Manuc ${pct(G.hlm.onlyN/G.hlm.textN)}.`],
+    ["Itemised, explained bills","and a neutral tip prompt with a visible \"no tip / cash\" option.",`Bill and tip complaints across both sources: ${bill}.`],
+    ["Offer the lunch menu proactively","in all languages at Caru' cu Bere.",`${lunch.length} Tripadvisor 2025+ reviews mention it (${lunch.map(r=>r.s+"★").join(", ")||"none"}).`],
+    ["Temperature and freshness checks","at the pass for lamb and platters at Hanu' lui Manuc.",`Food appears in ${hlmFood} of ${hlmLow} 1–2★ Google reviews there; ${taCold} Tripadvisor 2025+ reviews describe dishes as cold, lukewarm or reheated.`],
+    ["Reply to every 1–3★ review","with specifics, as Caru' cu Bere already does.",`Replies to 1–3★ Google reviews: Caru' cu Bere ${G.ccb.lowMidReplyN}/${G.ccb.lowMidN}, Hanu' lui Manuc ${G.hlm.lowMidReplyN}/${G.hlm.lowMidN}.`]
+  ];
+  $("recs").innerHTML = items.map(([b,t,e])=>`<li><b>${esc(b)}</b> ${esc(t)}<span class="ev">Evidence: ${esc(e)}</span></li>`).join("");
+}
+/* ---------- review explorer ---------- */
+function evRows(){
+  const f=S.ev, q=f.q.trim().toLowerCase();
+  return ofSrc(ROWS,S.src).filter(r=>(f.venue==="all"||r.v===f.venue)&&(f.year==="all"||r.y===+f.year)&&
+    (f.rating==="all"||(f.rating==="hi"&&r.s>=4)||(f.rating==="mid"&&r.s===3)||(f.rating==="lo"&&r.s<=2))&&
+    (!f.theme||r.tp[f.theme]!=null)&&
+    (!q||(r.t+" "+r.themes.map(k=>THEMES[k]).join(" ")+" "+r.items.map(k=>ITEMS[k]).join(" ")+" "+r.lang+" "+(r.waiter?"waiter named":"")).toLowerCase().includes(q)))
+    .sort((a,b)=>b.d.localeCompare(a.d)||a.s-b.s);
+}
+function renderReviews(){
+  const list=evRows(), shown=list.slice(0,S.page*50);
+  $("revCap").textContent = S.src==="t" ? "Tripadvisor 2025+ sample (paraphrased and coded per theme). Filter by venue, rating, year, theme or keyword."
+    : "Google Maps reviews and the Tripadvisor 2025+ sample (paraphrased). Google review text is not published on this page; each Google row shows its rating, language, themes, dishes and flags. Filter by venue, rating, year, theme or keyword.";
+  $("revCount").innerHTML = `<span class="mono">${fmtN(list.length)}</span> reviews match · average ${list.length?f2(avg(list.map(r=>r.s))):"–"}★ · showing ${fmtN(shown.length)}`;
+  $("revBody").innerHTML = shown.map(r=>{
+    const tags=r.themes.map(k=>{ const p=r.tp[k]; return `<span class="tag ${p>0?"pos":p<0?"neg":""}">${esc((THEMES[k]||k).toLowerCase())}${p>0?" +":p<0?" −":""}</span>`; }).join("");
+    const what = r.src==="t" ? esc(r.t) : `<span class="muted">${r.hasText?(r.nameOnly?"Waiter's name only":`Text review, ${r.words} words${r.lang?", "+esc(r.lang):""}`):"Stars only, no text"}${r.waiter&&!r.nameOnly?" · names a waiter":""}${r.reply?" · owner replied":""}${r.items.length?" · mentions "+esc(r.items.map(k=>ITEMS[k]).join(", ")):""}</span>`;
+    return `<tr><td class="n">${r.d}<br><span class="src">${SRC[r.src]}</span></td><td><span class="v ${r.v}">${VENUES[r.v].short}</span></td><td>${starsHtml(r.s)}</td><td style="min-width:240px">${what}</td><td style="min-width:150px">${tags}</td></tr>`; }).join("") || `<tr><td colspan="5" class="muted">No reviews match these filters.</td></tr>`;
+  $("more").hidden = shown.length>=list.length;
+  $("fVenue").value=S.ev.venue; $("fRating").value=S.ev.rating; $("fYear").value=S.ev.year; $("fTheme").value=S.ev.theme; if($("fText").value!==S.ev.q) $("fText").value=S.ev.q;
+}
+function renderMethod(){
+  const I=INFO;
+  $("method").innerHTML = `<p><b>Method.</b> <b>Google Maps:</b> ${fmtN(COUNTS.g)} reviews pulled via the SignalQub API on 13 Oct 2026 (Caru' cu Bere: ${fmtN(I.ccb.gN)}, ${fmtDate(I.ccb.gFrom)} – ${fmtDate(I.ccb.gTo)}, "most relevant"; Hanu' lui Manuc: ${fmtN(I.hlm.gN)}, ${fmtDate(I.hlm.gFrom)} – ${fmtDate(I.hlm.gTo)}, "newest"; the API returns at most ~4,445 per request, so earlier Google reviews are not covered). Reviewer names and photos removed. Themes and dishes coded by multilingual keyword matching; praise/complaint follows the star rating. Google review text is used to derive these codes but is not published on this page, because Google's terms restrict redistributing review content.</p>
+  <p><b>Tripadvisor:</b> ${COUNTS.t} English-language reviews with visit dates from Jan 2025 (Caru' cu Bere ${I.ccb.tN}, Hanu' lui Manuc ${I.hlm.tN}), taken from the project's coded Tripadvisor sample, each paraphrased and coded per theme with +/− polarity and Tripadvisor sub-ratings where given. It is a reading sample, not every review: it averages well below the platform's 4.1, which suggests longer, critical reviews are over-represented. Use it for themes and direction, not as the true average. Hanu' lui Manuc has a single 2025 Tripadvisor review, so its half-year history is very thin.</p>
+  <p>Platform totals as listed on Tripadvisor and Google in Oct 2026. The samples show direction and themes, not statistically representative percentages, and the two restaurants' Google samples cover different periods. No dated menus are available, so menu-price history cannot be calculated. Context: City Grill Group invested about €550k in expanding Hanu' lui Manuc in 2025; foreign guests exceed 50% there in summer. Sources: <a href="https://www.tripadvisor.com/Restaurant_Review-g294458-d739896-Reviews-Caru_cu_bere-Bucharest.html">Tripadvisor – Caru' cu Bere</a>, <a href="https://www.tripadvisor.com/Restaurant_Review-g294458-d739908-Reviews-Restaurant_Hanu_Lui_Manuc-Bucharest.html">Tripadvisor – Hanu' lui Manuc</a>, <a href="https://signalqub.com/docs">SignalQub API</a>, <a href="https://rhn.ro/en/hanul-lui-manuc-a-strategic-pillar-for-city-grill/">RHN</a>, <a href="https://financialintelligence.ro/?p=24097">Financial Intelligence</a>.</p>`;
+}
+function renderDashboard(){ renderSrc(); renderHalf(); renderStars(); renderSubs(); renderThemes(); renderDishes(); renderReviews(); }
+
+/* ================= analyst ================= */
 const GROUPS = [
   {name:"Customer experience",qs:[
-    {q:INITIAL_Q,r:{focus:"complaints"}},
-    {q:"What do customers praise and criticize most at each restaurant?",r:{focus:"mix"}},
-    {q:"What are the main reasons behind negative reviews?",r:{focus:"complaints",rating:"lo"}},
-    {q:"Which aspects of the customer experience should management prioritize?",r:{focus:"complaints",mode:"impact"}}]},
+    ["What do customers praise and criticize most at each restaurant?",{focus:"mix"}],
+    ["What are the main reasons behind negative reviews?",{focus:"complaints"}],
+    ["Which aspects of the customer experience should management prioritize?",{focus:"complaints",prioritize:true}]]},
   {name:"Restaurant comparison",qs:[
-    {q:"How does Caru' cu Bere compare with Hanu' lui Manuc on food, service, atmosphere, and value?",r:{focus:"compare"}},
-    {q:"What are the most important differences between the two restaurants?",r:{focus:"compare"}},
-    {q:"Which positive practices identified at one restaurant could be investigated at the other?",r:{focus:"praise"}}]},
+    ["How does Caru' cu Bere compare with Hanu' lui Manuc on food, service, atmosphere, and value?",{focus:"compare"}],
+    ["What are the most important differences between the two restaurants?",{focus:"compare"}],
+    ["Which positive practices identified at one restaurant could be investigated at the other?",{focus:"praise"}]]},
   {name:"Historical analysis",qs:[
-    {q:"How has sentiment changed from 2023 to 2026?",r:{focus:"trend"}},
-    {q:"Have particular customer complaints become more frequent?",r:{focus:"trend"}},
-    {q:"Are there meaningful changes in the balance between positive and negative reviews?",r:{focus:"trend"}}]},
+    ["How has sentiment changed from 2025 to 2026?",{focus:"trend"}],
+    ["Have particular customer complaints become more frequent?",{focus:"trend"}],
+    ["Are Google reviews trending up or down month by month?",{focus:"trend",src:"g"}]]},
   {name:"Pricing and value",qs:[
-    {q:"What do customers say about menu prices and value for money?",r:{focus:"value"}},
-    {q:"How have comparable menu-item prices changed?",r:{focus:"value"}},
-    {q:"What evidence suggests that management should investigate a perceived-value problem?",r:{focus:"value"}}]},
+    ["What do customers say about menu prices and value for money?",{focus:"value"}],
+    ["How have comparable menu-item prices changed?",{focus:"value"}],
+    ["What evidence suggests that management should investigate a perceived-value problem?",{focus:"value"}]]},
+  {name:"Google reviews and staff",qs:[
+    ["How many Google reviews are just a waiter's name, and what does that do to the rating?",{focus:"staff"}],
+    ["Which dishes and drinks get mentioned most, and how are they rated?",{focus:"dishes"}],
+    ["Does management reply to bad reviews?",{focus:"staff"}]]},
   {name:"AI-driven analysis",qs:[
-    {q:"What other analyses would provide useful insights for management?",r:{focus:"mix"}},
-    {q:"Identify an important pattern that management might overlook.",r:{focus:"complaints",mode:"impact"}},
-    {q:"Generate a comparative management briefing with prioritized recommendations.",r:{focus:"briefing"}}]}
+    ["Identify an important pattern that management might overlook.",{focus:"staff"}],
+    ["What other analyses would provide useful insights for management?",{focus:"mix"}],
+    ["Generate a comparative management briefing with prioritized recommendations.",{focus:"briefing"}]]}
 ];
-const FOCUS_LABEL = {complaints:"Complaints",praise:"Praise",mix:"Praise and complaints",compare:"Restaurant comparison",trend:"Change over time",value:"Prices and value"};
-
+const THEME_WORDS = [["clean",/\b(clean|curat|curăț|hygien|igien|dirty|murdar)/],["noise",/\b(noise|noisy|loud|zgomot|gălăgi|galagi)/],["portion",/\b(portion|porti|porți)/],["reservation",/\b(reservation|booking|rezerv)/],["wait",/\b(wait|slow|astept|aștept|speed|delay|întârz|intarz)/],["show",/\b(show|music|muzic|danc|dans|folk|spectacol)/],["atmosphere",/\b(atmosphere|atmosfer|ambian|setting|decor|interior)/],["drinks",/\b(drinks?\b|bauturi|băuturi|cocktail)/],["food",/\b(food|mancar|mâncar|cooked|reheated|gust)/],["service",/\b(service|serviciu|servir|rude|staff|personal|politet|amabil)/]];
 function localRoute(q){
   const s=q.toLowerCase(); const r={focus:"mix"};
-  if(/brief/.test(s)) r.focus="briefing";
-  else if(/(price|value|cost|expens|menu.?item|preț|pret|scump|valoare)/.test(s)) r.focus="value";
-  else if(/(trend|change|over time|2023|2024|2025|evolu|frequent|balance|schimb)/.test(s)) r.focus="trend";
-  else if(/(compar|differ|versus|\bvs\b|diferen)/.test(s)) r.focus="compare";
-  else if(/(complain|critic|negative|problem|issue|bad|worst|plâng|plang|reclam|nemulț|negativ)/.test(s)) r.focus="complaints";
-  else if(/(praise|like|love|best|strength|positive|laud|apreci|pozitiv)/.test(s)) r.focus="praise";
+  if(/brief|briefing|raport pentru management|sinteza|sinteză/.test(s)) r.focus="briefing";
+  else if(/(name-only|name only|just a waiter|waiter'?s name|organic|inflat|prompted|asked to (leave|write)|owner repl|repl(y|ies)|raspuns|răspuns|ospatar|ospătar|waiter|chelner|staff name|overlook)/.test(s)) r.focus="staff";
+  else if(/(price|value|cost|expens|cheap|pricey|bill|\btip|pret|preț|scump|valoare|nota de plat|menu-item|meniu)/.test(s)) r.focus="value";
+  else if(/(dish|drink|beer|wine|papana|ciolan|knuckle|lamb|miel|sarmale|\bmici\b|soup|ciorb|preparat|feluri|bere\b|vin\b)/.test(s)) r.focus="dishes";
+  else if(/(trend|change|over time|evolu|since|grow|frequent|month|half-year|2025|schimb|crescut|scazut|scăzut)/.test(s)) r.focus="trend";
+  else if(/(compar|differ|versus|\bvs\b|better|diferen|mai bun)/.test(s)) r.focus="compare";
+  else if(/(complain|critic|negative|problem|issue|\bbad\b|worst|1.?2|low.rated|plang|plâng|reclam|nemul|negativ|prioriti|fix first)/.test(s)) r.focus="complaints";
+  else if(/(praise|like|love|\bbest\b|strength|positive|laud|apreci|pozitiv)/.test(s)) r.focus="praise";
   if(/(caru|bere)/.test(s)&&!/(manuc|hanu)/.test(s)) r.venue="ccb";
-  if(/(manuc|hanu)/.test(s)&&!/(caru|bere)/.test(s)) r.venue="hlm";
-  const y=s.match(/\b(2023|2024|2025|2026)\b/g); if(y&&y.length===1&&r.focus!=="trend") r.year=y[0];
-  if(/(negative review|1.?2|one.star|low.rated|bad review)/.test(s)) r.rating="lo";
-  if(/(prioriti|first|overlook|damag|impact)/.test(s)) r.mode="impact";
-  for(const k of Object.keys(THEMES)) if(s.includes(THEMES[k].toLowerCase().split(" ")[0])) { r.theme=k; break; }
+  if(/(manuc|hanu)/.test(s)&&!/(caru|\bbere\b)/.test(s)) r.venue="hlm";
+  if(/google/.test(s)&&!/tripadvisor/.test(s)) r.src="g";
+  if(/tripadvisor/.test(s)&&!/google/.test(s)) r.src="t";
+  if(/(prioriti|first|fix|impact|damag)/.test(s)) r.prioritize=true;
+  for(const [k,re] of THEME_WORDS) if(re.test(s)){ r.theme=k; break; }
+  if(r.theme&&["mix","complaints","praise"].includes(r.focus)) r.focus="theme";
   return r;
 }
 function sanitizeRoute(o){
   if(!o||typeof o!=="object") return null;
-  const r={focus:["complaints","praise","mix","compare","trend","value","briefing"].includes(o.focus)?o.focus:"mix"};
-  if(["ccb","hlm"].includes(o.venue)) r.venue=o.venue;
-  if(["2023","2024","2025","2026"].includes(String(o.year))) r.year=String(o.year);
-  if(["hi","mid","lo"].includes(o.rating)) r.rating=o.rating;
-  if(o.mode==="impact") r.mode="impact";
+  const r={focus:["complaints","praise","mix","compare","trend","value","dishes","staff","theme","briefing"].includes(o.focus)?o.focus:"mix"};
+  if(VS.includes(o.venue)) r.venue=o.venue;
+  if(["g","t"].includes(o.source)) r.src=o.source;
   if(o.theme&&THEMES[o.theme]) r.theme=o.theme;
+  if(r.focus==="theme"&&!r.theme) r.focus="mix";
+  if(o.prioritize===true) r.prioritize=true;
   return r;
 }
-const ROUTE_PROMPT = q => `Classify a restaurant-management question about two Bucharest restaurants (Caru' cu Bere = "ccb", Hanu' lui Manuc = "hlm") so a dashboard can pick the right view.
-Reply with ONLY a JSON object: {"focus": one of "complaints"|"praise"|"mix"|"compare"|"trend"|"value"|"briefing", "venue": "all"|"ccb"|"hlm", "year": "all"|"2023"|"2024"|"2025"|"2026", "rating": "all"|"hi"|"mid"|"lo", "mode": "frequency"|"impact", "theme": "" or one of ${Object.keys(THEMES).join("|")}}
-Rules: "trend" for change over time; "value" for prices, value, bills, menu prices; "compare" for head-to-head; "rating":"lo" when the question is about negative or 1-2 star reviews; "mode":"impact" when asking what to prioritise, fix first, or what hurts ratings most; "theme" only when one topic is clearly the subject.
-Example: {"focus":"complaints","venue":"hlm","year":"all","rating":"all","mode":"frequency","theme":"food"}
+const ROUTE_PROMPT = q => `Classify a restaurant-management question about two Bucharest restaurants (Caru' cu Bere = "ccb", Hanu' lui Manuc = "hlm") so a dashboard can pick the right analysis. Data: Google Maps reviews (Aug–Oct 2026, ratings and coded themes, dishes, waiter names, owner replies) and a coded Tripadvisor sample (2025–2026, paraphrased, sub-ratings).
+Reply with ONLY a JSON object: {"focus": one of "complaints"|"praise"|"mix"|"compare"|"trend"|"value"|"dishes"|"staff"|"theme"|"briefing", "venue": "both"|"ccb"|"hlm", "source": "both"|"g"|"t", "theme": "" or one of ${Object.keys(THEMES).join("|")}, "prioritize": true|false}
+Rules: "theme" when one topic (e.g. service, food, cleanliness, noise) is the subject; "staff" for waiter names, prompted or name-only reviews, organic rating, owner replies; "dishes" for specific dishes or drinks; "value" for prices, value, bills, tips, menu prices; "trend" for change over time; "compare" for head-to-head; "prioritize": true when asking what to fix first.
 Question: ${q}`;
 
-/* ---------- actions, insights, summaries ---------- */
-function actionFor(theme,v){
-  const A = {
-    food: v==="hlm" ? "Temperature and freshness check at the pass for lamb, ribs and platters; replate anything that has waited." : "Taste and temperature check at the pass for mains and sides; spot-check salt on traditional dishes.",
-    service:"Coach floor staff for busy nights: greet within minutes, check tables mid-meal, never rush guests before the kitchen closes.",
-    complaint:"Complaint recovery script: taste or replace a returned dish without debate; a manager resolves it at the table.",
-    value: v==="ccb" ? "Make value visible: offer the weekday lunch menu in every language and show portion sizes on the menu." : "Review portion size and price on platters and group menus; state what is included up front.",
-    billing:"Itemise and explain every bill line; drop or clearly label cover and 'beer cart' charges; never bill an item described as free.",
-    tip:"Set the card terminal to a neutral tip prompt with a visible 'no tip' option.",
-    wait:"Quote realistic waits at seating and stagger late bookings against kitchen closing time.",
-    reservation:"Let guests book 'show view' tables and honour them; send a 19:30 show reminder with the booking.",
-    noise:"Offer quieter tables away from the musicians when guests book.",
-    lunchmenu:"Offer the lunch menu proactively to every guest, in every language.",
-    group:"Rework group set menus to include the signature dishes guests expect.",
-    menu:"Print menus in a larger type size for the terrace.",
-    access:"Audit step-free access and say what is available on the booking page.",
-    comfort:"Check seating comfort in the courtyard."
-  };
-  return A[theme] || "Review the underlying reviews before deciding on an action.";
-}
-function sevPill(x){
-  if(x.count>=2&&x.lowShare>=0.75) return {cls:"bad",t:"Rating killer"};
-  if(x.hiShare>=0.5) return {cls:"mut",t:"Mild – often in 4–5★"};
-  if(x.avgStars<3) return {cls:"warn",t:"Damaging"};
-  return {cls:"mut",t:"Mixed"};
-}
-function coverageNote(rows,v){
-  const c=coverage(rows,v); const n=c.reduce((a,b)=>a+b.n,0); const n26=c.find(x=>x.y===2026).n;
-  const gaps=c.filter(x=>x.n===0).map(x=>x.y);
-  return `${n} reviews; ${n?pct(n26/n):"0%"} from 2026${gaps.length?"; no reviews for "+gaps.join(", "):""}`;
-}
+function venuesFor(route){ return route.venue?[route.venue]:VS; }
+function srcLabel(src){ return src==="all"?"Google + Tripadvisor":SRC[src]; }
 
-function buildInsights(focus, rows, venues, mode){
-  const out=[], next=[];
-  if(focus==="complaints"||focus==="mix"){
-    for(const v of venues){
-      const rs=byVenue(rows,v), n=rs.length; if(!n) continue;
-      const fq=rankThemes(rs,"neg","frequency"), im=rankThemes(rs,"neg","impact"); if(!fq.length) continue;
-      const top=fq[0];
-      out.push({kind:"risk",title:`${VN(v)}: ${top.label.toLowerCase()} is the most frequent complaint`,
-        body:`${top.count} of ${n} sampled reviews (${pct(top.share)}) carry a ${top.label.toLowerCase()} complaint; those reviews average ${f1(top.avgStars)}★.${top.tieWith.length?` Tied with ${top.tieWith.join(", ").toLowerCase()}.`:""}`,
-        n:top.count,venue:v,period:"Filtered sample",action:actionFor(top.key,v),limit:`Coded sample, ${coverageNote(rs,v)}.`});
-      const killers=fq.filter(x=>x.count>=2&&x.lowShare>=0.75);
-      for(const k of killers.slice(0,1)) out.push({kind:"risk",title:`${VN(v)}: ${k.label.toLowerCase()} complaints sink the rating`,
-        body:`${k.low} of ${k.count} reviews with this complaint are 1–2★ (average ${f1(k.avgStars)}★), among the lowest-scoring complaints even though it ranks only #${k.rank} by frequency. Per mention, it does more damage than the top complaints.`,
-        n:k.count,venue:v,period:"Filtered sample",action:actionFor(k.key,v),limit:"Few mentions; read the underlying reviews before acting."});
-      const a=fq.slice(0,3).map(x=>x.key).join(), b=im.slice(0,3).map(x=>x.key).join();
-      if(a!==b&&mode!=="impact"){ const same=[...fq.slice(0,3).map(x=>x.key)].sort().join()===[...im.slice(0,3).map(x=>x.key)].sort().join();
-        next.push(`Switch the ranking to Impact for ${VN(v)}: the top 3 ${same?"reorders to":"changes to"} ${im.slice(0,3).map(x=>x.label.toLowerCase()).join(", ")}.`); }
-      const val=fq.find(x=>x.key==="value");
-      if(val&&val.hiShare>=0.4) out.push({kind:"watch",title:`${VN(v)}: price complaints are common but mild`,
-        body:`${val.hi} of ${val.count} reviews that complain about price still give 4–5★. Guests grumble about cost without marking the visit down much.`,
-        n:val.count,venue:v,period:"Filtered sample",action:"Track whether price remarks move into 1–3★ reviews over the next quarter.",limit:"Small counts; price remarks are often brief asides."});
-      const fd=fq.find(x=>x.key==="food"); if(fd){ const d=drivers("food",fd.rows)[0]; if(d&&d.count>=3) next.push(`${VN(v)}: ${d.count} of ${fd.count} food complaints mention ${d.label.toLowerCase()}. Pair reviews with visit time and party size to see if it clusters at peak hours (needs those fields).`); }
-    }
-  }
-  if(focus==="praise"||focus==="mix"){
-    for(const v of venues){
-      const rs=byVenue(rows,v), n=rs.length; if(!n) continue;
-      const pr=rankThemes(rs,"pos","frequency"); if(!pr.length) continue;
-      out.push({kind:"strength",title:`${VN(v)}: ${pr[0].label.toLowerCase()} is the most praised theme`,
-        body:`${pr[0].count} of ${n} reviews (${pct(pr[0].share)}) praise it; those reviews average ${f1(pr[0].avgStars)}★.`,
-        n:pr[0].count,venue:v,period:"Filtered sample",action:"Protect it: keep it visible in staff briefings and marketing.",limit:`Coded sample, ${coverageNote(rs,v)}.`});
-    }
-    if(venues.length===2){
-      const sa=themeStats(byVenue(rows,"ccb")), sb=themeStats(byVenue(rows,"hlm"));
-      const na=byVenue(rows,"ccb").length||1, nb=byVenue(rows,"hlm").length||1;
-      const gaps=Object.keys(THEMES).map(k=>({k,a:(sa[k]?.pos.length||0)/na,b:(sb[k]?.pos.length||0)/nb,ca:sa[k]?.pos.length||0,cb:sb[k]?.pos.length||0})).filter(x=>x.ca+x.cb>=3).sort((x,y)=>Math.abs(y.a-y.b)-Math.abs(x.a-x.b));
-      if(gaps[0]){ const g=gaps[0], lead=g.a>g.b?"ccb":"hlm", other=lead==="ccb"?"hlm":"ccb";
-        out.push({kind:"strength",title:`Transferable practice: ${THEMES[g.k].toLowerCase()} at ${VN(lead)}`,
-          body:`${THEMES[g.k]} praise appears in ${pct(lead==="ccb"?g.a:g.b)} of ${VN(lead)} reviews (${lead==="ccb"?g.ca:g.cb}) versus ${pct(lead==="ccb"?g.b:g.a)} at ${VN(other)} (${lead==="ccb"?g.cb:g.ca}).`,
-          n:g.ca+g.cb,venue:lead,period:"Filtered sample",action:`Investigate what ${VN(lead)} does here and whether it suits ${VN(other)}.`,limit:"Differences of a few reviews; treat as a lead, not proof."}); }
-    }
-  }
-  if(focus==="compare"){
-    for(const [k,l] of [["f","food"],["s","service"],["v","value"],["a","atmosphere"]]){
-      const a=subAvg(byVenue(rows,"ccb"),k), b=subAvg(byVenue(rows,"hlm"),k);
-      if(a.avg!=null&&b.avg!=null&&Math.abs(a.avg-b.avg)>=0.3) out.push({kind:"watch",title:`${l[0].toUpperCase()+l.slice(1)} sub-rating: ${a.avg>b.avg?VN("ccb"):VN("hlm")} leads`,
-        body:`${VN("ccb")} ${f2(a.avg)} (n=${a.n}) vs ${VN("hlm")} ${f2(b.avg)} (n=${b.n}).`,n:a.n+b.n,venue:a.avg>b.avg?"ccb":"hlm",period:"Reviews with Tripadvisor sub-ratings",action:"Check the lagging venue's complaints on this dimension below.",limit:"Only reviews that gave sub-ratings; small n."});
-    }
-    const ca=byVenue(rows,"ccb"), cb=byVenue(rows,"hlm");
-    if(ca.length&&cb.length) out.unshift({kind:"watch",title:"Sample averages are nearly identical",
-      body:`${VN("ccb")} ${f2(avg(ca.map(r=>r.s)))}★ (n=${ca.length}) vs ${VN("hlm")} ${f2(avg(cb.map(r=>r.s)))}★ (n=${cb.length}); both are 4.1 on Tripadvisor. Differences sit in themes, not the headline score.`,
-      n:ca.length+cb.length,venue:null,period:"Filtered sample",action:"Compare by theme, not by average rating.",limit:"Coded sample is not representative of all reviews."});
-    next.push("Compare management reply quality per venue (needs owner-response text, not in the sample).");
-  }
-  if(focus==="trend"){
-    for(const v of venues){
-      const ys=yearStats(rows,v).filter(x=>x.n>=3);
-      if(ys.length>=2){ const a=ys[0], b=ys[ys.length-1];
-        out.push({kind:b.avg>=a.avg?"strength":"risk",title:`${VN(v)}: average ${b.avg>=a.avg?"up":"down"} from ${a.y} to ${b.y}`,
-          body:`${f2(a.avg)}★ in ${a.y} (n=${a.n}) → ${f2(b.avg)}★ in ${b.y} (n=${b.n}). Share of 1–2★: ${pct(a.lo/a.n)} → ${pct(b.lo/b.n)}; share of 5★: ${pct(a.five/a.n)} → ${pct(b.five/b.n)}.`,
-          n:a.n+b.n,venue:v,period:`${a.y} vs ${b.y}`,action:"Read the latest year's 1–2★ reviews in the evidence table.",limit:"Years with fewer than 3 reviews are left out; 2026 is year to date."}); }
-      const gaps=yearStats(rows,v).filter(x=>x.n<3).map(x=>`${x.y} (n=${x.n})`);
-      if(gaps.length) next.push(`${VN(v)}: too few reviews for ${gaps.join(", ")}. Add more dated reviews (e.g. the Google export) before reading a trend.`);
-    }
-    out.push({kind:"watch",title:"The sample is weighted towards 2026",body:`${rows.filter(r=>r.y===2026).length} of ${rows.length} filtered reviews are from 2026. Year-on-year shifts mostly reflect what was collected.`,n:rows.length,venue:null,period:"2023–2026 YTD",action:"Collect a fixed number of reviews per venue per quarter.",limit:"Selection, not sentiment, may drive apparent change."});
-  }
-  if(focus==="value"){
-    for(const v of venues){
-      const rs=byVenue(rows,v), n=rs.length; if(!n) continue; const st=themeStats(rs);
-      const neg=st.value?.neg.length||0, pos=st.value?.pos.length||0, bill=(st.billing?.neg.length||0)+(st.tip?.neg.length||0);
-      out.push({kind:neg>pos?"risk":"watch",title:`${VN(v)}: ${neg} price complaints vs ${pos} value compliments`,
-        body:`Value is mentioned in ${neg+pos} of ${n} reviews. Bill and tip complaints add ${bill} more${bill?`, averaging ${f1(avg([...(st.billing?.neg||[]),...(st.tip?.neg||[])].map(r=>r.s)))}★`:""}.`,
-        n:neg+pos,venue:v,period:"Filtered sample",action:actionFor(bill>=2?"billing":"value",v),limit:"Anecdotal; no dated menu prices to test against."});
-    }
-    next.push("Upload dated menus (item, price, portion, date) to compare signature-dish prices 2023→2026 against the timing of price complaints.");
-  }
-  return {findings:out.slice(0,5),next:next.slice(0,3)};
-}
-
-function buildRecs(rows, venues){
-  const all=[];
-  for(const v of venues){ for(const x of rankThemes(byVenue(rows,v),"neg","impact")) all.push({...x,v}); }
-  all.sort((a,b)=>b.impact-a.impact);
-  return all.slice(0,5).map(x=>({v:x.v,key:x.key,label:x.label,count:x.count,impact:x.impact,avgStars:x.avgStars,action:actionFor(x.key,x.v)}));
-}
-
-function summarize(focus, rows, venues, mode){
+// Each analysis returns {title, kpis, module (html), text (computed markdown), facts (object for Claude), highlight, filters, fus, next}
+function analyse(route){
+  const vs=venuesFor(route), f=route.focus;
+  const res={title:"",kpis:[],module:"",text:"",facts:{},highlight:[],filters:{},fus:[],next:[]};
+  const g=v=>ROWS.filter(r=>r.src==="g"&&r.v===v), t=v=>ROWS.filter(r=>r.src==="t"&&r.v===v);
   const L=[];
-  const head=v=>`**${VN(v)}** (n=${byVenue(rows,v).length})`;
-  const rankLines=(v,sign,m,k=3)=>rankThemes(byVenue(rows,v),sign,m).slice(0,k).map((x,i)=>`${i+1}. ${x.label}: ${x.count} reviews (${pct(x.share)}), avg ${f1(x.avgStars)}★${x.tieWith.length&&m!=="impact"?` · tied with ${x.tieWith.join(", ").toLowerCase()}`:""}`);
-  if(focus==="complaints"){
-    L.push(`**Top complaints by ${mode==="impact"?"impact (mentions × stars lost)":"how often they appear"}**, coded sample${rows.length?"":" (no reviews match the filters)"}.`);
-    for(const v of venues){ L.push(head(v)); L.push(...(rankLines(v,"neg",mode).length?rankLines(v,"neg",mode):["No coded complaints in this filter."])); }
-    const imp=venues.map(v=>{const f=rankThemes(byVenue(rows,v),"neg","frequency").slice(0,3).map(x=>x.key).join(), i=rankThemes(byVenue(rows,v),"neg","impact").slice(0,3).map(x=>x.key).join(); return f!==i?v:null;}).filter(Boolean);
-    if(imp.length&&mode!=="impact") L.push(`Ranking by impact (mentions × stars lost) reorders the list for ${imp.map(VN).join(" and ")}; use the toggle above.`);
-    for(const v of venues){ const k=rankThemes(byVenue(rows,v),"neg","frequency").find(x=>x.rank>3&&x.count>=2&&x.lowShare>=0.75); if(k) L.push(`Watch at ${VN(v)}: ${k.label.toLowerCase()} is less frequent (${k.count}) but ${k.low} of ${k.count} of those reviews are 1–2★.`); }
-  } else if(focus==="praise"){
-    L.push("**Most praised themes**, coded sample.");
-    for(const v of venues){ L.push(head(v)); L.push(...rankLines(v,"pos","frequency")); }
-  } else if(focus==="mix"){
-    for(const v of venues){ L.push(head(v)); L.push("Praised:"); L.push(...rankLines(v,"pos","frequency")); L.push("Criticised:"); L.push(...rankLines(v,"neg","frequency")); }
-  } else if(focus==="compare"){
-    L.push("**Head to head**, coded sample.");
-    for(const v of venues){ const rs=byVenue(rows,v); L.push(`- ${VN(v)}: ${f2(avg(rs.map(r=>r.s)))}★ over ${rs.length} reviews; food ${f2(subAvg(rs,"f").avg)}, service ${f2(subAvg(rs,"s").avg)}, value ${f2(subAvg(rs,"v").avg)}, atmosphere ${f2(subAvg(rs,"a").avg)} (sub-ratings from ${subAvg(rs,"f").n} reviews)`); }
-  } else if(focus==="trend"){
-    L.push("**Average rating by year**, coded sample (2026 = year to date).");
-    for(const v of venues) L.push(`- ${VN(v)}: `+yearStats(rows,v).map(y=>`${y.y} ${y.n?f1(y.avg)+"★ (n="+y.n+")":"no data"}`).join(" · "));
-  } else if(focus==="value"){
-    L.push("**Price and value mentions**, coded sample.");
-    for(const v of venues){ const st=themeStats(byVenue(rows,v)); L.push(`- ${VN(v)}: ${st.value?.neg.length||0} price complaints, ${st.value?.pos.length||0} value compliments, ${st.billing?.neg.length||0} bill-transparency and ${st.tip?.neg.length||0} tip complaints; value sub-rating ${f2(subAvg(byVenue(rows,v),"v").avg)}`); }
-    L.push("Menu-price history cannot be calculated: no dated menus are in the project.");
+  if(f==="complaints"||f==="mix"){
+    res.title = f==="mix"?"Praise and complaints":"What drives negative reviews";
+    res.facts.complaints={}; res.facts.praise={};
+    let mod=`<div class="g2">`;
+    for(const v of vs){
+      const gl=g(v), low=gl.filter(r=>r.s<=2), rk=rankThemes(gl,-1), tk=rankThemes(t(v),-1), pr=rankThemes(gl,1);
+      res.kpis.push({c:`var(--${v})`,b:pct(low.length/gl.length,1),s:`${VN(v)}: 1–2★ share of Google (${low.length} of ${fmtN(gl.length)})`});
+      res.facts.complaints[VN(v)]={google_low_rated:low.length,google_n:gl.length,google_top_complaints:rk.slice(0,5).map(x=>({theme:x.label,low_rated_reviews_mentioning:x.count,share_of_low_rated:pct(x.share)})),tripadvisor_n:t(v).length,tripadvisor_coded_complaints:tk.slice(0,5).map(x=>({theme:x.label,count:x.count,avg_stars:f2(x.avgStars)}))};
+      L.push(`**${VN(v)}** — ${low.length} of ${fmtN(gl.length)} Google reviews are 1–2★ (${pct(low.length/gl.length,1)}).`);
+      L.push(`- Google 1–2★ themes: ${rk.slice(0,3).map(x=>`${x.label.toLowerCase()} ${x.count} (${pct(x.share)})`).join(", ")||"none coded"}.`);
+      L.push(`- Tripadvisor 2025+ coded complaints (n=${t(v).length}): ${tk.slice(0,3).map(x=>`${x.label.toLowerCase()} ${x.count}`).join(", ")||"none"}.`);
+      if(f==="mix"){ res.facts.praise[VN(v)]=pr.slice(0,5).map(x=>({theme:x.label,high_rated_reviews_mentioning:x.count})); L.push(`- Most praised in 4–5★ Google reviews: ${pr.slice(0,3).map(x=>`${x.label.toLowerCase()} ${fmtN(x.count)}`).join(", ")}.`); }
+      const max=Math.max(1,...rk.slice(0,5).map(x=>x.count));
+      mod+=`<div><h4><span class="v ${v}">${VENUES[v].short}</span> Google 1–2★ reviews · n=${low.length}</h4><div class="rows" style="margin-top:6px">${rk.slice(0,5).map(x=>`<div class="brow"><span class="muted">${esc(x.label)}</span><div class="bpair">${bar({v,val:x.count,max,label:`${x.count} · ${pct(x.share)}`,tip:`${VN(v)}: ${x.count} of ${low.length} low-rated Google reviews mention ${x.label.toLowerCase()}`})}</div></div>`).join("")||`<p class="note">No coded themes.</p>`}</div>
+        <p class="note" style="margin:6px 0 0">Tripadvisor coded complaints (n=${t(v).length}): ${tk.slice(0,4).map(x=>`${esc(x.label)} ${x.count}`).join(" · ")||"none"}</p></div>`;
+    }
+    res.module=mod+`</div>`;
+    if(route.prioritize){
+      const pri=vs.flatMap(v=>rankThemes(g(v),-1).slice(0,3).map(x=>({v,...x}))).sort((a,b)=>b.count-a.count).slice(0,3);
+      L.push(`**Priority order by complaint volume:** ${pri.map((x,i)=>`${i+1}. ${VN(x.v)} · ${x.label.toLowerCase()} (${x.count} low-rated reviews)`).join("; ")}.`);
+      res.facts.priority_by_volume=pri.map(x=>({venue:VN(x.v),theme:x.label,low_rated_reviews:x.count}));
+    }
+    res.highlight=["box-themes","box-stars"]; res.filters={rating:"lo",venue:route.venue||"all"};
+    res.fus=["Which complaints sink ratings at Hanu' lui Manuc?","How do the two venues compare on service?"];
+    res.next=["Read the low-rated Tripadvisor paraphrases by theme to separate service incidents from food quality.","Add visit time to Google reviews to test whether complaints cluster on busy evenings."];
   }
-  return L.join("\n");
+  else if(f==="praise"){
+    res.title="What guests praise, and what could transfer";
+    const st={}; vs.forEach(v=>st[v]=themeStats(g(v)));
+    let mod=`<div class="g2">`; res.facts.praise={};
+    for(const v of vs){ const gl=g(v), hi=gl.filter(r=>r.s>=4), pr=rankThemes(gl,1), five=gl.filter(r=>r.s===5&&r.hasText);
+      res.kpis.push({c:`var(--${v})`,b:pct(five.filter(r=>r.waiter).length/five.length),s:`${VN(v)}: 5★ text reviews naming a waiter`});
+      res.facts.praise[VN(v)]={google_high_rated:hi.length,themes:pr.slice(0,6).map(x=>({theme:x.label,reviews:x.count,share_of_high_rated:pct(x.share)})),five_star_text:five.length,five_star_naming_waiter:five.filter(r=>r.waiter).length};
+      L.push(`**${VN(v)}** — top praise in ${fmtN(hi.length)} Google 4–5★ reviews: ${pr.slice(0,4).map(x=>`${x.label.toLowerCase()} ${fmtN(x.count)} (${pct(x.share)})`).join(", ")}.`);
+      const max=Math.max(1,...pr.slice(0,5).map(x=>x.count));
+      mod+=`<div><h4><span class="v ${v}">${VENUES[v].short}</span> Google 4–5★ · n=${fmtN(hi.length)}</h4><div class="rows" style="margin-top:6px">${pr.slice(0,5).map(x=>`<div class="brow"><span class="muted">${esc(x.label)}</span><div class="bpair">${bar({v,val:x.count,max,label:`${fmtN(x.count)} · ${pct(x.share)}`,tip:`${VN(v)}: ${fmtN(x.count)} of ${fmtN(hi.length)} high-rated reviews mention ${x.label.toLowerCase()}`})}</div></div>`).join("")}</div></div>`;
+    }
+    res.module=mod+`</div>`;
+    if(vs.length===2){
+      const share=(v,k)=>{ const hi=g(v).filter(r=>r.s>=4); return hi.length?hi.filter(r=>r.tp[k]>0).length/hi.length:0; };
+      const gaps=Object.keys(THEMES).map(k=>({k,a:share("ccb",k),b:share("hlm",k)})).filter(x=>x.a+x.b>0.04).sort((x,y)=>Math.abs(y.a-y.b)-Math.abs(x.a-x.b)).slice(0,3);
+      L.push(`**Biggest praise gaps** (share of 4–5★ Google reviews): ${gaps.map(x=>`${THEMES[x.k].toLowerCase()}: Caru' ${pct(x.a)} vs Manuc ${pct(x.b)}`).join("; ")}.`);
+      res.facts.praise_gaps=gaps.map(x=>({theme:THEMES[x.k],caru_share:pct(x.a),manuc_share:pct(x.b)}));
+    }
+    res.highlight=["box-themes","box-google"]; res.filters={rating:"hi",venue:route.venue||"all"};
+    res.fus=["How many Google reviews are just a waiter's name?","What are the main reasons behind negative reviews?"];
+    res.next=["Check whether praise for staff holds after removing name-only reviews.","Compare the show schedule and seating at both venues to explain the show-praise gap."];
+  }
+  else if(f==="theme"){
+    const k=route.theme, label=THEMES[k];
+    res.title=`${label}: what the reviews say`;
+    res.facts.theme={theme:label}; let mod=`<div class="g2">`;
+    for(const v of vs){ const gl=g(v), withT=gl.filter(r=>r.tp[k]!=null), p=withT.filter(r=>r.s>=4).length, n=withT.filter(r=>r.s<=2).length, tt=t(v).filter(r=>r.tp[k]!=null);
+      const months=googleMonths(v).map(m=>{ const rs=gl.filter(r=>r.d.startsWith(m.m)&&r.tp[k]!=null); return {m:m.m,n:rs.length,low:rs.filter(r=>r.s<=2).length,base:m.n}; });
+      res.kpis.push({c:`var(--${v})`,b:`${fmtN(withT.length)}`,s:`${VN(v)}: Google reviews mentioning ${label.toLowerCase()} · avg ${f2(avg(withT.map(r=>r.s)))}★`});
+      res.facts.theme[VN(v)]={google_mentions:withT.length,google_text_reviews:gl.filter(r=>r.hasText).length,praise_4_5:p,complaint_1_2:n,avg_stars:f2(avg(withT.map(r=>r.s))),by_month:months,tripadvisor_coded:{praise:tt.filter(r=>r.tp[k]>0).length,complaints:tt.filter(r=>r.tp[k]<0).length,examples:tt.slice(0,6).map(r=>`${r.d} ${r.s}★: ${r.t}`)}};
+      L.push(`**${VN(v)}** — ${fmtN(withT.length)} Google reviews mention ${label.toLowerCase()}: ${fmtN(p)} at 4–5★, ${n} at 1–2★ (avg ${f2(avg(withT.map(r=>r.s)))}★). Tripadvisor 2025+: ${tt.filter(r=>r.tp[k]>0).length} positive, ${tt.filter(r=>r.tp[k]<0).length} negative codes (n=${t(v).length}).`);
+      mod+=`<div><h4><span class="v ${v}">${VENUES[v].short}</span> by month, Google</h4><table><thead><tr><th>Month</th><th>Mentions</th><th>In 1–2★</th></tr></thead><tbody>${months.map(m=>`<tr><td>${m.m}</td><td class="n">${m.n} <span class="muted">of ${fmtN(m.base)}</span></td><td class="n">${m.low}</td></tr>`).join("")}</tbody></table>
+        ${tt.length?`<p class="note" style="margin:6px 0 0"><b>Tripadvisor examples:</b> ${tt.slice(0,3).map(r=>`${r.s}★ ${esc(r.t)}`).join(" · ")}</p>`:""}</div>`;
+    }
+    res.module=mod+`</div>`;
+    if(k==="clean") L.push(`Cleanliness is rarely mentioned (${ROWS.filter(r=>r.tp.clean!=null).length} reviews in total), so treat any reading as indicative.`);
+    res.highlight=["box-themes"]; res.filters={theme:k,venue:route.venue||"all",rating:"all"};
+    res.fus=[`Has ${label.toLowerCase()} improved month by month?`,"What are the main reasons behind negative reviews?"];
+    res.next=[`Tag ${label.toLowerCase()} complaints by sub-issue (e.g. rude, slow, cold) to make them actionable.`];
+  }
+  else if(f==="compare"){
+    res.title="Caru' cu Bere vs Hanu' lui Manuc";
+    const rowsDef=[];
+    const G={}; VS.forEach(v=>G[v]=googleWriting(v));
+    const add=(l,fn)=>rowsDef.push([l,VS.map(fn)]);
+    add("Google (platform, reported)",v=>VENUES[v].google+" · "+VENUES[v].googleN);
+    add("Tripadvisor (platform, reported)",v=>VENUES[v].ta+" · "+VENUES[v].taN);
+    add("Google sample avg",v=>`${f2(INFO[v].gAvg)} · n=${fmtN(INFO[v].gN)}`);
+    add("Google sample, organic avg",v=>f2(G[v].avgOrganic));
+    add("Google 1–2★ share",v=>pct(g(v).filter(r=>r.s<=2).length/g(v).length,1));
+    add("Tripadvisor sample avg",v=>`${f2(INFO[v].tAvg)} · n=${INFO[v].tN}`);
+    for(const [k,l] of [["f","food"],["s","service"],["v","value"],["a","atmosphere"]]) add(`Tripadvisor ${l} sub-rating`,v=>{ const x=subAvg(t(v),k); return x.n?`${f2(x.avg)} · n=${x.n}`:"–"; });
+    add("Top complaint (Google 1–2★)",v=>rankThemes(g(v),-1)[0]?.label||"–");
+    add("Top praise (Google 4–5★)",v=>rankThemes(g(v),1)[0]?.label||"–");
+    add("Most named dish",v=>{ const it=itemStats(g(v))[0]; return it?`${it.label} (${it.c})`:"–"; });
+    add("Owner reply rate",v=>pct(G[v].replyN/G[v].n));
+    res.module=`<div class="scroll"><table><thead><tr><th>Measure</th><th>Caru' cu Bere</th><th>Hanu' lui Manuc</th></tr></thead><tbody>${rowsDef.map(([l,c])=>`<tr><td>${l}</td>${c.map(x=>`<td class="n">${esc(x)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+    res.facts.comparison=Object.fromEntries(rowsDef.map(([l,c])=>[l,{caru_cu_bere:c[0],hanu_lui_manuc:c[1]}]));
+    const tdiff=Object.keys(THEMES).map(k=>{ const sh=v=>{ const tx=g(v).filter(r=>r.hasText); return tx.length?tx.filter(r=>r.tp[k]<0).length/tx.length:0; }; return {k,a:sh("ccb"),b:sh("hlm")}; }).sort((x,y)=>Math.abs(y.a-y.b)-Math.abs(x.a-x.b)).slice(0,3);
+    res.facts.complaint_rate_differences=tdiff.map(x=>({theme:THEMES[x.k],caru_share_of_text_reviews:pct(x.a,1),manuc_share_of_text_reviews:pct(x.b,1)}));
+    VS.forEach(v=>res.kpis.push({c:`var(--${v})`,b:f2(INFO[v].gAvg),s:`${VN(v)}: Google sample avg (n=${fmtN(INFO[v].gN)})`}));
+    L.push(`**Headline scores are close; the samples differ.** Google sample: Caru' ${f2(INFO.ccb.gAvg)} vs Manuc ${f2(INFO.hlm.gAvg)}; Tripadvisor sample: ${f2(INFO.ccb.tAvg)} (n=${INFO.ccb.tN}) vs ${f2(INFO.hlm.tAvg)} (n=${INFO.hlm.tN}).`);
+    L.push(`- Largest complaint-rate gaps (share of text reviews at 1–2★ mentioning the theme): ${tdiff.map(x=>`${THEMES[x.k].toLowerCase()} Caru' ${pct(x.a,1)} vs Manuc ${pct(x.b,1)}`).join("; ")}.`);
+    L.push(`- Organic Google average (excluding name-only): Caru' ${f2(G.ccb.avgOrganic)}, Manuc ${f2(G.hlm.avgOrganic)}.`);
+    res.highlight=["box-stars","box-subs","box-themes"]; res.filters={venue:"all",rating:"all"};
+    res.fus=["Which positive practices could transfer between venues?","What are the main reasons behind negative reviews?"];
+    res.next=["Pull a Caru' cu Bere Google sample sorted by 'newest' so both venues cover the same period and sort order."];
+  }
+  else if(f==="trend"){
+    res.title="How ratings moved, 2025 → 2026";
+    const T={}, M={}; vs.forEach(v=>{T[v]=halfYearStats("t",v); M[v]=googleMonths(v);});
+    res.facts.tripadvisor_half_years=Object.fromEntries(vs.map(v=>[VN(v),T[v].map(x=>({period:x.p,n:x.n,avg:f2(x.avg),low_1_2:x.lo,five:x.five}))]));
+    res.facts.google_months=Object.fromEntries(vs.map(v=>[VN(v),M[v].map(x=>({month:x.m,n:x.n,avg:f2(x.avg),low_1_2:x.lo,share_low:pct(x.lo/x.n,1)}))]));
+    for(const v of vs){ const ms=M[v]; if(ms.length>=2){ const a=ms[0], b=ms[ms.length-1]; L.push(`**${VN(v)} on Google:** ${f2(a.avg)}★ in ${a.m} (n=${fmtN(a.n)}) → ${f2(b.avg)}★ in ${b.m} (n=${fmtN(b.n)}); 1–2★ share ${pct(a.lo/a.n,1)} → ${pct(b.lo/b.n,1)}.`); }
+      const th=T[v].filter(x=>x.n>=3); if(th.length>=2) L.push(`- Tripadvisor sample: ${th.map(x=>`${x.p} ${f2(x.avg)}★ (n=${x.n})`).join(" → ")}.`); else L.push(`- Tripadvisor sample too thin for a half-year trend (${T[v].map(x=>`${x.p}: n=${x.n}`).join(", ")}).`);
+      res.kpis.push({c:`var(--${v})`,b:ms.length?f2(ms[ms.length-1].avg):"–",s:`${VN(v)}: Google avg, ${ms.length?ms[ms.length-1].m:"–"} (to 13 Oct)`}); }
+    // complaint theme shift on Google: Aug–Sep vs Oct for HLM, Sep vs Oct for CCB
+    const shift=vs.map(v=>{ const ms=M[v].map(x=>x.m); if(ms.length<2) return null; const last=ms[ms.length-1]; const A=g(v).filter(r=>!r.d.startsWith(last)), B=g(v).filter(r=>r.d.startsWith(last));
+      const ks=Object.keys(THEMES).map(k=>({k,a:A.filter(r=>r.tp[k]<0).length/A.length,b:B.filter(r=>r.tp[k]<0).length/B.length})).sort((x,y)=>(y.b-y.a)-(x.b-x.a));
+      return {v,last,top:ks[0]}; }).filter(Boolean);
+    shift.forEach(s=>{ if(s.top&&s.top.b>s.top.a) L.push(`- ${VN(s.v)}: the complaint rising most in ${s.last} is ${THEMES[s.top.k].toLowerCase()} (${pct(s.top.a,1)} of earlier reviews → ${pct(s.top.b,1)}).`); });
+    res.facts.rising_complaint=shift.map(s=>({venue:VN(s.v),latest_month:s.last,theme:THEMES[s.top.k],earlier_share:pct(s.top.a,1),latest_share:pct(s.top.b,1)}));
+    res.module=`<div class="scroll">${$("trends").innerHTML}</div>`;
+    res.highlight=["box-half","box-trends"]; res.filters={venue:route.venue||"all"};
+    res.fus=["Which complaints are rising at Hanu' lui Manuc?","How many Google reviews are just a waiter's name?"];
+    res.next=["Pull Google reviews for Jan–Jul 2026 (a second API window) to see a longer trend.","Collect a fixed number of Tripadvisor reviews per venue per quarter so periods are comparable."];
+  }
+  else if(f==="value"){
+    res.title="Prices and value for money";
+    res.facts.value={}; let mod=`<div class="g2">`;
+    for(const v of vs){ const all=ROWS.filter(r=>r.v===v), gl=g(v), st=themeStats(gl), tt=themeStats(t(v));
+      const val=st.value||{m:0,p:0,n:0,z:0}, por=st.portion||{m:0,n:0}, bil=st.billing||{m:0,n:0};
+      const taPrices=t(v).filter(r=>/(€|\$|RON|lei)\s?\d|\d+\s?(RON|lei|€)/i.test(r.t));
+      res.facts.value[VN(v)]={google_value_mentions:val.m,in_4_5:val.p,in_3:val.z,in_1_2:val.n,google_portion_mentions:por.m,portion_in_1_2:por.n,google_billing_mentions:bil.m,billing_in_1_2:bil.n,google_reviews_quoting_a_price:gl.filter(r=>r.price).length,tripadvisor_value:{praise:tt.value?.p||0,complaints:tt.value?.n||0},tripadvisor_value_subrating:subAvg(t(v),"v"),tripadvisor_price_quotes:taPrices.map(r=>`${r.d} ${r.s}★: ${r.t}`)};
+      res.kpis.push({c:`var(--${v})`,b:`${val.n}/${val.m}`,s:`${VN(v)}: Google value mentions in 1–2★ / all`});
+      L.push(`**${VN(v)}** — Google: ${val.m} reviews mention value (${val.p} at 4–5★, ${val.n} at 1–2★); portions ${por.m} (${por.n} at 1–2★); bills and tips ${bil.m}. Tripadvisor 2025+: ${tt.value?.n||0} price complaints vs ${tt.value?.p||0} value compliments; value sub-rating ${f2(subAvg(t(v),"v").avg)} (n=${subAvg(t(v),"v").n}).`);
+      mod+=`<div style="border-left:4px solid var(--${v});padding-left:10px"><h4>${VN(v)}</h4><div class="kpis" style="margin-top:6px">
+        <div class="kpi"><b style="color:var(--bad)">${val.n}</b><span>Google value mentions at 1–2★</span></div><div class="kpi"><b style="color:var(--good)">${val.p}</b><span>at 4–5★</span></div>
+        <div class="kpi"><b>${por.n}/${por.m}</b><span>portion size, 1–2★ / all</span></div><div class="kpi"><b>${f2(subAvg(t(v),"v").avg)}</b><span>Tripadvisor value sub-rating · n=${subAvg(t(v),"v").n}</span></div></div>
+        ${taPrices.length?`<p class="note" style="margin:6px 0 0"><b>Prices quoted in Tripadvisor paraphrases (anecdotal):</b> ${taPrices.map(r=>`${r.d} ${r.s}★ ${esc(r.t)}`).join(" · ")}</p>`:""}</div>`;
+    }
+    res.module=mod+`</div><div class="missing" style="margin-top:10px"><b>Menu-price history: not available</b><p>No dated menus are in the data, so comparable dish prices (ciolan, papanași, Manuc platter) cannot be tracked from 2025 to 2026. Upload dated menus as a CSV (item, price, portion, date) or PDFs to enable it. Prices in reviews are anecdotal and are not used as menu prices.</p></div>`;
+    L.push(`**Menu-price changes cannot be measured:** there are no dated menus in the data. Value perception above comes from what reviewers say, not from prices.`);
+    res.highlight=["box-themes","box-subs"]; res.filters={theme:"value",venue:route.venue||"all",rating:"all"};
+    res.fus=["Which dishes get mentioned most, and how are they rated?","Does management reply to bad reviews?"];
+    res.next=["Upload dated menus to compare signature-dish prices with the timing of value complaints.","Split value complaints by dish to find which items feel overpriced."];
+  }
+  else if(f==="dishes"){
+    res.title="Dishes and drinks guests mention";
+    res.facts.items={}; let mod=`<div class="g2">`;
+    for(const v of vs){ const rows=ofSrc(by(ROWS,v),route.src||"all"), it=itemStats(rows);
+      res.facts.items[VN(v)]=it.slice(0,10).map(x=>({item:x.label,reviews:x.c,avg_stars:f2(x.avg),at_4_5:x.hi,at_1_2:x.lo}));
+      res.kpis.push({c:`var(--${v})`,b:it[0]?it[0].label.replace(/ \(.*\)/,""):"–",s:`${VN(v)}: most named (${it[0]?it[0].c:0} reviews)`});
+      L.push(`**${VN(v)}** — most named: ${it.slice(0,4).map(x=>`${x.label.toLowerCase()} ${x.c} (avg ${f1(x.avg)}★)`).join(", ")}.`);
+      const weak=it.filter(x=>x.c>=4).sort((a,b)=>a.avg-b.avg)[0]; if(weak) L.push(`- Lowest-rated of the items named at least 4 times: ${weak.label.toLowerCase()} (avg ${f2(weak.avg)}★, ${weak.lo} at 1–2★).`);
+      mod+=`<div><h4><span class="v ${v}">${VENUES[v].short}</span> ${srcLabel(route.src||"all")}</h4><table><thead><tr><th>Item</th><th>Reviews</th><th>Avg ★</th><th>1–2★</th></tr></thead><tbody>${it.slice(0,8).map(x=>`<tr><td>${esc(x.label)}</td><td class="n">${x.c}</td><td class="n">${f2(x.avg)}</td><td class="n">${x.lo}</td></tr>`).join("")}</tbody></table></div>`;
+    }
+    res.module=mod+`</div>`;
+    L.push(`Counts are small next to ${fmtN(COUNTS.g)} reviews: most reviews do not name a dish.`);
+    res.highlight=["box-dishes"]; res.filters={venue:route.venue||"all"};
+    res.fus=["What do customers say about value for money?","What are the main reasons behind negative reviews?"];
+    res.next=["Add dish-level sentiment (praise vs complaint per dish) by coding the sentence around each dish."];
+  }
+  else if(f==="staff"){
+    res.title="How Google reviews are written: waiter names and owner replies";
+    const G={}; VS.forEach(v=>G[v]=googleWriting(v));
+    res.facts.google_writing=Object.fromEntries(vs.map(v=>[VN(v),{reviews:G[v].n,period:`${G[v].from} to ${G[v].to}`,sort:VENUES[v].gSort,text_reviews:G[v].textN,naming_a_waiter:G[v].namedN,name_only:G[v].onlyN,avg_all:f2(G[v].avgAll),avg_name_only:f2(G[v].avgOnly),avg_without_name_only:f2(G[v].avgOrganic),avg_stars_only_no_text:f2(G[v].avgNoText),owner_replied:G[v].replyN,low_mid_1_3:G[v].lowMidN,low_mid_replied:G[v].lowMidReplyN}]));
+    for(const v of vs){ const x=G[v];
+      res.kpis.push({c:`var(--${v})`,b:pct(x.onlyN/x.textN),s:`${VN(v)}: Google text reviews that are only a waiter's name (${fmtN(x.onlyN)})`});
+      L.push(`**${VN(v)}** — ${pct(x.namedN/x.textN)} of ${fmtN(x.textN)} text reviews name a waiter; ${fmtN(x.onlyN)} (${pct(x.onlyN/x.textN)}) are only a name. Average ${f2(x.avgAll)} → ${f2(x.avgOrganic)} without them.`);
+      L.push(`- Owner replied to ${pct(x.replyN/x.n)} of all reviews and ${x.lowMidReplyN} of ${x.lowMidN} rated 1–3★.`); }
+    res.module=`<div class="scroll">${$("gwrite").innerHTML}</div>`;
+    res.highlight=["box-google","box-findings"]; res.filters={venue:route.venue||"all"};
+    res.fus=["What are the main reasons behind negative reviews?","How does Caru' cu Bere compare with Hanu' lui Manuc?"];
+    res.next=["Ask floor managers whether staff request reviews at the table; compare with name-only volume by day.","Measure reply quality (templated vs specific) on a sample of owner replies."];
+  }
+  res.text=L.join("\n");
+  res.facts.platform_reported_oct_2026=Object.fromEntries(VS.map(v=>[VN(v),{google:`${VENUES[v].google} (${VENUES[v].googleN})`,tripadvisor:`${VENUES[v].ta} (${VENUES[v].taN})`}]));
+  res.facts.samples={google:{n:COUNTS.g,period:"Aug–Oct 2026 (Caru' 30 Sep–13 Oct most relevant; Manuc 11 Aug–13 Oct newest)",polarity:"praise = 4–5★, complaint = 1–2★"},tripadvisor:{n:COUNTS.t,period:"visits Jan 2025–Oct 2026",note:"reading sample, paraphrased, over-represents critical reviews; Manuc has 1 review from 2025"}};
+  res.facts.missing_data=["No dated menus: menu-price history cannot be computed","Google review text is not published; codes and counts only","No visit time or party size for Google reviews"];
+  return res;
 }
 
-function buildContext(q, focus, rows, venues, mode, filters){
-  const per={};
-  for(const v of venues){
-    const rs=byVenue(rows,v);
-    per[VN(v)]={
-      sample_n:rs.length, sample_avg_stars:+f2(avg(rs.map(r=>r.s))), reviews_by_year:Object.fromEntries(coverage(rows,v).map(c=>[c.y,c.n])),
-      complaints_by_frequency:rankThemes(rs,"neg","frequency").slice(0,6).map(x=>({theme:x.label,mentions:x.count,share_of_reviews:pct(x.share),avg_stars_of_those_reviews:+f2(x.avgStars),in_1_2_star:x.low,in_4_5_star:x.hi,impact_score:+x.impact.toFixed(1),sub_drivers:drivers(x.key,x.rows)})),
-      complaints_by_impact_top3:rankThemes(rs,"neg","impact").slice(0,3).map(x=>x.label),
-      praise_by_frequency:rankThemes(rs,"pos","frequency").slice(0,5).map(x=>({theme:x.label,mentions:x.count,avg_stars:+f2(x.avgStars)})),
-      tripadvisor_subratings:{food:subAvg(rs,"f"),service:subAvg(rs,"s"),value:subAvg(rs,"v"),atmosphere:subAvg(rs,"a"),n_with_subratings:subAvg(rs,"f").n},
-      by_year:yearStats(rows,v),
-      platform_reported_oct_2026:{google:`${VENUES[v].google} (${VENUES[v].googleN})`,tripadvisor:`${VENUES[v].ta} (${VENUES[v].taN}), ${VENUES[v].taRank}`,tripadvisor_ai_tags:VENUES[v].tags}
-    };
-  }
-  const ins=buildInsights(focus,rows,venues,mode);
-  return JSON.stringify({question:q,dashboard_view:FOCUS_LABEL[focus],filters,ranking:mode,
-    definitions:{mentions:"number of sampled reviews carrying that theme code",impact_score:"mentions × (5 − average stars of those reviews)",sub_drivers:"keyword matches on paraphrased text; indicative"},
-    venues:per, computed_findings:ins.findings.map(f=>f.title+": "+f.body),
-    missing_data:["No dated menus: menu-price history cannot be computed","No Google review-level records in the project (platform totals only)","No visit time, party size beyond a label, or owner responses per review"],
-    caveats:["Coded Tripadvisor sample of 63 reviews, paraphrased; not statistically representative","2023 has 2 reviews (Hanu' lui Manuc only); 2026 is year to date and dominates the sample","Three Oct 2026 Caru' cu Bere entries come from a 'recent 5★' strip and skew positive"],
-    reviews:rows.map(r=>[VN(r.v),r.d,r.s,r.tags.join(" "),r.t])});
-}
-const RULES = `You are the City Grill Customer Analyst for two Bucharest restaurants run by City Grill Group: Caru' cu Bere and Hanu' lui Manuc. Each question arrives with COMPUTED RESULTS calculated by the dashboard from a coded sample of Tripadvisor reviews.
+const RULES = `You are the City Grill Customer Analyst for two Bucharest restaurants run by City Grill Group: Caru' cu Bere and Hanu' lui Manuc. Each question arrives with COMPUTED RESULTS calculated by the dashboard from two samples: Google Maps reviews (Aug–Oct 2026, ratings, keyword-coded themes and dishes, waiter names, owner replies) and a coded Tripadvisor sample (visits 2025–2026, paraphrased, with sub-ratings).
 Rules:
-- Use ONLY the computed results and reviews provided. Quote exact counts and sample sizes (n). Never invent numbers, reviews, dates or prices.
-- Keep platform ratings (Google, Tripadvisor totals) separate from sample figures.
+- Use ONLY the computed results provided. Quote exact counts and sample sizes (n). Never invent numbers, reviews, dates or prices.
+- Keep platform ratings separate from sample figures, and Google separate from Tripadvisor.
 - Say when a count is small (under 5) or a period is thin. Never claim causation from co-occurrence.
 - Separate what the data shows from your interpretation; label recommendations as recommendations.
 - Answer in the language of the question (Romanian or English).
-- Format: one bold opening sentence that answers the question, then 3–6 "- " bullets with evidence, then one line starting "Next analysis:" naming the single most useful follow-up analysis and the data it needs. Under 200 words. Use **bold** and "- " bullets only, no tables.
+- Format: one bold opening sentence that answers the question, then 3–6 "- " bullets with evidence, then one line starting "Next analysis:" naming the single most useful follow-up analysis and the data it needs. Under 220 words. Use **bold** and "- " bullets only, no tables.
 - Finish with a line "FOLLOWUPS:" followed by exactly two "- " lines, each a short follow-up question a manager might ask next.`;
+const BRIEF_RULES = `Write a concise management briefing for City Grill Group from the COMPUTED RESULTS below (Google Maps sample and coded Tripadvisor sample for Caru' cu Bere and Hanu' lui Manuc). Use only these numbers; cite n for every claim; keep platform ratings separate from sample figures and the two sources apart; never claim causation.
+Sections, as "### " headings: Three key customer insights (numbered) · Strongest positive and negative themes · Restaurant comparison · Prices and value · Three prioritised actions (numbered, most important first, each tied to a counted finding) · Sources and sample sizes · Limitations · Suggested next analyses. Under 400 words. Use **bold**, "- " bullets and numbered lines only.`;
 function splitFU(text){
   const i=text.search(/\n?\s*FOLLOWUPS:/i); if(i<0) return {body:text.trim(),fus:[]};
-  const body=text.slice(0,i).trim(); const fus=text.slice(i).split("\n").slice(1).map(l=>l.replace(/^\s*[-*]\s*/,"").trim()).filter(Boolean).slice(0,3);
-  return {body,fus};
+  return {body:text.slice(0,i).trim(),fus:text.slice(i).split("\n").filter(l=>!/FOLLOWUPS:/i.test(l)).map(l=>l.replace(/^\s*[-*]\s*/,"").trim()).filter(Boolean).slice(0,3)};
 }
-const DEFAULT_FU = {
-  complaints:["Which complaints sink ratings the most?","Have these complaints grown since 2024?"],
-  praise:["What are the main reasons behind negative reviews?","How do the two venues compare on service?"],
-  mix:["Which aspects should management prioritize?","How has sentiment changed from 2023 to 2026?"],
-  compare:["What are the top 3 complaints at each restaurant?","Which practices could transfer between venues?"],
-  trend:["Which complaints sink ratings the most?","What do customers say about value for money?"],
-  value:["Which complaints sink ratings the most?","Are bill and tip complaints growing?"]
-};
+const failCopy=e=>({not_granted:"Claude was not allowed for this page, so the computed answer is shown.",sampling_disabled:"Claude is not available on this account; showing the computed answer.",rate_limited:"Too many requests just now; showing the computed answer. Try again in a minute.",session_expired:"Sign in again to get Claude's interpretation; showing the computed answer."}[e&&e.code]||"Claude's answer did not come through; showing the computed answer.");
 
-function computedBriefing(rows){
-  const vs=["ccb","hlm"], L=[];
+function applyView(res,route){
+  if(route.src&&route.src!==S.src){ S.src=route.src; }
+  S.ev={venue:"all",rating:"all",year:"all",theme:"",q:"",...res.filters}; S.page=1;
+  document.querySelectorAll(".box.focus").forEach(b=>b.classList.remove("focus"));
+  res.highlight.forEach(id=>{ const el=$(id); if(el) el.classList.add("focus"); });
+  renderDashboard();
+}
+function kpiHtml(k){ return `<div class="kpis">${k.map(x=>`<div class="kpi" style="--c:${x.c}"><b>${esc(x.b)}</b><span>${esc(x.s)}</span></div>`).join("")}</div>`; }
+function setBusy(b){ S.busy=b; $("askBtn").disabled=b; $("briefBtn").disabled=b; document.querySelectorAll(".chip").forEach(c=>c.disabled=b); }
+
+async function ask(q,preset){
+  q=(q||"").trim(); if(!q||S.busy) return;
+  setBusy(true);
+  const thread=$("thread");
+  const qEl=document.createElement("div"); qEl.className="q"; qEl.textContent=q; thread.appendChild(qEl);
+  const a=document.createElement("div"); a.className="a"; thread.appendChild(a);
+  a.innerHTML=`<div class="who">Analyst <span class="badge">working</span></div><p class="note">Reading the question and counting the reviews…</p>`;
+  a.scrollIntoView({behavior:"smooth",block:"nearest"});
+  const sample=await S.sample;
+  let route=preset?{...preset}:localRoute(q);
+  if(!preset&&sample){
+    try{ const r=await sample([{role:"user",content:ROUTE_PROMPT(q)}],{cache:false}); const m=(r.text||"").match(/\{[\s\S]*\}/); const sr=m&&sanitizeRoute(JSON.parse(m[0])); if(sr) route=sr; }catch(e){ /* keep local route */ }
+  }
+  if(route.focus==="briefing"){ a.remove(); qEl.remove(); setBusy(false); await briefing(); return; }
+  const res=analyse(route);
+  applyView(res,route);
+  const scope=`${route.venue?VN(route.venue):"Both venues"} · ${route.src?SRC[route.src]:"Google + Tripadvisor"}`;
+  const head=`<div class="who">Analyst <span class="badge">Computed from data</span><span class="badge">${esc(scope)}</span></div><h4>${esc(res.title)}</h4>${kpiHtml(res.kpis)}<div>${res.module}</div>`;
+  const comp=`<div class="prose">${md(res.text)}</div>`;
+  const nextH=res.next.length?`<p class="note" style="margin:0"><b>Suggested next analyses:</b> ${res.next.map(esc).join(" · ")}</p>`:"";
+  const fuH=fus=>`<div class="fus"><span class="eyebrow">Follow up</span>${fus.map(f=>`<button class="chip" type="button" data-q="${esc(f)}">${esc(f)}</button>`).join("")}</div>`;
+  if(!sample){
+    a.innerHTML=head+comp+nextH+fuH(res.fus)+`<p class="note" style="margin:0">Claude is not reachable in this view, so this answer is computed from the data without interpretation. Open the page as a claude.ai artifact for Claude's reading.</p>`;
+    setBusy(false); return;
+  }
+  const aiId="ai-"+Date.now();
+  a.innerHTML=head+comp+`<div class="prose" id="${aiId}"><div class="who"><span class="badge ai">Claude's interpretation</span></div><p class="note">Interpreting the results…</p></div>`+nextH;
+  const aiEl=$(aiId);
+  const facts=JSON.stringify({question:q,analysis:res.title,computed_answer:res.text,computed_results:res.facts});
+  const msgs=[{role:"user",content:RULES+"\n\nAcknowledge with OK."},{role:"assistant",content:"OK."},...S.hist.slice(-6),{role:"user",content:`COMPUTED RESULTS:\n${facts}\n\nQUESTION: ${q}`}];
+  try{
+    const out=await sample(msgs,{cache:false,onText:({text})=>{ aiEl.innerHTML=`<div class="who"><span class="badge ai">Claude's interpretation</span></div>`+md(splitFU(text).body); }});
+    const {body,fus}=splitFU(out.text||"");
+    aiEl.innerHTML=`<div class="who"><span class="badge ai">Claude's interpretation</span></div>`+md(body);
+    a.insertAdjacentHTML("beforeend",fuH(fus.length?fus:res.fus));
+    S.hist.push({role:"user",content:q},{role:"assistant",content:body});
+  }catch(e){
+    aiEl.innerHTML=`<p class="note">${esc(failCopy(e))}</p>`;
+    a.insertAdjacentHTML("beforeend",fuH(res.fus));
+  }
+  setBusy(false);
+}
+
+function briefingFacts(){
+  const out={};
+  for(const v of VS){ const gl=ROWS.filter(r=>r.src==="g"&&r.v===v), tl=ROWS.filter(r=>r.src==="t"&&r.v===v), G=googleWriting(v), st=themeStats(gl);
+    out[VN(v)]={platform:{google:VENUES[v].google+" ("+VENUES[v].googleN+")",tripadvisor:VENUES[v].ta+" ("+VENUES[v].taN+")"},
+      google:{n:gl.length,avg:f2(G.avgAll),organic_avg:f2(G.avgOrganic),low_1_2:gl.filter(r=>r.s<=2).length,top_complaints:rankThemes(gl,-1).slice(0,3).map(x=>`${x.label} ${x.count}`),top_praise:rankThemes(gl,1).slice(0,3).map(x=>`${x.label} ${x.count}`),name_only:G.onlyN,text_reviews:G.textN,reply_rate_1_3:`${G.lowMidReplyN}/${G.lowMidN}`,value_mentions:{all:st.value?.m||0,low:st.value?.n||0},top_items:itemStats(gl).slice(0,3).map(x=>`${x.label} ${x.c} (${f2(x.avg)}★)`)},
+      tripadvisor:{n:tl.length,avg:f2(avg(tl.map(r=>r.s))),coded_complaints:rankThemes(tl,-1).slice(0,3).map(x=>`${x.label} ${x.count}`),subratings:{food:f2(subAvg(tl,"f").avg),service:f2(subAvg(tl,"s").avg),value:f2(subAvg(tl,"v").avg),atmosphere:f2(subAvg(tl,"a").avg),n:subAvg(tl,"f").n}}};
+  }
+  return {venues:out,findings:buildFindings().map(f=>`${f.title}: ${f.body}`),missing:["No dated menus","Google text not published; codes only","Samples cover different periods and sort orders"]};
+}
+function computedBriefing(){
+  const F=briefingFacts(), L=[], fs=buildFindings();
   L.push(`### City Grill customer briefing`);
-  L.push(`Coded Tripadvisor sample, ${rows.length} reviews (${vs.map(v=>`${VN(v)} ${byVenue(rows,v).length}`).join(", ")}). Platform ratings, reported Oct 2026: ${vs.map(v=>`${VN(v)} Google ${VENUES[v].google}, Tripadvisor ${VENUES[v].ta}`).join("; ")}.`);
-  L.push(`### Three key insights`);
-  const ins=buildInsights("complaints",rows,vs,"frequency").findings.slice(0,3);
-  ins.forEach((f,i)=>L.push(`${i+1}. **${f.title}.** ${f.body}`));
+  L.push(`Google Maps sample ${fmtN(COUNTS.g)} reviews (Aug–Oct 2026) and coded Tripadvisor sample ${COUNTS.t} reviews (2025–2026). Platform ratings, reported Oct 2026: ${VS.map(v=>`${VN(v)} Google ${VENUES[v].google}, Tripadvisor ${VENUES[v].ta}`).join("; ")}.`);
+  L.push(`### Three key customer insights`);
+  [fs.find(f=>f.kind==="risk"&&/name/.test(f.title)),fs.find(f=>f.kind==="risk"&&/complaints/.test(f.title)),fs.find(f=>f.kind==="strength")].filter(Boolean).forEach((f,i)=>L.push(`${i+1}. **${f.title}.** ${f.body}`));
   L.push(`### Strongest positive and negative themes`);
-  for(const v of vs){ const p=rankThemes(byVenue(rows,v),"pos","frequency")[0], n=rankThemes(byVenue(rows,v),"neg","frequency")[0]; if(p&&n) L.push(`- ${VN(v)}: praised most for ${p.label.toLowerCase()} (${p.count}); criticised most for ${n.label.toLowerCase()} (${n.count}).`); }
+  VS.forEach(v=>L.push(`- ${VN(v)}: praised for ${F.venues[VN(v)].google.top_praise.join(", ")}; criticised for ${F.venues[VN(v)].google.top_complaints.join(", ")} (Google, mentions).`));
+  L.push(`### Restaurant comparison`);
+  VS.forEach(v=>{ const x=F.venues[VN(v)]; L.push(`- ${VN(v)}: Google sample ${x.google.avg} (organic ${x.google.organic_avg}, n=${fmtN(x.google.n)}); Tripadvisor sample ${x.tripadvisor.avg} (n=${x.tripadvisor.n}).`); });
   L.push(`### Prices and value`);
-  for(const v of vs){ const st=themeStats(byVenue(rows,v)); L.push(`- ${VN(v)}: ${st.value?.neg.length||0} price complaints vs ${st.value?.pos.length||0} value compliments; ${st.billing?.neg.length||0} bill-transparency complaints.`); }
-  L.push(`### Three prioritised actions (by impact score)`);
-  buildRecs(rows,vs).slice(0,3).forEach((r,i)=>L.push(`${i+1}. ${VN(r.v)} · ${r.label}: ${r.action} (${r.count} complaints, avg ${f1(r.avgStars)}★)`));
+  VS.forEach(v=>{ const x=F.venues[VN(v)]; L.push(`- ${VN(v)}: ${x.google.value_mentions.all} Google reviews mention value, ${x.google.value_mentions.low} of them at 1–2★; Tripadvisor value sub-rating ${x.tripadvisor.subratings.value} (n=${x.tripadvisor.subratings.n}). No dated menus, so price changes cannot be measured.`); });
+  L.push(`### Three prioritised actions`);
+  L.push(`1. **Complaint recovery script and checks at the pass** — the most common themes in 1–2★ Google reviews: ${VS.map(v=>`${VN(v)} ${F.venues[VN(v)].google.top_complaints.slice(0,2).join(", ")}`).join("; ")}.`);
+  L.push(`2. **Track an organic rating** — ${F.venues["Hanu' lui Manuc"].google.name_only} name-only Google reviews at Hanu' lui Manuc.`);
+  L.push(`3. **Reply to every 1–3★ review** — replies so far: ${VS.map(v=>`${VN(v)} ${F.venues[VN(v)].google.reply_rate_1_3}`).join(", ")}.`);
   L.push(`### Limitations`);
-  L.push(`- Paraphrased, coded sample; directional, not representative. 2026 dominates; 2023 has ${rows.filter(r=>r.y===2023).length} reviews.`);
-  L.push(`- No dated menus, so price changes cannot be measured.`);
-  L.push(`### Next analyses`);
-  L.push(`- Load the Google review export to test whether these themes hold at scale.`);
-  L.push(`- Add dated menus to connect price complaints to actual price moves.`);
+  L.push(`- Samples are directional, not representative; Google samples cover different periods and sort orders; Tripadvisor over-represents critical reviews.`);
+  L.push(`### Suggested next analyses`);
+  L.push(`- Pull Google reviews for Jan–Jul 2026 and a 'newest' sample for Caru' cu Bere.`);
+  L.push(`- Upload dated menus to test value complaints against real price moves.`);
   return L.join("\n");
 }
-const BRIEF_RULES = `Write a concise management briefing for City Grill Group from the COMPUTED RESULTS below (a coded sample of Tripadvisor reviews for Caru' cu Bere and Hanu' lui Manuc). Use only these numbers; cite n for every claim; keep platform ratings separate from sample figures; never claim causation.
-Sections, as "### " headings: Three key insights (numbered) · Strongest positive and negative themes · Restaurant comparison · Prices and value · Three prioritised actions (numbered, most important first, each tied to a counted complaint) · Sources and sample sizes · Limitations · Suggested next analyses. Under 380 words. Use **bold**, "- " bullets and numbered lines only.`;
-
-/* ---------- components ---------- */
-function Stars({s}){ return html`<span class="stars" aria-label=${s+" stars"}>${"★".repeat(s)}<s>${"★".repeat(5-s)}</s></span>`; }
-
-function Ledger({v,rows,dim}){
-  const V=VENUES[v], rs=byVenue(rows,v), cov=coverage(rows,v);
-  return html`<section class=${"ledger"+(dim?" dim":"")} style=${{"--c":`var(--${v})`}}>
-    <div class="lhead"><h2>${V.name}</h2><span>${V.addr}</span></div>
-    <div class="stats">
-      <div class="stat"><b class="num">${V.google}</b><span>Google · ${V.googleN} · reported</span></div>
-      <div class="stat"><b class="num">${V.ta}</b><span>Tripadvisor · ${V.taN} · reported</span></div>
-      <div class="stat"><b class="num">${rs.length?f2(avg(rs.map(r=>r.s))):"–"}</b><span>Sample avg · n=${rs.length}</span></div>
-    </div>
-    <div class="cov" title="Sampled reviews per year in the current filter">
-      <span class="eyebrow" style=${{marginRight:4}}>Sample by year</span>
-      ${cov.map(c=>html`<i key=${c.y} class=${c.n?"":"none"}>${c.y}${c.y===2026?" YTD":""} · ${c.n||"no data"}</i>`)}
-    </div>
-    <p class="small muted" style=${{margin:0}}>${V.concept} Tripadvisor tags: ${V.tags}.</p>
-  </section>`;
-}
-
-function useTip(){
-  const [tip,setTip]=useState(null);
-  const show=(e,text)=>{ const box=e.currentTarget.closest(".chartbox").getBoundingClientRect(); const t=e.currentTarget.getBoundingClientRect();
-    const x=(e.clientX!=null&&e.type!=="focus")?e.clientX:t.left+t.width/2, y=(e.clientY!=null&&e.type!=="focus")?e.clientY:t.top;
-    setTip({x:Math.min(Math.max(x-box.left,110),box.width-110),y:y-box.top,text}); };
-  const hide=()=>setTip(null);
-  const node=tip?html`<div class="tip" style=${{left:tip.x,top:tip.y}}>${tip.text}</div>`:null;
-  return {show,hide,node};
-}
-
-function RankColumn({v,rows,sign,mode,onSee,k=3}){
-  const rs=byVenue(rows,v), list=rankThemes(rs,sign,mode), max=Math.max(1,...list.map(x=>x.count));
-  return html`<div class="rcol" style=${{"--c":`var(--${v})`}}>
-    <h3><span class="vdot"></span>${VN(v)} <span class="small muted mono" style=${{fontWeight:400}}>n=${rs.length}</span></h3>
-    ${!list.length?html`<div class="missing"><b>No coded ${sign==="neg"?"complaints":"praise"} in this filter</b><p>Widen the year or rating filter.</p></div>`:null}
-    ${list.slice(0,k).map(x=>{ const pill=sign==="neg"?sevPill(x):null; const dr=sign==="neg"?drivers(x.key,x.rows):[];
-      return html`<div class="ritem" key=${x.key}>
-        <div class="rk">${x.rank}</div>
-        <div style=${{minWidth:0}}>
-          <div class="rt"><b>${x.label}</b>${pill?html`<span class=${"pill "+pill.cls}>${pill.t}</span>`:null}</div>
-          <div class="rmeter"><span style=${{width:(x.count/max*100)+"%"}}></span></div>
-          <div class="rmeta">
-            <span><b>${x.count}</b> of ${rs.length} reviews (${pct(x.share)})</span>
-            <span>avg <b>${f1(x.avgStars)}★</b></span>
-            ${sign==="neg"?html`<span><b>${x.low}</b> in 1–2★</span><span>impact <b>${x.impact.toFixed(1)}</b></span>`:null}
-            ${x.tieWith.length&&mode!=="impact"?html`<span>tied with ${x.tieWith.join(", ").toLowerCase()}</span>`:null}
-          </div>
-          ${dr.length?html`<div class="drv">${dr.map(d=>html`<span key=${d.label}>${d.label} · ${d.count}</span>`)}</div>`:null}
-          <div style=${{marginTop:6}}><button class="link" onClick=${()=>onSee(x.key,sign)}>See the ${x.count} review${x.count>1?"s":""}</button></div>
-        </div>
-      </div>`; })}
-    ${list.length>k?html`<div class="rest">Also mentioned: ${list.slice(k).map(x=>`${x.label} ${x.count}`).join(" · ")}</div>`:null}
-  </div>`;
-}
-
-function ThemeBars({rows,venues}){
-  const tip=useTip();
-  const stats=Object.fromEntries(venues.map(v=>[v,themeStats(byVenue(rows,v))]));
-  const keys=Object.keys(THEMES).filter(k=>venues.some(v=>stats[v][k])).sort((a,b)=>venues.reduce((s,v)=>s+(stats[v][b]?.pos.length||0)+(stats[v][b]?.neg.length||0),0)-venues.reduce((s,v)=>s+(stats[v][a]?.pos.length||0)+(stats[v][a]?.neg.length||0),0));
-  const max=Math.max(1,...venues.flatMap(v=>keys.flatMap(k=>[stats[v][k]?.pos.length||0,stats[v][k]?.neg.length||0])));
-  const none=Object.keys(THEMES).filter(k=>!venues.some(v=>stats[v][k]));
-  return html`<div class="box chartbox">
-    <h3>Complaints and praise by theme</h3>
-    <p class="cap">Reviews mentioning each theme. Red bars grow left (complaints), green bars grow right (praise). Net = praise − complaints; below zero means the theme hurts more than it helps.</p>
-    <div class=${venues.length===2?"g2":""}>
-    ${venues.map(v=>html`<div key=${v} class="tbars" style=${{minWidth:0}}>
-      <div class="trow head"><span><span class=${"v "+v}>${VENUES[v].short}</span></span><span style=${{textAlign:"right"}}>Complaints</span><span>Praise</span><span style=${{textAlign:"right"}}>Net</span></div>
-      ${keys.map(k=>{ const o=stats[v][k]||{pos:[],neg:[]}, p=o.pos.length, n=o.neg.length, net=p-n;
-        const t=`${VN(v)} · ${THEMES[k]}: ${n} complaint${n!==1?"s":""}${n?` (avg ${f1(avg(o.neg.map(r=>r.s)))}★)`:""}, ${p} praise${p?` (avg ${f1(avg(o.pos.map(r=>r.s)))}★)`:""}`;
-        return html`<div class="trow" key=${k} tabIndex="0" onMouseMove=${e=>tip.show(e,t)} onMouseLeave=${tip.hide} onFocus=${e=>tip.show(e,t)} onBlur=${tip.hide} aria-label=${t}>
-          <span class="tl">${THEMES[k]}</span>
-          <span class="side neg"><span style=${{width:(n/max*100)+"%"}}></span>${n?html`<em>${n}</em>`:null}</span>
-          <span class="side pos"><span style=${{width:(p/max*100)+"%"}}></span>${p?html`<em>${p}</em>`:null}</span>
-          <span class=${"net "+(net>0?"p":net<0?"n":"z")}>${net>0?"+":""}${net}</span>
-        </div>`; })}
-    </div>`)}
-    </div>
-    ${none.length?html`<p class="small muted" style=${{margin:"10px 0 0"}}>No coded mentions in this filter: ${none.map(k=>THEMES[k]).join(", ")}.</p>`:null}
-    ${tip.node}
-  </div>`;
-}
-
-function ImpactChart({rows,venues}){
-  const tip=useTip();
-  const pts=venues.flatMap(v=>rankThemes(byVenue(rows,v),"neg","frequency").map(x=>({...x,v})));
-  const W=560,H=290,m={l:40,r:16,t:16,b:38};
-  const xmax=Math.max(4,Math.ceil(Math.max(0,...pts.map(p=>p.count))/2)*2);
-  const X=c=>m.l+(c/xmax)*(W-m.l-m.r), Y=s=>m.t+((5-s)/4)*(H-m.t-m.b);
-  const xt=[]; for(let i=0;i<=xmax;i+=2) xt.push(i);
-  return html`<div class="box chartbox">
-    <h3>How often vs how much it hurts</h3>
-    <p class="cap">Each mark is one complaint theme. Right = mentioned more often; lower = the reviews carrying it score worse. Lower-right themes matter most.</p>
-    <div class="legend" style=${{marginBottom:6}}>${venues.map(v=>html`<span key=${v}><i style=${{background:`var(--${v})`,borderRadius:v==="ccb"?"50%":"2px"}}></i>${VN(v)}</span>`)}</div>
-    ${!pts.length?html`<div class="missing"><b>No complaints in this filter</b><p>Widen the filters to plot complaint themes.</p></div>`:html`
-    <svg viewBox=${`0 0 ${W} ${H}`} width="100%" role="img" aria-label="Scatter of complaint mentions against average stars">
-      <rect x=${X(xmax/2)} y=${Y(3)} width=${X(xmax)-X(xmax/2)} height=${Y(1)-Y(3)} fill="var(--red-soft)" opacity="0.7"></rect>
-      <text x=${X(xmax)-4} y=${Y(1)-6} text-anchor="end" style=${{fill:"var(--red)"}}>frequent and damaging</text>
-      ${[1,2,3,4,5].map(s=>html`<g key=${"y"+s}><line x1=${m.l} x2=${W-m.r} y1=${Y(s)} y2=${Y(s)} stroke="var(--line2)"></line><text x=${m.l-8} y=${Y(s)+4} text-anchor="end">${s}★</text></g>`)}
-      ${xt.map(c=>html`<text key=${"x"+c} x=${X(c)} y=${H-m.b+16} text-anchor="middle">${c}</text>`)}
-      <text x=${(m.l+W-m.r)/2} y=${H-4} text-anchor="middle">reviews with the complaint</text>
-      ${pts.map(p=>{ const cx=X(p.count), cy=Y(p.avgStars); const t=`${VN(p.v)} · ${p.label}: ${p.count} review${p.count>1?"s":""}, avg ${f1(p.avgStars)}★, ${p.low} in 1–2★, impact ${p.impact.toFixed(1)}`;
-        const mark=p.v==="ccb"?html`<circle cx=${cx} cy=${cy} r="6" fill=${`var(--${p.v})`} stroke="var(--surface)" stroke-width="1.5"></circle>`:html`<rect x=${cx-5.5} y=${cy-5.5} width="11" height="11" rx="1.5" fill=${`var(--${p.v})`} stroke="var(--surface)" stroke-width="1.5"></rect>`;
-        return html`<g key=${p.v+p.key} tabIndex="0" onMouseMove=${e=>tip.show(e,t)} onMouseLeave=${tip.hide} onFocus=${e=>tip.show(e,t)} onBlur=${tip.hide} style=${{cursor:"default"}}>
-          <title>${t}</title>${mark}
-          ${p.count>=3?html`<text class="lab" x=${cx+(p.v==="ccb"?9:-9)} y=${cy+(p.v==="ccb"?-6:14)} text-anchor=${p.v==="ccb"?"start":"end"}>${p.label}</text>`:null}
-        </g>`; })}
-    </svg>`}
-    ${tip.node}
-  </div>`;
-}
-
-function YearTable({rows,venues,sign="neg"}){
-  const keys=[...new Set(venues.flatMap(v=>rankThemes(byVenue(rows,v),sign,"frequency").slice(0,4).map(x=>x.key)))];
-  return html`<div class="box">
-    <h3>${sign==="neg"?"Complaints":"Praise"} by visit year</h3>
-    <p class="cap">Reviews with the theme ÷ reviews sampled that year. Hatched cells have no reviews; years with n below 3 are indicative only.</p>
-    <div class="scroll"><table>
-      <thead><tr><th>Theme</th><th>Venue</th>${YEARS.map(y=>html`<th key=${y}>${y}${y===2026?" YTD":""}</th>`)}</tr></thead>
-      <tbody>${keys.flatMap(k=>venues.map(v=>{ const ys=themeByYear(rows,v,k,sign);
-        return html`<tr key=${k+v}><td>${THEMES[k]}</td><td><span class=${"v "+v}>${VENUES[v].short}</span></td>
-          ${ys.map(y=>{ const sh=y.n?y.c/y.n:0; const bg=y.n?`color-mix(in srgb,var(--${sign==="neg"?"bad":"good"}) ${Math.round(sh*55)}%,transparent)`:undefined;
-            return html`<td key=${y.y} class="n">${y.n?html`<span class="heat" style=${{background:bg}} title=${`${y.c} of ${y.n} reviews`}>${y.c}/${y.n}${y.n<3?" ·":""}</span>`:html`<span class="heat cov"><i class="none">no data</i></span>`}</td>`; })}
-        </tr>`; }))}</tbody>
-    </table></div>
-    <p class="small muted" style=${{margin:"6px 0 0"}}>"·" marks a year with fewer than 3 sampled reviews.</p>
-  </div>`;
-}
-
-function BarPair({label,vals,max,fmt,venues,ns}){
-  return html`<div class="brow"><span class="muted">${label}</span><div class="bpair">
-    ${venues.map((v,i)=>{ const x=vals[i]; const nd=x==null;
-      return html`<div class="btrack" key=${v}><div class=${"bar"+(nd?" nodata":"")} style=${{"--c":`var(--${v})`,width:nd?"100%":Math.max(1,x/max*100)+"%"}} title=${nd?"No data":`${VN(v)}: ${fmt(x)}${ns?" (n="+ns[i]+")":""}`}><em>${nd?"no data":fmt(x)+(ns?` · n=${ns[i]}`:"")}</em></div></div>`; })}
-  </div></div>`;
-}
-
-function TrendModule({rows,venues}){
-  return html`<div class="g2">
-    <div class="box"><h3>Average rating by visit year</h3><p class="cap">Coded sample, stars out of 5. 2026 is year to date.</p>
-      <div class="legend" style=${{marginBottom:8}}>${venues.map(v=>html`<span key=${v}><i style=${{background:`var(--${v})`}}></i>${VN(v)}</span>`)}</div>
-      <div class="rows">${YEARS.map(y=>{ const ys=venues.map(v=>yearStats(rows,v).find(x=>x.y===y)); return html`<${BarPair} key=${y} label=${y+(y===2026?" YTD":"")} venues=${venues} vals=${ys.map(s=>s.n?s.avg:null)} ns=${ys.map(s=>s.n)} max=${5} fmt=${f1}/>`; })}</div>
-    </div>
-    <div class="box chartbox"><h3>Rating mix by year</h3><p class="cap">Share of each year's reviews at 1–2★, 3★, 4★ and 5★. More weight at both ends means more polarised opinion.</p>
-      <div class="legend" style=${{marginBottom:8}}><span><i style=${{background:"var(--bad)"}}></i>1–2★</span><span><i style=${{background:"var(--mid)"}}></i>3★</span><span><i style=${{background:"color-mix(in srgb,var(--good) 55%,transparent)"}}></i>4★</span><span><i style=${{background:"var(--good)"}}></i>5★</span></div>
-      <div class="rows">${venues.flatMap(v=>yearStats(rows,v).map(s=>html`<div class="brow" key=${v+s.y}><span class="small"><span class=${"v "+v}>${VENUES[v].short}</span> ${s.y}</span>
-        ${s.n?html`<div style=${{display:"grid",gridTemplateColumns:"1fr 3.2rem",gap:6,alignItems:"center"}}><div class="stack" title=${`n=${s.n}: ${s.lo} at 1–2★, ${s.mid} at 3★, ${s.four} at 4★, ${s.five} at 5★`}>
-          <span style=${{width:s.lo/s.n*100+"%",background:"var(--bad)"}}></span><span style=${{width:s.mid/s.n*100+"%",background:"var(--mid)"}}></span><span style=${{width:s.four/s.n*100+"%",background:"color-mix(in srgb,var(--good) 55%,transparent)"}}></span><span style=${{width:s.five/s.n*100+"%",background:"var(--good)"}}></span>
-        </div><span class="small mono muted">n=${s.n}</span></div>`:html`<div class="bar nodata" style=${{"--c":"var(--line)"}}><em>no data</em></div>`}
-      </div>`))}</div>
-    </div>
-  </div>`;
-}
-
-function CompareModule({rows,venues}){
-  const vs=venues;
-  return html`<div class="g2">
-    <div class="box"><h3>Tripadvisor sub-ratings</h3><p class="cap">Average of the food, service, value and atmosphere scores, only from reviews that gave them.</p>
-      <div class="legend" style=${{marginBottom:8}}>${vs.map(v=>html`<span key=${v}><i style=${{background:`var(--${v})`}}></i>${VN(v)} (n=${subAvg(byVenue(rows,v),"f").n})</span>`)}</div>
-      <div class="rows">${[["f","Food"],["s","Service"],["v","Value"],["a","Atmosphere"]].map(([k,l])=>html`<${BarPair} key=${k} label=${l} venues=${vs} vals=${vs.map(v=>subAvg(byVenue(rows,v),k).avg)} max=${5} fmt=${f2}/>`)}</div>
-    </div>
-    <div class="box"><h3>Star distribution</h3><p class="cap">Share of sampled reviews at each rating.</p>
-      <div class="legend" style=${{marginBottom:8}}>${vs.map(v=>html`<span key=${v}><i style=${{background:`var(--${v})`}}></i>${VN(v)} (n=${byVenue(rows,v).length})</span>`)}</div>
-      <div class="rows">${[5,4,3,2,1].map(s=>html`<${BarPair} key=${s} label=${"★".repeat(s)} venues=${vs} vals=${vs.map(v=>{const rs=byVenue(rows,v);return rs.length?rs.filter(r=>r.s===s).length/rs.length*100:null;})} max=${60} fmt=${x=>Math.round(x)+"%"}/>`)}</div>
-    </div>
-  </div>`;
-}
-
-function ValueModule({rows,venues}){
-  const pm=priceMentions(rows);
-  return html`<div class="grid">
-    <div class="g2">${venues.map(v=>{ const rs=byVenue(rows,v), st=themeStats(rs), sv=subAvg(rs,"v");
-      return html`<div class="box" key=${v} style=${{borderLeft:`4px solid var(--${v})`}}><h3>${VN(v)}</h3><p class="cap">n=${rs.length} sampled reviews</p>
-        <div class="kpis">
-          <div class="kpi"><b class="num" style=${{color:"var(--bad)"}}>${st.value?.neg.length||0}</b><span>price complaints</span></div>
-          <div class="kpi"><b class="num" style=${{color:"var(--good)"}}>${st.value?.pos.length||0}</b><span>value compliments</span></div>
-          <div class="kpi"><b class="num">${f2(sv.avg)}</b><span>value sub-rating · n=${sv.n}</span></div>
-          <div class="kpi"><b class="num">${(st.billing?.neg.length||0)} / ${(st.tip?.neg.length||0)}</b><span>bill / tip complaints</span></div>
-          <div class="kpi"><b class="num">${(st.lunchmenu?.pos.length||0)} / ${(st.lunchmenu?.neg.length||0)}</b><span>lunch menu + / −</span></div>
-        </div></div>`; })}</div>
-    <div class="box"><h3>Prices mentioned in reviews</h3><p class="cap">Anecdotal amounts guests quoted, as paraphrased. These are not menu prices and cannot show a price trend.</p>
-      <div class="scroll"><table><thead><tr><th>Visit</th><th>Venue</th><th>Rating</th><th>What the guest said</th></tr></thead>
-      <tbody>${pm.map(r=>html`<tr key=${r.id}><td class="n">${r.d}</td><td><span class=${"v "+r.v}>${VENUES[r.v].short}</span></td><td><${Stars} s=${r.s}/></td><td style=${{minWidth:240}}>${r.t}</td></tr>`)}</tbody></table></div>
-      ${!pm.length?html`<p class="small muted">No prices quoted in the filtered reviews.</p>`:null}
-    </div>
-    <div class="missing"><b>Menu-price history: not available</b><p>No dated menus are in this project, so comparable dish prices (e.g. ciolan, papanași, Manuc platter) cannot be tracked from 2023 to 2026. To enable it, upload dated menus as a CSV or PDFs with item, price, portion size and date.</p></div>
-  </div>`;
-}
-
-function Findings({ins,recs,focus}){
-  const color={risk:"var(--bad)",strength:"var(--good)",watch:"var(--warn)"};
-  const word={risk:"Risk",strength:"Strength",watch:"Watch"};
-  return html`<div class="g2">
-    <div class="box"><h3>Key findings</h3><p class="cap">Calculated from the filtered sample. Stripe and label: strength, risk or watch.</p>
-      ${ins.findings.length?ins.findings.map((f,i)=>html`<div class="finding" key=${i} style=${{"--s":color[f.kind]}}><span class="stripe"></span><div>
-        <b>${f.title}</b> <span class=${"pill "+(f.kind==="risk"?"bad":f.kind==="strength"?"good":"warn")}>${word[f.kind]}</span>
-        <p>${f.body}</p>
-        <div class="fmeta"><span>n=<b>${f.n}</b></span><span>${f.period}</span><span>Next: <b>${f.action}</b></span></div>
-        <div class="fmeta"><span>Limitation: ${f.limit}</span></div>
-      </div></div>`):html`<p class="small muted">No findings for this filter.</p>`}
-      ${ins.next.length?html`<div style=${{marginTop:8}}><span class="eyebrow">Suggested next analyses</span><ul class="next">${ins.next.map((t,i)=>html`<li key=${i}>${t}</li>`)}</ul></div>`:null}
-    </div>
-    <div class="box"><h3>Recommended actions</h3><p class="cap">Ranked by impact score (mentions × stars lost) across the venues in view. Actions adapted from the Reviews Desk recommendations; treat as proposals to test.</p>
-      <div class="recs">${recs.map((r,i)=>html`<div class="rec" key=${i}><div class="rk" style=${{color:`var(--${r.v})`}}>${i+1}</div><div>
-        <b>${r.action}</b><p><span class=${"v "+r.v}>${VENUES[r.v].short}</span> ${r.label} · ${r.count} complaint${r.count>1?"s":""}, avg ${f1(r.avgStars)}★ · impact ${r.impact.toFixed(1)}</p></div></div>`)}</div>
-      ${!recs.length?html`<p class="small muted">No complaints in this filter.</p>`:null}
-    </div>
-  </div>`;
-}
-
-function Evidence({rows,themeSel,setThemeSel,search,setSearch}){
-  const s=search.trim().toLowerCase();
-  const list=rows.filter(r=>(!themeSel||r.tags.includes(themeSel.key+(themeSel.sign==="pos"?"+":"-")))&&(!s||(r.t+" "+r.tags.join(" ")+" "+r.p).toLowerCase().includes(s))).sort((a,b)=>b.d.localeCompare(a.d)||a.s-b.s);
-  const tagEl=t=>{ const k=t.slice(0,-1), sg=t.slice(-1), hit=themeSel&&themeSel.key===k&&((themeSel.sign==="pos")===(sg==="+"));
-    return html`<span key=${t} class=${"tag "+(sg==="+"?"pos":"neg")+(hit?" hit":"")}>${(THEMES[k]||k).toLowerCase()} ${sg==="+"?"+":"−"}</span>`; };
-  return html`<div class="box" id="evidence">
-    <div style=${{display:"flex",justifyContent:"space-between",gap:10,flexWrap:"wrap",alignItems:"end"}}>
-      <div><h3>Evidence: coded reviews</h3><p class="cap" style=${{marginBottom:0}}>Paraphrased Tripadvisor reviews behind every number above. Follows the filters at the top.</p></div>
-      <div class="filters" style=${{margin:0}}>
-        <div class="f"><label for="ev-theme">Theme</label><select id="ev-theme" value=${themeSel?themeSel.key+"|"+themeSel.sign:""} onChange=${e=>{const [k,sg]=e.target.value.split("|"); setThemeSel(k?{key:k,sign:sg}:null);}}>
-          <option value="">All themes</option>
-          ${Object.keys(THEMES).map(k=>html`<option key=${k+"n"} value=${k+"|neg"}>${THEMES[k]} − complaints</option>`)}
-          ${Object.keys(THEMES).map(k=>html`<option key=${k+"p"} value=${k+"|pos"}>${THEMES[k]} + praise</option>`)}
-        </select></div>
-        <div class="f"><label for="ev-search">Search</label><input id="ev-search" type="search" placeholder="e.g. reheated, tip, lamb" value=${search} onInput=${e=>setSearch(e.target.value)}/></div>
-      </div>
-    </div>
-    <p class="small muted" style=${{margin:"8px 0"}}><span class="mono">${list.length}</span> of ${rows.length} filtered reviews · average ${list.length?f2(avg(list.map(r=>r.s))):"–"}★</p>
-    <div class="scroll"><table>
-      <thead><tr><th>Visit</th><th>Venue</th><th>Rating</th><th>What the guest said</th><th>Codes</th></tr></thead>
-      <tbody>${list.map(r=>html`<tr key=${r.id}><td class="n">${r.d}</td><td><span class=${"v "+r.v}>${VENUES[r.v].short}</span></td><td><${Stars} s=${r.s}/></td>
-        <td style=${{minWidth:240}}>${r.t} <span class="small muted">(${r.p})</span></td><td style=${{minWidth:150}}>${r.tags.map(tagEl)}</td></tr>`)}</tbody>
-    </table></div>
-  </div>`;
-}
-
-function App(){
-  const [filters,setFilters]=useState({venue:"all",year:"all",rating:"all"});
-  const [mode,setMode]=useState("frequency");
-  const [view,setView]=useState({focus:"complaints",question:INITIAL_Q});
-  const [themeSel,setThemeSel]=useState(null);
-  const [search,setSearch]=useState("");
-  const [input,setInput]=useState("");
-  const [busy,setBusy]=useState(false);
-  const [sampleFn,setSampleFn]=useState(undefined);
-  const [aiNote,setAiNote]=useState("");
-  const [log,setLog]=useState(()=>[{q:INITIAL_Q,a:summarize("complaints",ROWS,["ccb","hlm"],"frequency"),kind:"computed",route:{focus:"complaints"}}]);
-  const [fus,setFus]=useState(DEFAULT_FU.complaints);
-  const [brief,setBrief]=useState(null);
-  const hist=useRef([]), ctl=useRef(null), threadRef=useRef(null), logLen=useRef(1);
-
-  useEffect(()=>{ let live=true; (async()=>{ let s=null; try{ s=window.claude&&window.claude.use?await window.claude.use("sample"):null; }catch(e){ s=null; } if(live) setSampleFn(()=>s); })(); return ()=>{live=false}; },[]);
-  useEffect(()=>{ if(threadRef.current) threadRef.current.scrollTop=threadRef.current.scrollHeight; },[log]);
-
-  const rows=useMemo(()=>filterRows(ROWS,filters),[filters]);
-  const rowsAllV=useMemo(()=>filterRows(ROWS,{...filters,venue:"all"}),[filters]);
-  const venues=filters.venue==="all"?["ccb","hlm"]:[filters.venue];
-  const focus=view.focus;
-  const ins=useMemo(()=>buildInsights(focus,rows,venues,mode),[focus,rows,mode,filters.venue]);
-  const recs=useMemo(()=>buildRecs(rows,venues),[rows,filters.venue]);
-
-  const setF=(k,v)=>setFilters(f=>({...f,[k]:v}));
-  const onSee=(key,sign)=>{ setThemeSel({key,sign}); setSearch(""); setTimeout(()=>{ const el=document.getElementById("evidence"); if(el) el.scrollIntoView({behavior:"smooth",block:"start"}); },30); };
-  const upd=(i,patch)=>setLog(L=>L.map((x,j)=>j===i?{...x,...patch}:x));
-  const failCopy=e=>({not_granted:"Claude was not allowed for this page, so the computed answer is shown.",sampling_disabled:"Claude is not available on this account; showing the computed answer.",rate_limited:"Too many requests just now; showing the computed answer. Try again in a minute.",session_expired:"Sign in again to get Claude's interpretation; showing the computed answer."}[e&&e.code]||"Claude's answer did not come through; showing the computed answer.");
-
-  async function ask(q, presetRoute){
-    q=(q||"").trim(); if(!q||busy) return;
-    setBusy(true); setAiNote("");
-    let route=presetRoute||null;
-    if(!route&&sampleFn){ try{ route=sanitizeRoute(await sampleFn.json(ROUTE_PROMPT(q),{modelTier:"quick"})); }catch(e){ route=null; if(["not_granted","sampling_disabled"].includes(e&&e.code)){ setSampleFn(()=>null); setAiNote(failCopy(e)); } } }
-    if(!route) route=localRoute(q);
-    if(route.focus==="briefing"){ setBusy(false); makeBriefing(); return; }
-    const nf={venue:route.venue||"all",year:route.year||"all",rating:route.rating||"all"}, nm=route.mode||"frequency";
-    setFilters(nf); setMode(nm); setView({focus:route.focus,question:q}); setThemeSel(route.theme?{key:route.theme,sign:route.focus==="praise"?"pos":"neg"}:null); setSearch("");
-    const rs=filterRows(ROWS,nf), vs=nf.venue==="all"?["ccb","hlm"]:[nf.venue];
-    const computed=summarize(route.focus,rs,vs,nm);
-    const idx=logLen.current; logLen.current+=1;
-    setLog(L=>[...L,{q,a:"",kind:"pending",route}]);
-    const s=sampleFn;
-    if(!s){ upd(idx,{a:computed,kind:"computed"}); setFus(DEFAULT_FU[route.focus]||DEFAULT_FU.mix); setBusy(false); return; }
-    ctl.current=new AbortController();
-    const msgs=[{role:"user",content:RULES},...hist.current.slice(-4),{role:"user",content:`QUESTION: ${q}\n\nCOMPUTED RESULTS (JSON):\n${buildContext(q,route.focus,rs,vs,nm,nf)}`}];
-    try{
-      const res=await s(msgs,{cache:false,signal:ctl.current.signal,onText:({text})=>upd(idx,{a:splitFU(text).body,kind:"streaming"})});
-      const {body,fus:f}=splitFU(res.text); upd(idx,{a:body,kind:"ai"}); setFus(f.length?f:(DEFAULT_FU[route.focus]||DEFAULT_FU.mix));
-      hist.current.push({role:"user",content:q},{role:"assistant",content:body});
-    }catch(e){
-      if(e&&e.code==="cancelled"){ upd(idx,{a:(e.text?splitFU(e.text).body+"\n\n":"")+computed,kind:"computed"}); }
-      else { if(["not_granted","sampling_disabled"].includes(e&&e.code)) setSampleFn(()=>null); upd(idx,{a:computed,kind:"computed"}); setAiNote(failCopy(e)); }
-      setFus(DEFAULT_FU[route.focus]||DEFAULT_FU.mix);
-    }
-    setBusy(false);
+async function briefing(){
+  if(S.busy) return; setBusy(true);
+  const box=$("briefing"); box.hidden=false;
+  const head=`<div class="askhead"><h2>Management briefing</h2><span><button class="btn" type="button" id="copyBrief">Copy</button> <button class="btn" type="button" id="closeBrief">Close</button></span></div>`;
+  box.innerHTML=head+`<p class="note">Building the briefing from the data…</p>`;
+  box.scrollIntoView({behavior:"smooth",block:"start"});
+  const sample=await S.sample; let text=computedBriefing(), kind="Computed from data";
+  if(sample){
+    box.innerHTML=head+`<div class="who"><span class="badge ai">Written by Claude from the computed results</span></div><div class="prose" id="briefBody"><p class="note">Writing…</p></div>`;
+    try{ const out=await sample([{role:"user",content:BRIEF_RULES+"\n\nCOMPUTED RESULTS:\n"+JSON.stringify(briefingFacts())}],{cache:false,onText:({text})=>{ const el=$("briefBody"); if(el) el.innerHTML=md(text); }}); text=out.text||text; kind="Written by Claude from the computed results"; }
+    catch(e){ kind="Computed from data · "+failCopy(e); }
   }
-
-  async function makeBriefing(){
-    const rs=filterRows(ROWS,{...filters,venue:"all"});
-    const computed=computedBriefing(rs);
-    setBrief({text:computed,kind:sampleFn?"pending":"computed",computed});
-    setTimeout(()=>{ const el=document.getElementById("briefing"); if(el) el.scrollIntoView({behavior:"smooth",block:"start"}); },30);
-    if(!sampleFn) return;
-    try{
-      const ctx=buildContext("Management briefing","mix",rs,["ccb","hlm"],"frequency",{...filters,venue:"all"});
-      const res=await sampleFn(`${BRIEF_RULES}\n\nCOMPUTED RESULTS (JSON):\n${ctx}\n\nPRIORITISED ACTIONS BY IMPACT (computed):\n${JSON.stringify(buildRecs(rs,["ccb","hlm"]).slice(0,4).map(r=>({venue:VN(r.v),theme:r.label,complaints:r.count,avg_stars:+f2(r.avgStars),impact:+r.impact.toFixed(1),proposed_action:r.action})))}`,
-        {cache:false,onText:({text})=>setBrief(b=>b&&{...b,text,kind:"streaming"})});
-      setBrief(b=>b&&{...b,text:res.text,kind:"ai"});
-    }catch(e){ setBrief(b=>b&&{...b,text:computed,kind:"computed",note:failCopy(e)}); }
-  }
-  async function copyBrief(){ if(!brief) return; try{ await navigator.clipboard.writeText(brief.text); setBrief(b=>({...b,copied:true})); }catch(e){ const el=document.getElementById("brief-body"); if(el){ const r=document.createRange(); r.selectNodeContents(el); const s=window.getSelection(); s.removeAllRanges(); s.addRange(r);} setBrief(b=>({...b,copied:"select"})); } }
-
-  const last=log[log.length-1];
-  const sign=focus==="praise"?"pos":"neg";
-  const aiState=sampleFn===undefined?"Connecting to Claude…":sampleFn?"Claude interprets the computed figures for each question.":"Claude is not reachable in this view: answers are computed from the sample without interpretation.";
-
-  return html`<div class="wrap">
-    <header class="top">
-      <div class="t">
-        <span class="brand">City Grill · Customer Analyst</span>
-        <h1>${view.question}</h1>
-        <p class="sub">${FOCUS_LABEL[focus]} view · coded sample of ${ROWS.length} Tripadvisor reviews (visits Aug 2023 – Oct 2026, 2026 year to date) · platform ratings reported Oct 2026</p>
-      </div>
-      <button class="btn primary" onClick=${makeBriefing} disabled=${brief&&(brief.kind==="pending"||brief.kind==="streaming")}>Management briefing</button>
-    </header>
-
-    <section class="ask" aria-label="Ask the analyst">
-      <form class="askrow" onSubmit=${e=>{e.preventDefault(); const q=input; setInput(""); ask(q);}}>
-        <textarea id="ask-input" rows="1" placeholder="Ask about complaints, a venue, a year, prices… in English or Romanian" value=${input} onInput=${e=>setInput(e.target.value)} onKeyDown=${e=>{ if(e.key==="Enter"&&!e.shiftKey){ e.preventDefault(); const q=input; setInput(""); ask(q);} }}></textarea>
-        <button class="btn primary" type="submit" disabled=${busy||!input.trim()}>${busy?"Analysing…":"Ask"}</button>
-        ${busy?html`<button class="btn" type="button" onClick=${()=>ctl.current&&ctl.current.abort()}>Stop</button>`:null}
-      </form>
-      <details>
-        <summary class="small muted" style=${{cursor:"pointer"}}>Suggested management questions (16)</summary>
-        <div class="groups" style=${{marginTop:8}}>${GROUPS.map(g=>html`<div class="group" key=${g.name}><span class="eyebrow">${g.name}</span>
-          ${g.qs.map(x=>html`<button key=${x.q} class=${"chip"+(x.q===view.question?" on":"")} disabled=${busy} onClick=${()=>ask(x.q,x.r)}>${x.q}</button>`)}</div>`)}</div>
-      </details>
-      <p class="small muted" style=${{margin:0}}>${aiState}${aiNote?" "+aiNote:""}</p>
-    </section>
-
-    <div class="filters" role="group" aria-label="Filters">
-      <div class="f"><label for="f-venue">Restaurant</label><select id="f-venue" value=${filters.venue} onChange=${e=>setF("venue",e.target.value)}><option value="all">Both</option><option value="ccb">Caru' cu Bere</option><option value="hlm">Hanu' lui Manuc</option></select></div>
-      <div class="f"><label for="f-year">Visit year</label><select id="f-year" value=${filters.year} onChange=${e=>setF("year",e.target.value)}><option value="all">2023–2026</option>${YEARS.map(y=>html`<option key=${y} value=${y}>${y}${y===2026?" (YTD)":""}</option>`)}</select></div>
-      <div class="f"><label for="f-rating">Rating</label><select id="f-rating" value=${filters.rating} onChange=${e=>setF("rating",e.target.value)}>${Object.entries(RATING_LABEL).map(([k,l])=>html`<option key=${k} value=${k}>${l}</option>`)}</select></div>
-      <div class="f"><label for="f-view">View</label><select id="f-view" value=${focus} onChange=${e=>setView(v=>({...v,focus:e.target.value}))}>${Object.entries(FOCUS_LABEL).map(([k,l])=>html`<option key=${k} value=${k}>${l}</option>`)}</select></div>
-      <div class="f"><label>Rank complaints by</label><div class="seg">
-        <button aria-pressed=${mode==="frequency"} onClick=${()=>setMode("frequency")}>Frequency</button>
-        <button aria-pressed=${mode==="impact"} onClick=${()=>setMode("impact")} title="Mentions × (5 − average stars of those reviews)">Impact</button>
-      </div></div>
-      <span class="small muted" style=${{alignSelf:"center"}}>${rows.length} reviews in view</span>
-    </div>
-
-    <div class="ledgers">${["ccb","hlm"].map(v=>html`<${Ledger} key=${v} v=${v} rows=${rowsAllV} dim=${filters.venue!=="all"&&filters.venue!==v}/>`)}</div>
-
-    ${brief?html`<section class="box brief section" id="briefing">
-      <div style=${{display:"flex",justifyContent:"space-between",gap:10,flexWrap:"wrap",alignItems:"baseline"}}>
-        <div><h2>Management briefing</h2><p class="cap" style=${{margin:0}}>${brief.kind==="ai"||brief.kind==="streaming"?"Written by Claude from the computed figures; numbers come from the sample.":brief.kind==="pending"?"Claude is writing the briefing… the computed version is shown meanwhile.":"Computed directly from the sample."} Filters: ${filters.year==="all"?"2023–2026":filters.year}, ${RATING_LABEL[filters.rating]}, both venues.${brief.note?" "+brief.note:""}</p></div>
-        <div style=${{display:"flex",gap:6}}><button class="btn" onClick=${copyBrief}>${brief.copied===true?"Copied":brief.copied==="select"?"Text selected":"Copy text"}</button><button class="btn" onClick=${()=>setBrief(null)}>Close</button></div>
-      </div>
-      <div class="body" id="brief-body" dangerouslySetInnerHTML=${{__html:md(brief.text)}}></div>
-    </section>`:null}
-
-    <section class="box section answer" aria-live="polite">
-      <div style=${{display:"flex",justifyContent:"space-between",gap:10,flexWrap:"wrap",alignItems:"baseline"}}>
-        <h2>Analyst answer</h2>
-        ${sampleFn&&last.kind==="computed"&&!busy?html`<button class="btn" onClick=${()=>ask(last.q,last.route)}>Interpret with Claude</button>`:null}
-      </div>
-      <div class="thread" ref=${threadRef}>
-        ${log.map((x,i)=>html`<div key=${i} style=${{display:"grid",gap:6}}>
-          <div class="q">${x.q}</div>
-          <div class="a">
-            <span class="who">Analyst ${x.kind==="ai"||x.kind==="streaming"?html`<span class="badge ai">Claude · from computed figures</span>`:x.kind==="pending"?html`<span class="badge">Thinking…</span>`:html`<span class="badge">Computed from sample</span>`}</span>
-            ${x.kind==="pending"?html`<p class="muted small">Calculating and asking Claude…</p>`:html`<div dangerouslySetInnerHTML=${{__html:md(x.a)}}></div>`}
-          </div>
-        </div>`)}
-      </div>
-      ${fus.length?html`<div class="fus"><span class="eyebrow">Follow up</span>${fus.map(f=>html`<button key=${f} class="chip" disabled=${busy} onClick=${()=>ask(f)}>${f}</button>`)}</div>`:null}
-    </section>
-
-    <section class="section">
-      ${focus==="complaints"||focus==="praise"?html`<div class="box">
-        <h2>${focus==="complaints"?`Top 3 complaints per restaurant`:`Top 3 praised themes per restaurant`}</h2>
-        <p class="cap">${focus==="complaints"?(mode==="impact"?"Ranked by impact: mentions × (5 − average stars of those reviews).":"Ranked by how many sampled reviews carry the complaint; ties broken by lower average stars."):"Ranked by how many sampled reviews praise the theme."} Sub-driver chips are keyword matches on the paraphrased text. Filters: ${filters.year==="all"?"2023–2026":filters.year}, ${RATING_LABEL[filters.rating]}.</p>
-        <div class="ranks">${venues.map(v=>html`<${RankColumn} key=${v} v=${v} rows=${rows} sign=${sign} mode=${focus==="praise"?"frequency":mode} onSee=${onSee}/>`)}</div>
-      </div>`:null}
-      ${focus==="mix"?html`<div class="grid">
-        <div class="box"><h2>Most criticised</h2><p class="cap">Ranked by ${mode==="impact"?"impact":"frequency"}.</p><div class="ranks">${venues.map(v=>html`<${RankColumn} key=${v} v=${v} rows=${rows} sign="neg" mode=${mode} onSee=${onSee}/>`)}</div></div>
-        <div class="box"><h2>Most praised</h2><p class="cap">Ranked by frequency.</p><div class="ranks">${venues.map(v=>html`<${RankColumn} key=${v} v=${v} rows=${rows} sign="pos" mode="frequency" onSee=${onSee}/>`)}</div></div>
-      </div>`:null}
-      ${focus==="trend"?html`<${TrendModule} rows=${rows} venues=${venues}/>`:null}
-      ${focus==="compare"?html`<${CompareModule} rows=${rows} venues=${venues}/>`:null}
-      ${focus==="value"?html`<${ValueModule} rows=${rows} venues=${venues}/>`:null}
-    </section>
-
-    <section class="section g2">
-      ${focus==="trend"?html`<${YearTable} rows=${rows} venues=${venues} sign="neg"/>`:html`<${ImpactChart} rows=${rows} venues=${venues}/>`}
-      ${focus==="complaints"||focus==="mix"||focus==="value"?html`<${YearTable} rows=${rows} venues=${venues} sign=${sign}/>`:focus==="praise"?html`<${YearTable} rows=${rows} venues=${venues} sign="pos"/>`:html`<${ImpactChart} rows=${rows} venues=${venues}/>`}
-    </section>
-
-    <section class="section"><${ThemeBars} rows=${rows} venues=${venues}/></section>
-    <section class="section"><${Findings} ins=${ins} recs=${recs} focus=${focus}/></section>
-    <section class="section"><${Evidence} rows=${rows} themeSel=${themeSel} setThemeSel=${setThemeSel} search=${search} setSearch=${setSearch}/></section>
-
-    <section class="box section method">
-      <h3 style=${{color:"var(--ink)"}}>Sources and method</h3>
-      <p><b>Reported by platforms (Oct 2026):</b> Google and Tripadvisor ratings and review totals on the venue cards, Tripadvisor rankings and AI summary tags. These describe all reviews on each platform and are never mixed with sample figures.</p>
-      <p><b>Calculated from the coded sample:</b> ${ROWS.length} dated Tripadvisor reviews (Caru' cu Bere ${byVenue(ROWS,"ccb").length}, Hanu' lui Manuc ${byVenue(ROWS,"hlm").length}), paraphrased and coded by theme in the Old Town Reviews Desk. Every count, share, average and ranking on this page is computed in the page from those records. A review can carry several theme codes. Impact score = mentions × (5 − average stars of the reviews carrying the complaint). Sub-drivers are keyword matches on the paraphrased text and are indicative.</p>
-      <p><b>Coverage gaps:</b> Caru' cu Bere has no 2023 reviews; Hanu' lui Manuc has 2 from 2023 and 1 from 2025. 2026 is year to date and makes up ${pct(ROWS.filter(r=>r.y===2026).length/ROWS.length)} of the sample. Three Oct 2026 Caru' cu Bere entries came from Tripadvisor's "recent 5★" strip and skew positive. Cleanliness was never coded.</p>
-      <p><b>Not in this project:</b> dated menus (no menu-price history), Google review-level records, visit time, exact party size and owner responses. The sample shows direction and themes, not statistically representative percentages.</p>
-      <p><b>Interpretation:</b> answers marked "Claude" are written by Claude from the computed figures sent with each question; recommendations are proposals to test, not proven effects.</p>
-      <p>Sources: <a href="https://www.tripadvisor.com/Restaurant_Review-g294458-d739896-Reviews-Caru_cu_bere-Bucharest.html" target="_blank" rel="noopener">Tripadvisor – Caru' cu Bere</a> · <a href="https://www.tripadvisor.com/Restaurant_Review-g294458-d739908-Reviews-Restaurant_Hanu_Lui_Manuc-Bucharest.html" target="_blank" rel="noopener">Tripadvisor – Hanu' lui Manuc</a> · <a href="https://rhn.ro/en/hanul-lui-manuc-a-strategic-pillar-for-city-grill/" target="_blank" rel="noopener">RHN</a> · <a href="https://financialintelligence.ro/?p=24097" target="_blank" rel="noopener">Financial Intelligence</a></p>
-    </section>
-  </div>`;
+  box.innerHTML=head+`<div class="who"><span class="badge${kind.startsWith("Written")?" ai":""}">${esc(kind)}</span></div><div class="prose">${md(text)}</div>`;
+  $("copyBrief").onclick=()=>{ try{ navigator.clipboard.writeText(text); $("copyBrief").textContent="Copied"; }catch(e){} };
+  $("closeBrief").onclick=()=>{ box.hidden=true; };
+  setBusy(false);
 }
 
-ReactDOM.createRoot(document.getElementById("root")).render(html`<${App}/>`);
+/* ================= wiring ================= */
+function init(){
+  if(!ROWS.length){ document.querySelector(".wrap").insertAdjacentHTML("afterbegin",`<div class="missing" style="margin-top:16px"><b>Review data did not load</b><p>data/reviews.js is missing. Rebuild it with tools/build_data.py.</p></div>`); return; }
+  renderLedgers(); renderGoogle(); renderFindings(); renderTrends(); renderRecs(); renderMethod();
+  $("fTheme").insertAdjacentHTML("beforeend",Object.keys(THEMES).map(k=>`<option value="${k}">${THEMES[k]}</option>`).join(""));
+  renderDashboard();
+  $("groups").innerHTML=GROUPS.map((g,gi)=>`<div class="group"><span class="eyebrow">${g.name}</span>${g.qs.map((q,qi)=>`<button class="chip" type="button" data-g="${gi}" data-i="${qi}">${esc(q[0])}</button>`).join("")}</div>`).join("");
+  document.addEventListener("click",e=>{
+    const c=e.target.closest("button.chip"); if(!c||c.disabled) return;
+    if(c.dataset.q){ ask(c.dataset.q); return; }
+    const q=GROUPS[+c.dataset.g].qs[+c.dataset.i]; ask(q[0],q[1]);
+  });
+  $("askForm").addEventListener("submit",e=>{ e.preventDefault(); const v=$("askInput").value; $("askInput").value=""; ask(v); });
+  $("askInput").addEventListener("keydown",e=>{ if(e.key==="Enter"&&!e.shiftKey){ e.preventDefault(); $("askForm").requestSubmit(); }});
+  $("briefBtn").addEventListener("click",()=>briefing());
+  document.querySelectorAll("#srcSeg button").forEach(b=>b.addEventListener("click",()=>{ S.src=b.dataset.src; S.page=1; renderDashboard(); }));
+  [["fVenue","venue"],["fRating","rating"],["fYear","year"],["fTheme","theme"]].forEach(([id,k])=>$(id).addEventListener("change",e=>{ S.ev[k]=e.target.value; S.page=1; renderReviews(); }));
+  $("fText").addEventListener("input",e=>{ S.ev.q=e.target.value; S.page=1; renderReviews(); });
+  $("more").addEventListener("click",()=>{ S.page++; renderReviews(); });
+  S.sample=(async()=>{ try{ return window.claude&&window.claude.use ? await window.claude.use("sample") : null; }catch(e){ return null; } })();
+  S.sample.then(s=>{ const el=$("aiStatus"); el.textContent=s?"Claude connected":"Claude not reachable · computed answers"; el.className="status "+(s?"on":"off"); });
+}
+init();
 </script>
-
-</body></html>
+</body>
+</html>
