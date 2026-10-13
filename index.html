@@ -518,7 +518,20 @@ async function ask(q){
       if(j&&j.text){ a.innerHTML=`<span class="who">Analyst</span>`+md(j.text); history.push({role:"user",content:q},{role:"assistant",content:j.text.slice(0,2000)}); localAnswer(q); addFollow(a); done(); return; }
     }catch(e){}
   }
-  if(!s){ a.innerHTML=`<span class="who">Analyst · calculated on this page</span>`+md(localAnswer(q)); addFollow(a); toTop(a); done(); return; }
+  if(!s){
+    toTop(a);
+    const P=parseQ(q), nV=(P.v.length?P.v:["ccb","hlm"]).reduce((n,v)=>n+ROWS.filter(x=>x.v===v).length,0);
+    a.innerHTML=`<span class="who">Analyst · calculated on this page</span><p class="note">Reading ${fmt(nV)} reviews${P.themes.length?` about ${TNAME[P.themes[0]]}`:""}…</p>`;
+    const html=md(localAnswer(q)), follow=lastFollow;
+    await new Promise(r=>setTimeout(r,900));
+    const tmp=document.createElement("div"); tmp.innerHTML=html;
+    a.innerHTML=`<span class="who">Analyst · calculated on this page</span>`;
+    // reveal block by block, list items one at a time
+    for(const el of [...tmp.children]){
+      if(el.tagName==="UL"||el.tagName==="OL"){ const l=document.createElement(el.tagName); a.appendChild(l); for(const li of [...el.children]){ l.appendChild(li); await new Promise(r=>setTimeout(r,180)); } }
+      else { a.appendChild(el); await new Promise(r=>setTimeout(r,180)); }
+    }
+    lastFollow=follow; addFollow(a); done(); return; }
   const t0=Date.now(); const tick=setInterval(()=>{ const p=a.querySelector(".note"); if(p) p.textContent=`Thinking… ${Math.round((Date.now()-t0)/1000)}s`; },1000);
   const msgs=[{role:"user",content:claudePrompt(q)+"\n\nAcknowledge with OK."},{role:"assistant",content:"OK."},...history.slice(-6),{role:"user",content:q}];
   const onText=({text})=>{ clearInterval(tick); a.innerHTML=`<span class="who">Analyst</span>`+md(text); };
@@ -576,7 +589,7 @@ ${gRows}
 COUNTS COMPUTED BY THE PAGE (use for "how many"; theme arrays are [mentions, praise, complaints]):
 ${JSON.stringify(data)}`;
 }
-function toTop(a){ logEl.scrollTop=a.getBoundingClientRect().top-logEl.getBoundingClientRect().top+logEl.scrollTop-8; }
+function toTop(a){ const t=(a.previousElementSibling&&a.previousElementSibling.classList.contains("q"))?a.previousElementSibling:a; logEl.scrollTop=t.getBoundingClientRect().top-logEl.getBoundingClientRect().top+logEl.scrollTop-8; }
 function addFollow(a){ if(!lastFollow.length) return; const w=document.createElement("div"); w.className="chips"; w.style.marginTop="8px"; w.innerHTML=`<span class="note" style="width:100%">Follow-up questions:</span>`; lastFollow.forEach(q=>{const b=document.createElement("button"); b.type="button"; b.className="chip"; b.textContent=q; b.onclick=()=>ask(q); w.appendChild(b);}); a.appendChild(w); lastFollow=[]; toTop(a); }
 function done(){ btn.disabled=false; [...chipsEl.children].forEach(c=>c.disabled=false); }
 // ---------- local analyst: answers computed on this page (used when Claude is not reachable) ----------
