@@ -9,7 +9,7 @@ Your initial use case covers two City Grill Group restaurants in Bucharest:
 - Caru' cu Bere
 - Hanu' lui Manuc
 
-The analysis period is January 2023 through October 2026, with 2026 treated as year-to-date.
+The analysis period is January 2025 through October 2026, with 2026 treated as year-to-date.
 
 Your task is not merely to summarize customer reviews. You must analyze the available evidence, answer management questions, perform relevant calculations, identify patterns, and recommend additional analyses that could improve business decisions.
 
@@ -77,7 +77,7 @@ The interface should be usable by management without technical or statistical ex
 
 ## 5. Data scope and source handling
 
-Analyze data covering January 2023 through October 2026.
+Analyze data covering January 2025 through October 2026.
 
 Distinguish complete calendar years from 2026 year-to-date. Record the source, review date, restaurant, rating scale, and relevant classification fields for each review observation where available.
 
@@ -107,7 +107,7 @@ Where sufficient data exists, show:
 
 - Rating distribution.
 - Positive, neutral, and negative sentiment.
-- Rating trends across 2023, 2024, 2025, and 2026 year-to-date.
+- Rating trends across 2025, and 2026 year-to-date.
 - Comparisons between the two restaurants.
 - Relevant topic-specific sentiment.
 
@@ -196,7 +196,7 @@ Provide clickable question examples such as:
 - Which positive practices identified at one restaurant could be investigated at the other?
 
 **Historical analysis**
-- How has sentiment changed from 2023 to 2026?
+- How has sentiment changed from 2025 to 2026?
 - Have particular customer complaints become more frequent?
 - Are there meaningful changes in the balance between positive and negative reviews?
 
