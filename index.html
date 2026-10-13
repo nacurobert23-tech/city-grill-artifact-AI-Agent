@@ -470,7 +470,7 @@ const ANALYST_ENDPOINT="";
 let samplePromise=(async()=>{ try{ return window.claude ? await window.claude.use("sample") : null; }catch(e){ return null; } })();
 let toolsOK=false;
 samplePromise.then(async s=>{ if(s){ try{ const l=await s.limits(); toolsOK=!!(l&&l.tools); }catch(e){} }
-  note.textContent = s ? "Live answers by Claude, grounded in the review data on this page." : (ANALYST_ENDPOINT?"Answers by Claude through your analyst proxy; if it is unreachable, answers are calculated on this page.":"Claude is not reachable here, so answers are calculated on this page: the analyst reads the restaurant, topic, dish, period and type of question, then counts and compares the reviews. Open the page as a claude.ai artifact for Claude-written answers."); });
+  note.textContent = s ? "Live answers by Claude, grounded in the review data on this page." : (ANALYST_ENDPOINT?"Answers by Claude through your analyst proxy; if it is unreachable, answers are calculated on this page.":"Claude is not reachable in this view (GitHub Pages, a saved file, or the artifact opened in its own browser tab), so answers are calculated on this page. For answers written by Claude, open the page inside claude.ai (from the chat or your Artifacts list) and allow it to use Claude when asked."); });
 
 const slim=s=>({reviews:s.reviews,avg_rating:s.avg_rating,stars_1_to_5:s.stars_1_to_5,neg_pct:s.neg_pct,pos_pct:s.pos_pct,themes:s.themes});
 function contextPack(q){
@@ -521,22 +521,55 @@ async function ask(q){
     }catch(e){}
   }
   if(!s){ a.innerHTML=`<span class="who">Analyst · calculated on this page</span>`+md(localAnswer(q)); addFollow(a); toTop(a); done(); return; }
-  const t0=Date.now(); const tick=setInterval(()=>{ const p=a.querySelector(".note"); if(p&&p.dataset.live!=="0") p.textContent=`${p.dataset.msg||"Thinking…"} ${Math.round((Date.now()-t0)/1000)}s`; },1000);
-  const setMsg=m=>{ const p=a.querySelector(".note"); if(p){ p.dataset.msg=m; } };
-  const msgs=[{role:"user",content:rules()+"\n\nDATA (computed by this page from the review records):\n"+JSON.stringify(contextPack(q))},...history.slice(-6),{role:"user",content:q}];
-  const onText=({text})=>{ a.innerHTML=`<span class="who">Analyst</span>`+md(text); logEl.scrollTop=logEl.scrollHeight; };
-  const run=useTools=>s(msgs,useTools?{tools:TOOLS.map(t=>({...t,execute:i=>{setMsg(`Checking the reviews (${t.name.replace("_"," ")})…`); return t.execute(i||{});}})),onText}:{cache:false,onText});
+  const t0=Date.now(); const tick=setInterval(()=>{ const p=a.querySelector(".note"); if(p) p.textContent=`Thinking… ${Math.round((Date.now()-t0)/1000)}s`; },1000);
+  const msgs=[{role:"user",content:claudePrompt(q)+"\n\nAcknowledge with OK."},{role:"assistant",content:"OK."},...history.slice(-6),{role:"user",content:q}];
+  const onText=({text})=>{ clearInterval(tick); a.innerHTML=`<span class="who">Analyst</span>`+md(text); };
   try{
-    let res;
-    try{ res=await run(toolsOK); }
-    catch(e){ if(toolsOK&&(e.code==="tools_unavailable"||e.code==="invalid_request")){ toolsOK=false; res=await run(false); } else throw e; }
-    a.innerHTML=`<span class="who">Analyst</span>`+md(res.text); localAnswer(q); addFollow(a);
-    history.push({role:"user",content:q},{role:"assistant",content:res.text.slice(0,2000)});
+    const res=await s(msgs,{cache:false,onText});
+    clearInterval(tick);
+    a.innerHTML=`<span class="who">Analyst</span>`+md(res.text); localAnswer(q); addFollow(a); toTop(a);
+    history.push({role:"user",content:q},{role:"assistant",content:res.text.slice(0,2500)});
   }catch(e){
-    const c=e&&e.code; const why=c==="not_granted"?"Permission to ask Claude was declined. Reload the page to be asked again.":c==="rate_limited"?"Too many requests just now; try again in a minute.":`The live request failed (${esc(c||"error")}).`;
-    a.innerHTML=`<span class="who">Analyst</span>`+(e&&e.text?md(e.text):"")+`<p class="note">${why} Calculated summary instead:</p>`+md(localAnswer(q)); addFollow(a);
+    clearInterval(tick);
+    const c=e&&e.code; const why=c==="not_granted"?"Claude was not allowed to answer for this page (permission declined). Reload the page and choose Allow when asked.":c==="rate_limited"?"Too many requests just now; try again in a minute.":c==="sampling_disabled"?"Claude is not available for this account.":`Claude could not answer (error: ${esc(c||"unknown")}).`;
+    a.innerHTML=`<span class="who">Analyst</span>`+(e&&e.text?md(e.text):"")+`<p class="note" style="color:var(--warn)">${why} Below is the calculated answer instead.</p>`+md(localAnswer(q)); addFollow(a); toTop(a);
   }
-  clearInterval(tick); done();
+  done();
+}
+// compact data for Claude: summaries for everything, plus the review texts most relevant to the question
+function claudePrompt(q){
+  const P=parseQ(q), V=P.v.length?P.v:["ccb","hlm"];
+  const sl=s=>({reviews:s.reviews,avg:s.avg_rating,stars_1_to_5:s.stars_1_to_5,pos_pct:s.pos_pct,neg_pct:s.neg_pct,themes:Object.fromEntries(Object.entries(s.themes).map(([k,o])=>[k,[o.mentions,o.praise,o.complaint]]))});
+  const sum=(src,f={})=>({ccb:sl(summarize(select({venue:"ccb",source:src,...f}))),hlm:sl(summarize(select({venue:"hlm",source:src,...f})))});
+  const gm=v=>{const x=summarize(G(v)); return {waiter_named_pct:x.google_text_naming_waiter_pct,name_only_reviews:x.google_name_only_reviews,top_waiters:x.top_waiters.slice(0,5),owner_reply_pct:x.owner_reply_pct,owner_reply_1_2_star_pct:x.owner_reply_pct_1_2_star,languages:x.languages.slice(0,4)};};
+  const dish=v=>Object.fromEntries(Object.entries(dishCounts(select({venue:v,source:"all"}))).slice(0,10).map(([k,o])=>[k.split(" / ")[0],[o.mentions,o.avg_rating,o.neg]]));
+  // Tripadvisor reviews: relevant ones first (venue, theme, dish, year), then the rest by date, capped
+  let ta=ROWS.filter(x=>x.s==="T"&&V.includes(x.v)&&(!P.yr||x.d.startsWith(P.yr)));
+  const rel=x=>(P.themes.some(k=>x.th.includes(k))?2:0)+(P.dishes.some(d=>DISH[d].test(x.t))?2:0)+(x.r<=2?0.5:0);
+  ta.sort((a,b)=>rel(b)-rel(a)||b.d.localeCompare(a.d)); ta=ta.slice(0,230);
+  const taRows=ta.map(x=>`${x.v}|${x.d}|${x.r}★|${x.pa||""}|${Object.entries(x.tp||{}).map(([k,p])=>k+(p>0?"+":p<0?"-":"")).join(" ")}|${x.t}`).join("\n");
+  const words=(P.s.match(/[a-zăâîșțéèàüöä]{4,}/g)||[]).map(w=>w.slice(0,Math.max(4,w.length-2)));
+  const gpool=ROWS.filter(x=>x.s==="G"&&V.includes(x.v)&&x.t&&x.t.split(/\s+/).length>6);
+  const gq=gpool.filter(x=>P.themes.some(k=>x.th.includes(k))||words.some(w=>x.t.toLowerCase().includes(w))).sort((a,b)=>a.r-b.r).slice(0,20);
+  const glow=gpool.filter(x=>x.r<=2&&!gq.includes(x)).slice(0,12);
+  const gRows=[...gq,...glow].map(x=>`${x.v}|${x.d}|${x.r}★|${x.t.slice(0,220).replace(/\s+/g," ")}`).join("\n");
+  const data={platform_ratings:{ccb:"Google 4.6 (101k+ reviews); Tripadvisor 4.1 (20,185 reviews)",hlm:"Google 4.7 (~63.9k reviews); Tripadvisor 4.1 (5,309 reviews)"},
+    google_sample_summary:sum("G"),google_1_2_star_summary:sum("G",{rating:"neg"}),google_review_habits:{ccb:gm("ccb"),hlm:gm("hlm")},
+    tripadvisor_summary:sum("T"),tripadvisor_by_half_year:Object.fromEntries(HALVES.map(([l,f,t])=>[l,sum("T",{from:f,to:t})])),
+    tripadvisor_sub_ratings_avg:Object.fromEntries(["ccb","hlm"].map(v=>[v,Object.fromEntries(["f","s","v","a"].map(k=>{const r=T(v).filter(x=>x.sub&&x.sub[k]); return [{f:"food",s:"service",v:"value",a:"atmosphere"}[k],r.length?+avg(r.map(x=>x.sub[k])).toFixed(2):null];}))])),
+    dish_mentions_both_sources:{ccb:dish("ccb"),hlm:dish("hlm")}};
+  return `You are a Customer Reviews Analyst for two Bucharest restaurants run by City Grill Group, Caru' cu Bere (ccb) and Hanu' lui Manuc (hlm), covering Jan 2025 to Oct 2026. Answer ONLY from the data below; never invent numbers. Be concise and specific: lead with the answer in bold, then 3-6 short bullets with evidence (counts, shares, averages, dates, and concrete details from the reviews in your own words). Explain what the numbers mean and what management should do. Mention when a sample is small or the sources cover different periods. Answer in the language of the question (Romanian or English). Use **bold** and "- " bullets only, no tables or headings.
+
+DATA SOURCES: (1) Google Maps sample: ${fmt(ROWS.filter(x=>x.s==="G"&&x.v==="ccb").length)} Caru' cu Bere reviews (30 Sep-13 Oct 2026) and ${fmt(ROWS.filter(x=>x.s==="G"&&x.v==="hlm").length)} Hanu' lui Manuc reviews (11 Aug-13 Oct 2026); themes keyword-coded, praise = 4-5★, complaint = 1-2★; many reviews just name a waiter (likely prompted). (2) Tripadvisor sample: ${fmt(ROWS.length-ROWS.filter(x=>x.s==="G").length)} English reviews with visits Jan 2025-Oct 2026, paraphrased, each theme coded + (praise) or - (complaint); a reading sample that leans critical (avg ~3.5-3.6 vs 4.1 platform-wide). (3) Platform ratings as reported. No dated menu prices exist. Theme arrays are [mentions, praise, complaints].
+
+SUMMARIES (computed by the page):
+${JSON.stringify(data)}
+
+TRIPADVISOR REVIEWS (${ta.length} most relevant to the question; venue|visit|stars|party|themes|paraphrase):
+${taRows}
+
+GOOGLE REVIEW EXCERPTS (venue|date|stars|text):
+${gRows}`;
 }
 function toTop(a){ logEl.scrollTop=a.getBoundingClientRect().top-logEl.getBoundingClientRect().top+logEl.scrollTop-8; }
 function addFollow(a){ if(!lastFollow.length) return; const w=document.createElement("div"); w.className="chips"; w.style.marginTop="8px"; w.innerHTML=`<span class="note" style="width:100%">Follow-up questions:</span>`; lastFollow.forEach(q=>{const b=document.createElement("button"); b.type="button"; b.className="chip"; b.textContent=q; b.onclick=()=>ask(q); w.appendChild(b);}); a.appendChild(w); lastFollow=[]; toTop(a); }
