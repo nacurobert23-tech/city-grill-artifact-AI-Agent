@@ -113,8 +113,6 @@ Where sufficient data exists, show:
 
 Use the actual number of observations behind each calculation.
 
-If the 2023 sample is small, clearly indicate that comparisons involving this period are indicative. If an entire period is unavailable, preserve the gap instead of filling it with invented values.
-
 ### C. Customer themes
 
 Analyze recurring praise and complaints across:
