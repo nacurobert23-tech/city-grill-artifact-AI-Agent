@@ -1,0 +1,407 @@
+restaurant,visit_month,stars,party,food,service,value,atmosphere,themes_praised,themes_criticised,themes_neutral,management_reply,title,paraphrase
+Caru' cu Bere,2026-08,2,Friends,,,,,,food;service;value,,0,,Salty local dish was inedible; manager dismissed the complaint; felt pressured to review; pricey for quality.
+Caru' cu Bere,2026-08,5,Friends,5,5,5,4,food;service;atmosphere;show;drinks,,,0,,"Large group of sixty had great attentive service, pre-selected dishes, palinca hit, and lively dancing atmosphere."
+Caru' cu Bere,2026-08,2,Family,,,,,,wait;reservation;billing;service;food,,1,,Waited for a table despite booking; slow food; charged for butter and an unexplained beer cart fee; felt overcharged.
+Caru' cu Bere,2026-06,5,Family,,,,,food;service;value;show;reservation,,,1,,"Authentic Romanian food, good value for four, attentive service, lively show; reserve two weeks ahead for indoor seating."
+Caru' cu Bere,2026-08,4,Family,4,3,3,4,food;atmosphere,reservation;service;value,,0,,"Historic landmark, but reserved table was poorly located; mititei, schnitzel, papanasi good; a bit expensive for service."
+Caru' cu Bere,2026-07,5,Family,5,5,4,5,show;reservation;food;service;value;atmosphere,,,1,,"Booked a month ahead for dance-view table; helpful staff, delicious pork knuckle, stunning decor, massive portions, good value."
+Caru' cu Bere,2026-07,5,Couples,5,5,5,5,food;portion;atmosphere;value,,,1,,"Magnificent Gothic interior; giant pork knuckle for two was crispy and abundant; not cheapest, but worth it; uncrowded."
+Caru' cu Bere,2026-08,4,Couples,5,5,3,4,food;service;atmosphere;show,value,,0,,"Stunning historic setting with lively entertainment; standout pork knuckle, great schnitzel, excellent house beer, attentive server; somewhat touristy."
+Caru' cu Bere,2026-09,1,Friends,3,1,1,1,,service;billing;noise;value,,0,,Expensive and noisy; charged for a starter she tried returning; manager argued; disputed service charge; poor service overall.
+Caru' cu Bere,2026-07,5,Couples,,,,,atmosphere;show;food;wait;service,value,,1,,"Central, artistic venue with live trio; very tasty food, short wait, attentive server; prices higher but worth it."
+Caru' cu Bere,2026-08,3,Family,3,4,3,3,atmosphere;wait,food;service,,1,,"Stunning restaurant with prompt seating and quick food, but dry ribs and an unhappy middle-aged waiter disappointed the family."
+Caru' cu Bere,2026-05,4,Solo,,,,,food;portion,value;service,,0,,"Cheap weekday lunch menu for under 40 RON; reasonable portions and good food, though service felt like mass processing."
+Caru' cu Bere,2026-07,2,Couples,,,,,food;atmosphere,value;service,,1,,"Lunch menu withheld from English speakers unless requested, feeling like a scam; food was pretty good, atmosphere the main draw."
+Caru' cu Bere,2026-08,1,Family,3,1,2,3,,service;drinks;billing,,1,,"Poor service with late drinks; server insisted on a tip choice, then aggressively handled card payment, leaving a hostile final experience."
+Caru' cu Bere,2026-07,5,Family,,,,,food;service;portion;show;atmosphere,,,1,,"Stunning stained glass setting, excellent roasted pork knuckle with generous portions, attentive service, and a live performance."
+Caru' cu Bere,2026-06,4,Family,4,4,4,,reservation;atmosphere;show;food;portion,value,,0,,"Beautiful touristy spot with live music; pork knuckle slightly dry, huge portions, excellent papanasi, but pricey. Reserve dining room."
+Caru' cu Bere,2026-08,1,Friends,,,,,,noise;service;portion;billing,,0,,"Nice but very noisy; a rude, impatient waiter refused to let us share a dish and then demanded a tip."
+Caru' cu Bere,2026-07,5,Friends,,,,,food;service;atmosphere;show,,,0,,"Typical tourist spot with exquisite steak tartare, quick friendly service, and lively music; book ahead for the dining room."
+Caru' cu Bere,2026-07,1,Couples,3,1,2,5,,food;service;wait;drinks;billing;value,,0,,"Cold food and delayed drinks, a 25-minute wait for mains, and pressure to tip after paying 180 euros for four."
+Caru' cu Bere,2026-07,5,Family,,,,,service;food;atmosphere,,,1,,"Wonderful experience with delicious food; the friendly, attentive waiter made us feel welcome in a great atmosphere."
+Caru' cu Bere,2026-06,1,Family,,,,,,service;wait;food,,1,,"Disorganized timing, repeated drink requests, and food that felt reheated and greasy; inattentive waiters. Will not return."
+Caru' cu Bere,2026-04,2,Family,,,,,,wait;service;billing;atmosphere,,0,,"Waited 1.5 hours for an outdoor table, staff were absent, and the waiter criticized our tip, saying we were rich."
+Caru' cu Bere,2026-07,5,Family,,,,,atmosphere;show;service,,,1,,"Stunning stained glass and woodwork with live music felt like time travel; the patient, attentive waiter made dinner smooth."
+Caru' cu Bere,2026-04,2,Friends,2,3,1,4,atmosphere,food;value;service,,1,,"Impressive historic interior, but bland, overpriced food and rushed service with uncomfortable seating. Visit for architecture only."
+Caru' cu Bere,2026-04,4,Family,,,,,food;portion;show;atmosphere,service;wait,,1,,"Gorgeous building, huge portions, amazing pork knuckle, and folk dancing; clunky service with missing menus and long waits."
+Caru' cu Bere,2026-04,4,Solo,4,1,5,5,value;atmosphere;food,service;wait,,0,,Weekday noon lunch menu for 10 euros in an impressive place; staff quoted a long wait but served quickly if you stayed.
+Caru' cu Bere,2026-08,5,Couples,,,,,atmosphere;service;food;value,,,0,,"Beautiful nineteenth-century establishment that transports you back in time; kind, knowledgeable staff and affordable pork specialties. Must visit."
+Caru' cu Bere,2026-08,4,Family,,,,,atmosphere;food,value,,0,,"Extraordinary historic building with stained glass and frescoes; food is good with many Romanian dishes, though prices run above average."
+Caru' cu Bere,2026-03,4,Friends,,,,,food;atmosphere;show;service,value,,0,,"Touristy but worth it for good Romanian food, kitschy atmosphere and historic setting; costs higher than other places, enjoyable evening show."
+Caru' cu Bere,2026-03,2,Friends,,,,,food,reservation;service;show;noise,,0,,"Booked an upstairs room but were seated downstairs; staff unhelpful and unpleasant, though food was decent and papanasi good. Would not return."
+Caru' cu Bere,2026-05,3,Friends,,,,,food;show,service;wait;value,,0,,"Classic tourist spot; food good but service poor and meals arrived at uneven times. Entertaining dance shows, though experience felt ordinary."
+Caru' cu Bere,2026-05,3,Friends,3,1,3,4,atmosphere,service;wait;drinks,,0,,"Slow, uncoordinated service: long waits to order and drinks arrived after dishes; interior seat blocked show view, though food arrived quickly."
+Caru' cu Bere,2026-05,5,Family,,,,,food;atmosphere;drinks;portion,,,1,,"Enjoyable outdoor dinner on a pleasant May night; liked the draft beer and oversized pork portion, plans to return."
+Caru' cu Bere,2026-05,4,Friends,4,3,3,5,food;atmosphere;show,wait;value,,0,,"Must-try landmark; traditional meat dishes and good vegetable soups, dancers perform at dinner, though seats are hard to get."
+Caru' cu Bere,2026-04,4,Couples,,,,,show;atmosphere;service,food;wait;value,,1,,"Worth visiting for historic setting and folk dances; food average, service friendly, but crowds mean long waits and higher prices."
+Caru' cu Bere,2026-05,5,Couples,,,,,food;service;drinks;show;atmosphere;reservation,,,1,,"Perfect final meal; impressive decor, great food, beer and dancing, and a waiter who gave excellent service. Booked by email after online trouble."
+Caru' cu Bere,2026-02,1,Couples,,,,,,reservation;wait;portion;value;show;billing;service,,0,,"Booked balcony view but got an obstructed table; long 40-minute wait, small portions, mandatory tip, and show viewing was poor."
+Caru' cu Bere,2026-07,1,Family,,,,,atmosphere;show,food;value;noise,,1,,"Below-average, overpriced food in a huge, noisy tourist venue; decor impressive, but better to just look without dining."
+Caru' cu Bere,2026-05,5,Couples,5,5,5,5,food;service;value;atmosphere,,,1,,"Historic building with excellent traditional food, attentive service and atmosphere; waiter gave helpful dish and wine recommendations."
+Caru' cu Bere,2026-08,4,Couples,,,,,food;atmosphere,wait;show,,0,,"Tourist trap with good food and company; outdoor seating lost charm, waits were an hour, Brazilian dancers felt out of place."
+Caru' cu Bere,2026-04,2,Friends,2,3,2,3,,food;noise;service;billing,,1,,"Touristy hall with loud live music; dry carp was poor, bean soup fine, service friendly, but complaints were not reflected in the bill."
+Caru' cu Bere,2026-07,5,Family,5,5,5,5,food;service;value;atmosphere;show,,,0,,"Ordered the daily menu and ate excellently; recommends visiting for lunch or dinner, with live music and scheduled shows."
+Caru' cu Bere,2026-08,1,Friends,1,1,1,3,atmosphere,food;service;value,,1,,"Worst meal in Bucharest: wine poor, meat dry and overcooked; manager was rude when complaining, though the decor was lovely."
+Caru' cu Bere,2026-05,3,Friends,2,3,2,3,atmosphere,food;service;value;portion;wait,,0,,"Beautiful building, but small portions, poor service, long waits, and food not worth the price."
+Caru' cu Bere,2026-08,2,Couples,,,,,atmosphere,food,,1,,"Historic interior is lovely, but the food disappointed: mismatched menu photo, weak polenta, sauce and salad."
+Caru' cu Bere,2026-03,1,Family,,,,,,noise;service;value;reservation;billing;drinks;food,,0,,"Booked ahead but seated in a noisy basement near musicians; pricey drinks, poor service, pushy tipping."
+Caru' cu Bere,2026-08,5,Family,5,5,5,5,food;service;value;atmosphere,,,0,,"Emblematic building with spectacular architecture; delicious traditional Romanian food and a super nice, friendly waiter."
+Caru' cu Bere,2026-08,3,Couples,,,,,food;show,service;noise;billing,,1,,"Good food but very noisy and busy; ignored as a couple, dishes arrived unordered, and getting the bill was difficult."
+Caru' cu Bere,2026-08,5,Couples,,,,,food;service;atmosphere,,,1,,"Beautiful atmosphere, excellent service, and outstanding desserts; the papanasi and profiteroles were highly recommended."
+Caru' cu Bere,2026-04,4,Couples,,,,,food;atmosphere;show;portion,value,,0,,"Must-visit with tasty meats and a spacious setting; generous portions, slightly high prices, and folk dance performances."
+Caru' cu Bere,2026-01,5,Friends,,,,,atmosphere;service;reservation;food,,,1,,"Impressive historic interior, a warm hostess who found a table without a booking, and attentive staff; great papanasi."
+Caru' cu Bere,2026-03,5,Family,,,,,atmosphere;show;food;portion;value,,,0,,"Unusual venue with live violin, piano and flute; plentiful traditional dishes, and a 9 euro fixed-price menu."
+Caru' cu Bere,2026-03,5,Couples,5,5,5,5,food;service;atmosphere;value;show;drinks,reservation;wait,,1,,"Traditional food and drink were excellent, and server Fane stayed helpful despite a packed venue; booking is advised."
+Caru' cu Bere,2026-02,1,Friends,,,,,atmosphere,food;service,,1,,"Historic decor was cool, but rude, idle staff and very poor, bland, lukewarm food left the group disappointed."
+Caru' cu Bere,2026-07,5,Friends,,,,,service,,,1,,"Elena provided friendly, professional, attentive service with excellent recommendations, making the whole dinner feel special and memorable."
+Caru' cu Bere,2026-05,5,Solo,5,4,4,5,food;service;value;atmosphere;show;drinks,,,1,,"Historic 1879 restaurant with delicious duck, live musicians, and a broad beer selection; very enjoyable solo meal."
+Caru' cu Bere,2026-06,3,Business,3,4,3,4,service;atmosphere;portion,food;value,,1,,"Stunning interior and pleasant service, but the Wagyu burger was average: limp fries, too many pickles, undercooked meat."
+Caru' cu Bere,2026-05,5,Friends,5,5,5,5,food;service;value;atmosphere;drinks;show,reservation,,0,,"Must-visit with lovely atmosphere, great beer, good food, friendly staff and live music; book online to avoid being turned away."
+Caru' cu Bere,2026-04,4,Family,,,,,food;value,drinks,,0,,"Affordable lunch menu for a family group, food delicious, but water costs five euros; very touristy, evening prices differ."
+Caru' cu Bere,2026-05,5,Friends,5,5,5,5,food;service;atmosphere,show,,0,,"Expected a tourist trap, found a pleasant restaurant with lovely decor, excellent food and attentive staff; dance show less traditional."
+Caru' cu Bere,2026-09,1,Couples,,,,,,reservation;atmosphere;service,,0,,"Booked ahead but seated on a cramped, hot balcony crowded by people watching the show; they left without ordering."
+Caru' cu Bere,2026-08,1,Couples,,3,2,1,,wait;noise;service,,0,,"Waited ninety minutes for courses, left after paying for beers; loud music and chaotic crowd; would not recommend."
+Caru' cu Bere,2025-11,4,Friends,5,5,4,5,food;value;atmosphere;drinks,,,0,,"Dinner with friends; meat was delicious, value reasonable for a renowned restaurant, wide craft beer range, a must-see stop."
+Caru' cu Bere,2026-03,3,Friends,,,,,,service;food,,0,,"Rude waiter at first, then a better server; ribs arrived cold and tough, dishes were returned, and replacements still disappointing."
+Caru' cu Bere,2026-03,1,Family,,,,,,service;noise,,0,,"Staff seemed annoyed by our requests and the children's presence; not recommended for families or a relaxed, quiet visit."
+Caru' cu Bere,2026-01,5,Couples,,,,,reservation;food;service;atmosphere;show,,,0,,"Booked online ahead; medieval rooms felt special, goulash was tasty, service fast, and violinists added to the atmosphere."
+Caru' cu Bere,2026-03,4,Couples,,,,,reservation;food;portion;service;atmosphere,value,,0,,"Locals recommended it; booking needed; beautiful setting, friendly waiter, generous plates, though menu prices about 15% higher."
+Caru' cu Bere,2026-01,5,Couples,,,,,food;portion;drinks;show;value;reservation,,,1,,"Booked ahead, great table view of dancers; turkey schnitzel and pork were amazing, generous portions; drinks good and worth the price."
+Caru' cu Bere,2026-04,4,Couples,,,,,service;atmosphere;food,value;portion,,0,,"Afternoon visit: many smiling staff, historic venue, papanasi good but heavy; slightly expensive but worth seeing for the folklore."
+Caru' cu Bere,2026-02,3,Couples,,,,,atmosphere,service;food;drinks,,1,,"Beautiful building and lively atmosphere, but touristy; service lukewarm, drinks delayed, and the salmon was dry and inedible."
+Caru' cu Bere,2025-12,4,Family,,,,,food;atmosphere;show,reservation;value,,0,,Renowned spot worth a dinner visit; booked a balcony but best seats were taken; food was hearty and the shows were fun.
+Caru' cu Bere,2026-04,5,Family,,,,,food;atmosphere;service;show,,,1,,"Historic center location with live music and folklore; vegan, vegetarian and traditional dishes were excellent, and service friendly."
+Caru' cu Bere,2026-05,5,Couples,5,5,5,4,food;service;value;atmosphere,,,0,,"Lunch while passing through; despite tourist focus, typical Romanian food was excellent, prices reasonable and service fast."
+Caru' cu Bere,2026-04,5,Family,,,,,food;atmosphere;show,,,0,,"Historic brewery decor, excellent food, recommended smoked pork shank, nice atmosphere and a violinist's music."
+Caru' cu Bere,2026-08,5,Couples,5,4,4,5,food;service;atmosphere;show,,,0,,Living-museum interiors and genuine Romanian cuisine; booking the balcony gives a great view of the folk show.
+Caru' cu Bere,2026-02,5,Couples,,,,,service;food;show;reservation,,,0,,"Online booking honored promptly, excellent staff, good food, and charming traditional dances performed for guests."
+Caru' cu Bere,2026-02,5,Friends,,,,,service;food;atmosphere,,,1,,Attentive waitress accommodated dietary needs and gave good advice; beautiful interior and lovely traditional Romanian food.
+Caru' cu Bere,2026-02,2,Family,2,3,1,3,,food;value;show,,0,,"Overrated and costly; food below average, pork shank tough, prices far above other places, and advertised show absent."
+Caru' cu Bere,2025-09,5,Friends,,,,,food;atmosphere;value,,,0,,Typical Romanian spot serving local specialties; the huge venue impressed on arrival and the lunch experience was very positive.
+Caru' cu Bere,2026-02,5,Friends,5,5,,5,food;service;atmosphere;show,,,1,,"Lovely atmosphere and great food; server recommended papanasi, and the local dancing made the visit memorable."
+Caru' cu Bere,2026-05,5,Friends,,,,,food;service;value;atmosphere,,,0,,"Spacious historic venue with traditional Romanian dishes, efficient courteous service, and excellent value for money."
+Caru' cu Bere,2026-03,1,Couples,,,,,,reservation;wait;show;food;service,,1,,"Despite a booking made weeks ahead, guests were seated late at a poor table; cold food and unwelcoming staff."
+Caru' cu Bere,2026-03,3,Friends,4,5,3,4,food;service;atmosphere,value,,0,,"Large, beautiful venue with live traditional music; meat dishes and beer were good, prices somewhat above average."
+Caru' cu Bere,2026-09,2,Family,1,4,1,3,service;atmosphere;drinks,food;value,,1,,"Spectacular location and interior, but bland, lukewarm food and expensive; staff helpful and house beer was good."
+Caru' cu Bere,2026-02,5,Family,,,,,service;food;atmosphere;clean,,,0,,"Old-town spot near the monastery; quick polite service, beautiful setting, great food and sweets, clean toilets."
+Caru' cu Bere,2026-09,3,Friends,,,,,,service;value,,0,,"Rude manners and incomplete service on the balcony; prices above city average, though shows and building still worth visiting."
+Caru' cu Bere,2026-02,3,Couples,3,2,2,5,atmosphere,food;value;service,,0,,Beautiful atmosphere though it feels somewhat fake; cuisine unremarkable and prices higher than comparable restaurants.
+Caru' cu Bere,2025-11,2,Friends,4,1,3,3,food,service;drinks;billing,,0,,"Rude waiter, drinks delayed, awkward bill with a sarcastic tip request, though the food was really great."
+Caru' cu Bere,2026-03,5,Friends,,,,,food;atmosphere;show,,,1,If You Miss This Place,"Lamb shank excellent; traditional music and dancing make it unforgettable, a must-visit."
+Caru' cu Bere,2026-02,5,Friends,5,5,5,5,value;service;food;atmosphere;show,,,1,100% recommend!!,"Group of twelve pre-booked; great food, beers, prices, lively entertainment, welcoming staff."
+Caru' cu Bere,2026-08,3,Family,,,,,show,wait;food,,0,Unique.,"Unique venue with entertainment, no traditional costumes; long waits and disappointing food."
+Caru' cu Bere,2026-03,2,Family,,,,,food,reservation;service;show,,0,Service to review food not,"Table given away after a wait, rude host, show already ended; decent food, poor communication."
+Caru' cu Bere,2026-03,3,Couples,,,,,portion;atmosphere,food,,0,Hearty lunch but no more,"Generous portions and beautiful interior, but food lacked wow factor; hype overblown."
+Caru' cu Bere,2026-03,5,Friends,,,,,atmosphere;show;food;service,wait,,1,Tourists come for the overall,"Gorgeous building, good dancers, hot filling food; book ahead, ground floor very crowded."
+Caru' cu Bere,2025-10,5,Friends,,,,,show;food;service,,,1,Great night! 100% recommend!,"Guests involved in entertainment, steak tartare excellent, waiter made it special."
+Caru' cu Bere,2026-05,5,Family,5,5,5,5,show;food;service;atmosphere,,,1,"More than a meal: dance,","Live dancing and singing, delicious food, waitress made the evening special."
+Caru' cu Bere,2025-11,1,Couples,,,,,,food;value;billing;service,,0,Bad experience,"Poor cold cuts, manager dismissed complaint, unordered dessert charged; will not return."
+Caru' cu Bere,2026-01,4,Friends,,,,,atmosphere;show;service,food,,0,Caru’ cu Bere: you have,"Atmosphere, live music and friendly service stand out; mains unremarkable, papanasi impressed."
+Caru' cu Bere,2025-12,3,Friends,,,,,food,wait;service,,1,"Nice food, very very busy,","Tasty goulash, but mains took over an hour, staff stretched and rude, room packed."
+Caru' cu Bere,2025-12,1,Family,,,,,,service;value;billing,,1,Terrible service. Sub par menu,Waiter ignored table after pushing a pricey starter; bill rushed with tip pressure.
+Caru' cu Bere,2025-12,3,Couples,,,,,food,wait;service;drinks;clean;noise,,0,First day in Bucharest,"Soups fast and delicious, mains slow, drinks mixed up, terrace noisy and cold, restroom dirty."
+Caru' cu Bere,2025-12,3,Couples,,,,,atmosphere;service,food;value;wait,,1,The food is not worth,"Beautiful interior, rushed pace; food below average for price, service good."
+Caru' cu Bere,2026-02,3,Friends,2,5,4,5,reservation;service;atmosphere;show,food,,0,CUTE EXPERIENCE,"Booked a month ahead; friendly staff and dancing, sides and dessert underwhelmed, cramped stage."
+Caru' cu Bere,2026-04,4,Couples,,,,,portion;reservation,service;value,,0,Typical tourist restaurant,"Touristy, unwelcoming staff; generous portions, high prices; would not return."
+Caru' cu Bere,2026-02,5,Friends,,,,,food;atmosphere,,,1,AMAZING FIND,"Authentic Romanian food excellent, papanasi standout; plans to return."
+Caru' cu Bere,2025-10,2,Couples,,,,,,noise;food;service,,1,"Eat elsewhere, don’t fall for","Seated in busy walkway, loud music, poor service, undercooked steak; show felt gimmicky."
+Caru' cu Bere,2026-04,4,Friends,4,4,3,4,atmosphere;food;show,value,,0,Nice place in the old,"Lively old-town spot with varied dishes; touristy and pricey, show included."
+Caru' cu Bere,2026-03,5,Couples,,,,,service;show;food;atmosphere,,,0,Great experience and great service,"Excellent Italian-speaking waiter, folk dances, great food, gothic interior; balcony recommended."
+Caru' cu Bere,2026-08,5,Friends,5,5,5,5,food;portion;service;atmosphere;show,,,1,Highly Recommended,"Second visit: great food, large portions, good service, dancing; tourist-trap warning wrong."
+Caru' cu Bere,2025-11,3,Couples,,,,,atmosphere,service;food;noise,,1,Slow service,"Very slow service, polenta and pork knuckle disappointing, music nice but loud."
+Caru' cu Bere,2025-08,4,Family,4,3,3,5,atmosphere;show;food;drinks,value;service,,1,Historic Building,"Historic building, live music, good food and house beer; pricey, impersonal service."
+Caru' cu Bere,2025-12,4,Friends,,,,,food;reservation,value;service,,1,I'll be back,"Good location, tasty food, prices a bit high, waiters rushed diners out."
+Caru' cu Bere,2025-10,5,Friends,5,5,5,5,food;service;atmosphere;drinks;reservation,,,0,An exceptional place not to,"Mythical place blending pub and church; great food, beer, cocktails, fast service."
+Caru' cu Bere,2026-07,4,Friends,,,,,atmosphere;show;food;service,value,,0,Typical establishment,"Historic interior, folk shows, good food and service, prices above average."
+Caru' cu Bere,2025-12,3,Couples,,,,,,food;service;value,,0,He lives up to the,"Essential stop, but another restaurant cooked and served better for half the price."
+Caru' cu Bere,2025-10,4,Family,,,,,portion;atmosphere,food;wait;value,,1,"Magnificent atmosphere, mediocre gastronomic quality","Stunning interior, bland standardized food, slow service, large portions, high prices."
+Caru' cu Bere,2026-08,3,Couples,,,,,atmosphere,value;reservation,,0,Nice place with live music,"Beautiful Art Nouveau setting and live music; food decent but pricey, reservations needed."
+Caru' cu Bere,2025-11,5,Family,4,5,4,5,service;food;atmosphere;show,,,1,Dorian made it happen.,"Server Dorian treated guests like VIPs, shared wine tips; music made the evening."
+Caru' cu Bere,2025-09,2,Family,,,,,food,service;billing,,0,Food gets bad if you,"Good food, but repeated tip requests and a hostile waiter after refusing."
+Caru' cu Bere,2026-04,3,Couples,,,,,,wait;reservation;value;food,,0,Try at least 1 time...then,"Long entrance queue, seated in cellar despite booking, pricey and underwhelming dishes."
+Caru' cu Bere,2026-01,3,Family,,,,,,reservation;value;food;show,,0,Advice :only if internal post,Could not book; seated outside without shows at inside prices; ordinary food.
+Caru' cu Bere,2025-10,3,Friends,2,1,2,3,show,service;food;wait;value,,1,Disappointing food and experience,"Lovely building and dancers, very slow service, lukewarm food, indifferent management."
+Caru' cu Bere,2025-10,3,Couples,,,,,show;food;atmosphere,wait,,1,"Beautiful Setting, Amazing Entertainment -","Lovely setting and entertainment, hot plentiful food, confusing queues with sightseers."
+Caru' cu Bere,2026-02,3,Couples,4,3,3,1,food,atmosphere;noise,,0,guiri at maximum level,"Food fine, but very touristy and loud; conversation hard."
+Caru' cu Bere,2025-10,1,Couples,,,,,,service;value;billing,,0,Theft without a gun,"Slow disorganized service, limited English, average food at high prices, tipping pressure."
+Caru' cu Bere,2026-01,4,Friends,,,,,atmosphere;show;food;service,value,,0,To try,"Historic setting, frequent shows, good spicy food, quick service, expensive."
+Caru' cu Bere,2025-12,4,Family,,,,,atmosphere;show;food,value,,1,Nice atmosphere restaurant with romaian,"Lively dancers, tasty meat; kids menu lacking, pre-book, a bit pricey."
+Caru' cu Bere,2025-10,5,Friends,5,5,5,5,food;service;atmosphere;value;reservation,,,0,Typical cuisine in a wonderful,"Beautiful interior, excellent service, Italian-speaking server; booking advised."
+Caru' cu Bere,2026-03,5,Couples,,,,,atmosphere;service;food;portion,,,1,Beautiful AND Delicious,"Impeccable service; pork knuckle and stuffed cabbage outstanding, huge portions."
+Caru' cu Bere,2025-08,4,Family,,,,,atmosphere;show;service;value,drinks;billing,,0,"Essential, watch out for extras!","Live shows, quick service, cheap weekday lunch menu; drinks costly, tip pre-added."
+Caru' cu Bere,2026-08,5,Family,5,5,4,5,food;service;value;atmosphere;show,,,0,A truly special evening,"Fabulous historic setting, good food; dancers pull diners into dancing."
+Caru' cu Bere,2025-09,1,Couples,,,,,,food;service,,1,Major disappointment,Confit pork and polenta inedible; staff ignored them and dismissed complaints.
+Caru' cu Bere,2025-09,5,Friends,,,,,atmosphere;food;service;show;portion,,,0,Local historic top,"Friendly waiters, typical dishes, giant portions, live music and ballet."
+Caru' cu Bere,2025-11,5,Couples,,,,,atmosphere;food,value,,1,Fashionable entry into Romanian traditional,"Cozy atmosphere, traditional food; not budget-friendly but worthwhile."
+Caru' cu Bere,2025-11,2,Couples,,,,,atmosphere,food;service;value,,0,Disappointed expectations,"Interiors impressed, but bland food, inattentive service, prices too high."
+Caru' cu Bere,2025-10,5,Friends,5,4,5,5,food;service;value;atmosphere;show,,,1,Traditional cuisine with a lively,Live music and dancing; pork knuckle delicious and filling.
+Caru' cu Bere,2025-09,5,Friends,,,,,food;service;value;reservation,,,1,Perfect,"Busy Sunday without waiting; superb reasonably priced food, prompt service."
+Caru' cu Bere,2025-11,5,Couples,5,5,5,5,atmosphere;food;service;show;reservation,,,0,Local typical that I recommend,"Walk-in seated quickly, helpful waiter, great papanasi, shows."
+Caru' cu Bere,2025-09,4,Couples,,,,,atmosphere;food;show,service,,1,Beautiful Architecture and Good Food,"Stunning interior, good food; frosty host, later service and show enjoyable."
+Caru' cu Bere,2026-02,5,Friends,,,,,food;service;value;atmosphere;show,,,1,Traditional Romanian Food,"Fun, delicious, reasonably priced; attentive server."
+Caru' cu Bere,2026-02,5,Friends,,,,,service;food;portion;show,reservation,,1,Great unexpected evening in a,"Reservation mix-up fixed with basement table; hearty large portions, great papanasi."
+Caru' cu Bere,2026-06,1,Couples,,,,,,service;food;noise;drinks,,1,Do not go here for,"Miserable staff, poor food, too noisy and busy, house beer disappointed."
+Caru' cu Bere,2025-12,5,Solo,,,,,atmosphere;food;service,wait,,0,Very good cuisine in a,"Packed so waited at bar, then mushroom ragout and attentive service."
+Caru' cu Bere,2025-10,5,Family,,,,,atmosphere;food;portion,,,1,Always comeback,"Family tradition spot; neo-Gothic architecture, generous well-prepared food."
+Caru' cu Bere,2025-11,5,Friends,4,4,5,5,food;service;atmosphere;show,wait;noise,,1,Party Hearty Romanian-Style,"Long lines Friday, authentic dishes, dancing, very loud music."
+Caru' cu Bere,2025-10,2,Friends,,,,,atmosphere,food;value;billing;service,,0,LOCATION ONLY,"Poor food, assembly-line service, partly raw shank, bill over 100 euros."
+Caru' cu Bere,2025-11,5,Couples,,,,,atmosphere;food;drinks,,,0,Perfect atmosphere and great food,"Loved everything, especially perfectly cooked pork knuckle."
+Caru' cu Bere,2026-01,5,Friends,,,,,service;food,,,0,Beautiful and fun,"Good food, but service stood out; waiter Gabriel attentive and kind."
+Caru' cu Bere,2025-10,3,Friends,,,,,atmosphere,food;portion;value;service,,0,Caru cu drink,"Unique interior, small portions, high prices, superficial service."
+Caru' cu Bere,2026-10,5,Family,,,,,food;atmosphere;service;show,,,0,W O N D E,"Lunch with live music; good food, waiter Mario spoke Italian well."
+Caru' cu Bere,2025-09,3,Friends,,,,,food;portion,service;noise,,0,"Folklore,chaos,good food","Generous good food, but lacking service and a noisy chaotic room."
+Caru' cu Bere,2025-07,3,Couples,3,1,2,5,atmosphere,food;service;billing,,1,Amazing interior but dull food,"Beautiful interior, average food, slow service, tip demanded anyway."
+Caru' cu Bere,2025-04,5,Solo,5,5,5,5,atmosphere;food;service;value;show,wait,,1,Gastronomy marries art,"Creative menu, excellent fish, lively music; solo guest waited 1h40."
+Caru' cu Bere,2025-12,3,Couples,,,,,,value;service;food;show;billing,,1,"High prices, average service, tasteless","Prices rose sharply, average food, mediocre service, short dancing, tip pushing."
+Caru' cu Bere,2025-10,1,Friends,,,,,,billing;value;drinks;service,,0,Monitor prices before paying,Wine charged 55 lei instead of 15; hidden service charges on drinks.
+Caru' cu Bere,2025-07,3,Family,,,,,food;atmosphere;show,value;clean,,1,Overpriced touristic place with good,"Very good steak, other dishes just okay for price; sticky tables."
+Caru' cu Bere,2025-10,5,Friends,,,,,service;food;show,,,1,Elena was excellent!!,"Server Elena handled a large group well; pork knuckle, papanasi, dancing."
+Caru' cu Bere,2025-07,5,Friends,,,,,food;portion;value;drinks;show;service;atmosphere,,,0,Good experience,"Group of nine; dance show, very good food, large portions, fair prices."
+Caru' cu Bere,2025-09,5,Couples,,,,,reservation;atmosphere;food;service;show;portion,,,1,Definitely worth a visit,"Booked ahead; filling authentic food, attentive waiter Marius, lively show."
+Caru' cu Bere,2025-10,5,Couples,4,3,4,5,value;food;atmosphere,service,,1,"Yes, it's touristy, but","Touristy and crowded with spotty service, but stunning interior and good-value food."
+Caru' cu Bere,2025-08,3,Family,,,,,service;atmosphere;show,food;billing,,0,"Average, not spectacular, but certainly","Friendly service and dancers; cold goose liver, undercooked vegetables, tip pressure."
+Caru' cu Bere,2025-11,5,Family,,,,,food;service;value;atmosphere;show,,,1,Best food in Bucharest,"Amazing food, friendly staff, lovely dancing, reasonable prices."
+Caru' cu Bere,2025-06,2,Couples,2,1,1,3,atmosphere,food;service;value;wait;billing,,1,Overpriced for what it offers,"Average food, long waits, high prices, tip possibly added unannounced."
+Caru' cu Bere,2025-04,4,Friends,4,5,5,5,service;value;atmosphere;show,,,1,Caru cu Bere night,"Food alright, friends loved it; nice atmosphere and good service."
+Caru' cu Bere,2025-05,4,Friends,4,4,3,4,food;service;atmosphere,value;noise,,1,"Tourist place, but sometimes you","Noisy fun atmosphere, quick service, good beer, overpriced food."
+Caru' cu Bere,2025-10,5,Couples,,,,,food;atmosphere;service;drinks,,,1,Good traditional option,"Draught beer, beef soup, juicy schnitzel, beautiful building."
+Caru' cu Bere,2025-08,4,Couples,2,3,1,4,food;atmosphere,noise;show;clean;value,,0,Disappointed,"Loud Latin show, sticky tables, good food, absurd prices."
+Caru' cu Bere,2026-01,5,Couples,5,5,4,5,food;service;atmosphere,value,,0,More than a local... a,"Movie-set setting, fast courteous service, great meat and beer, very expensive."
+Caru' cu Bere,2025-07,4,Couples,5,3,4,4,food;portion,service;noise;reservation;wait,,0,Regular,"Table far from show despite request; huge portions, slow overwhelmed service."
+Caru' cu Bere,2025-09,5,Solo,,,,,food;atmosphere;drinks;portion,,,1,Excellent,"Gigantic portions, delicious carp and polenta, great beer."
+Caru' cu Bere,2025-08,4,Couples,,,,,food;atmosphere,value;billing,,0,Immersive experience,"Good food and beer, pricier than average; expect a 10% tip."
+Caru' cu Bere,2026-01,4,Friends,,,,,food;service;atmosphere;show,value,,0,Very fun experience,"Dancers during dinner, good food, slightly high price, attentive waitress."
+Caru' cu Bere,2025-09,5,Couples,,,,,reservation;service;wait;show;atmosphere;food;portion,,,0,Must-see if you come to,"Booked a month ahead; served within half an hour, dancers, huge papanasi."
+Caru' cu Bere,2026-01,3,Couples,,,,,,food;service;value;atmosphere,,1,"Beautiful building, but overpriced and","Beautiful architecture, mediocre expensive food, forced atmosphere."
+Caru' cu Bere,2025-08,3,Friends,,,,,atmosphere,food;value,,0,Nice just the place,"Nice decor, poor expensive food compared with nearby places."
+Caru' cu Bere,2026-04,5,Couples,,,,,food;atmosphere;service,,,1,PHENOMENAL atmosphere!,"Authentic food, stunning woodwork, attentive staff; amazing papanasi."
+Caru' cu Bere,2025-03,5,Solo,,,,,food;service;reservation;value;portion,,,1,"Must visit! Food, environment, service,",Authentic food in historic beer house; book ahead; weekday set lunch a bargain.
+Caru' cu Bere,2025-11,1,Solo,3,1,3,1,,billing;service;food,,0,scammed,"Felt scammed on the bill paying cash; polenta good, rest mediocre."
+Caru' cu Bere,2026-03,5,Solo,,,,,atmosphere;reservation;service;clean,,,1,Lovely service,"Lovely historic place, polite service, mid-range prices, clean toilets."
+Caru' cu Bere,2025-03,3,Friends,,,,,show;atmosphere,wait;food;service;value,,1,Dinner,"Main course took over an hour, arrived dry; pricey, nice entertainment."
+Caru' cu Bere,2025-05,3,Couples,,,,,food;atmosphere;show;portion,value,,0,Nice atmosphere but overrated,"Quaint atmosphere and shows; pork shank very good and huge, maybe overpriced."
+Caru' cu Bere,2025-02,5,Friends,,,,,food;portion;value;show;service,,,0,Great experience,"Very good dishes, generous portions, good value; waiter quickly fixed a wrong dish."
+Caru' cu Bere,2025-09,4,Family,,,,,food,,,0,Bucovineana Top,"Recommends Bucovineana, a hearty pork and sausage stew with polenta."
+Caru' cu Bere,2025-07,4,Family,1,3,2,5,atmosphere;show,value;food,,0,Overrated,"Beautiful building, high prices for low-quality food, worth it for the ballet."
+Caru' cu Bere,2025-03,1,Couples,,,,,service,wait;food,,1,Overrated 2,"Nearly 2.5-hour wait for food; mediocre food, apologetic staff."
+Caru' cu Bere,2025-03,2,Friends,,,,,,service;food;portion;wait,,1,Cold Food & Service,"Rubbish service, small cold portions, hour wait, dishes arrived separately."
+Caru' cu Bere,2025-04,4,Friends,,,,,food;service,value;portion,,1,"Famous, good but expensive","35-euro mixed meat plate small; food good, service fast."
+Caru' cu Bere,2025-04,4,Family,,,,,atmosphere;food;wait,value,,1,Overvalued,"Wonderful decor, meal came quickly and tasty, pricier than similar places."
+Caru' cu Bere,2025-09,3,Family,,,,,food,reservation;service,,1,Mediocre restaurant,Reservations refused though quarter full; dismissive waitress; food reasonable.
+Caru' cu Bere,2025-07,4,Friends,5,4,5,2,food;value;service,atmosphere;show,,1,Fabulous food but sit upstairs!,"Fabulous food, great value; basement seating missed the music and dancing."
+Caru' cu Bere,2025-04,4,Family,,,,,food,service,,1,Very good experience,"Walk-in seated quickly; food liked, service cold and inattentive."
+Caru' cu Bere,2026-07,5,Couples,5,5,5,5,food;service;atmosphere,,,1,Excellent Experience,"Fantastic service, food and atmosphere; friendly helpful server."
+Caru' cu Bere,2025-03,4,Friends,,,,,show;food;service;value;reservation,,,1,More than satisfactory.,"Beautiful location, engaging show, satisfactory food, fair price."
+Caru' cu Bere,2025-03,2,Solo,,,,,,noise;wait;service,,1,Restaurant didn't live up to,"Blocked view, loud show, long wait; left without ordering."
+Caru' cu Bere,2026-09,5,Couples,,,,,food;service,,,1,The best mici,Excellent mici and outstanding service; beautiful decor.
+Caru' cu Bere,2025-06,1,Family,4,1,3,3,food,service;drinks,,0,Never again.,"Angry waiter moved table, rushed orders, pushed soda instead of water; left."
+Caru' cu Bere,2025-10,2,Couples,,,,,atmosphere,food;service,,1,Disappointing - needs to up,"Impressive interior, poor welcome, average food; overrated."
+Caru' cu Bere,2025-08,5,Friends,,,,,food;show;service;reservation,,,0,Typical Romanian dinner,"Saturday dances, very good meat, exceptional papanasi, courteous waitress."
+Caru' cu Bere,2025-08,5,Family,,,,,atmosphere;show;reservation;drinks;food,,,1,"Fabulous atmosphere, defo worth a","Nightly dancing, big menu, tasty ribs, huge beers; book ahead."
+Caru' cu Bere,2025-05,5,Family,,,,,food;service;reservation,value,,1,Touristy but enjoyable food and,"Grilled pork and turkey schnitzel impressed; pricey lamb ribs, friendly waiter."
+Caru' cu Bere,2025-08,5,Couples,,,,,food;service;value;portion,,,0,To be considered one of,"Salmon and carp delicious, large portions, kind waiter, fair prices."
+Caru' cu Bere,2025-05,2,Friends,,,,,atmosphere,food;value;service;billing,,1,Nice place and nice building,"Average food, high prices, grumpy waiter pressured for tip amounts."
+Caru' cu Bere,2025-05,1,Friends,1,3,1,2,,food;value;service;wait,,1,A scam for tourists,"Waited over ninety minutes, food disappointed, pricing high."
+Caru' cu Bere,2025-04,3,Couples,,,,,atmosphere,food;service,,1,To be reviewed,"Dark tavern vibe; cold ribs, but soup and papanasi good."
+Caru' cu Bere,2025-03,1,Couples,,,,,,food;service,,1,Worst food nd service I've,"Rude greeting, blocked view, bland food, unlisted offal stew."
+Caru' cu Bere,2025-03,1,Couples,,,,,,service;wait;food;billing;value;portion,,1,Bad bad bad,"Crowded, slow service, poor food, unexpected extra charge, expensive."
+Caru' cu Bere,2025-04,3,Couples,,,,,service;atmosphere,food;value;show,,1,I don't know.,"Impeccable service, mediocre food, above-average prices, dancers hard to see."
+Caru' cu Bere,2025-04,2,Family,1,3,1,3,portion,reservation;atmosphere;food;value;service,,1,Unpleasant dinner,"Reservation confusion, gloomy lower room, large but disappointing dishes."
+Caru' cu Bere,2025-03,4,Friends,,,,,food;atmosphere;reservation,service;wait,,0,Dinner with friends,"Excellent traditional food, inefficient service, ninety-minute wait."
+Caru' cu Bere,2025-03,5,Family,5,5,5,5,food;service;value;atmosphere;show;reservation,,,1,Delicious Dinner,"Delicious food, attentive staff, enjoyable show; book ahead."
+Caru' cu Bere,2025-12,3,Friends,,,,,,show;food;atmosphere;service,,0,Bucharest's Tourist,"Show invisible from seat, dark room, mediocre food."
+Caru' cu Bere,2025-04,2,Couples,,,,,atmosphere,value;portion;food;billing,,0,Too publicized,"Striking atmosphere, high prices, compulsory tip, small portions."
+Caru' cu Bere,2025-04,2,Solo,,,,,portion,value;food;atmosphere;reservation;drinks;billing,,0,Typical have the food and,"Tourist-trap feel, high prices, confusing flavours, overpriced water."
+Caru' cu Bere,2025-02,5,Couples,,,,,food;atmosphere;value;service;drinks,,,1,Amazing !,"Excellent food, live music, local beer; ask for the lunch menu."
+Caru' cu Bere,2025-08,5,Business,5,5,5,5,food;service;drinks;atmosphere;value,,,1,A really neat experience with,"Good food, strong drinks list, first-class service for a business group."
+Caru' cu Bere,2025-11,3,Couples,,,,,value;atmosphere;reservation,noise,,1,Pretty solid historic lunch spot,"Good-value lunch menus, but packed and loud."
+Caru' cu Bere,2025-04,5,Family,5,4,5,5,food;service;atmosphere;value;reservation,wait,,1,Delicious,"Delicious sarmale and profiteroles; packed, food slow."
+Caru' cu Bere,2025-03,5,Family,,,,,food;service;atmosphere;value,,,1,"Caru cu Bere, bucharest","Custom lunch menu delicious, very good service, accommodated wheelchair user."
+Caru' cu Bere,2025-08,5,Family,,,,,atmosphere;show;service;food;value;reservation,,,0,"Very nice, recommended","Live music, kind waiters, great food, fair prices; fills up."
+Caru' cu Bere,2025-10,2,Family,2,1,3,3,food,service;billing,,1,A bitter experience,"Decent food, payment waiter extremely rude after tip declined."
+Caru' cu Bere,2025-09,4,Solo,4,3,4,4,food;atmosphere,service,,0,Gastronomy with history.,"Decent menu, untidy service due to size, impressive decor."
+Caru' cu Bere,2025-01,4,Friends,,,,,food;service;atmosphere;drinks;portion,,,1,Good,"Traditional food with modern touch, warm staff, generous portions."
+Caru' cu Bere,2025-04,3,Friends,,,,,food,reservation;billing;service;noise,,0,"The food is very good,","Very good food, poor seating, no split bills, disorganized service."
+Caru' cu Bere,2025-03,1,Friends,3,1,1,1,,wait;service;show;value,,0,bad experience,"Nearly two hours for food, no show, poor service for price."
+Caru' cu Bere,2025-07,5,Friends,5,5,5,5,food;service;value;atmosphere,,,1,Authentic Romanian vibes and perfect,"Authentic atmosphere, very good food, kind attentive waiter."
+Caru' cu Bere,2025-08,5,Couples,4,4,4,5,food;service;atmosphere,,,1,Caru' cu bere,"Built for volume, yet good food, impressive interior."
+Caru' cu Bere,2025-07,5,Friends,,,,,food;service;show;atmosphere,,,1,An absolute must for traditional,"Traditional cuisine done well, warm hospitality, lively show."
+Caru' cu Bere,2026-06,5,Couples,,,,,food;service;atmosphere;wait,,,1,Beautiful interior with a bustling,"Friendly efficient service, amazing food, short wait."
+Caru' cu Bere,2025-05,2,Couples,,,,,,wait;service;food,,1,Excessively slow service,"Ten minutes to order, over an hour for dishes, average food."
+Caru' cu Bere,2026-01,4,Family,,,,,food;atmosphere,value,,1,"Beautiful place, good food","Elegant venue, wide menu, good food, above-average prices."
+Caru' cu Bere,2025-03,1,Couples,,,,,,food;service;billing,,1,TERRIBLE EXPERIENCE,"Raw chicken served, rude staff, pressured tipping."
+Caru' cu Bere,2025-03,2,Couples,,,,,,service;drinks,,1,Shocking service from front of,"Hostile front-of-house, slow drinks, seated outside."
+Caru' cu Bere,2025-11,1,Friends,,,,,,reservation;wait;service,,0,Very bad,"Arrived on time for booking, queued, told too late; left."
+Caru' cu Bere,2025-03,1,Family,3,1,3,5,food;show;atmosphere,service;value,,1,Inappropriate service,"Good overpriced food; waiters pressured for reviews, checking phones."
+Caru' cu Bere,2025-10,1,Friends,,,,,,reservation;wait;food;service;value;noise,,0,"Nice place, poor food and","Table not held after late arrival, loud, disappointing food and bill."
+Caru' cu Bere,2025-07,1,Business,,,,,,service;drinks,,1,Terrible Service,"Staff ignored requests, no drink refills."
+Caru' cu Bere,2025-03,4,Friends,,,,,food;portion,show;reservation,,0,Right in the centre,"Tasty food, huge portions; booked too late, missed show."
+Caru' cu Bere,2026-01,3,Couples,,,,,,food;value;billing,,0,Particular and beautiful place,"Quaint place, food not great, high prices, tipping pressure."
+Caru' cu Bere,2025-06,2,Family,,,,,,food;service;drinks;billing,,1,Decent food - rude aggressive,"Overcooked steak, drinks never came, unrequested tip added."
+Caru' cu Bere,2025-02,3,Friends,,,,,value,food;drinks,,0,Not so special,Dry cold food; 7-euro two-course lunch menu; free dessert after mix-up.
+Caru' cu Bere,2025-06,5,Friends,,,,,atmosphere;food,show,,1,Fabulous decor and good food,"Stunning building, lovely food; brief entertainment, few vegetarian options."
+Caru' cu Bere,2025-04,1,Couples,1,2,1,2,atmosphere,food;service;value,,1,Awful overpriced good,"Greasy food, high prices, basement seat, unapproachable staff."
+Caru' cu Bere,2025-01,1,Couples,1,1,1,1,,wait;service;food;clean,,1,Disappointed :(,"45-minute wait, later arrivals seated first, mould, bug in food."
+Caru' cu Bere,2025-02,5,Couples,5,5,5,,service;food;value;drinks,,,1,Highly recommended! Great atmosphere and,Waiter adapted dish to dietary needs; good-value house wine.
+Caru' cu Bere,2025-07,1,Family,,,,,,service;billing,,1,When No Tip Means No,Waiter rude after guests chose not to tip.
+Caru' cu Bere,2025-10,5,Friends,5,5,5,5,atmosphere;food;service;value;show;wait,,,1,"Delicious food, best atmosphere","Great entertainment, reasonable prices; walk-ins seated within thirty minutes."
+Caru' cu Bere,2025-03,5,Friends,5,5,5,5,atmosphere;food;service;show,,,1,"Great atmosphere, delicious food","Lively busy spot, friendly staff, delicious dishes, live music."
+Caru' cu Bere,2025-05,5,Couples,,,,,reservation;atmosphere;show;food;value,,,0,Beautiful Experience,"Balcony view of dancers, ciorba and mixed meats, about 45 euros."
+Caru' cu Bere,2025-02,5,Friends,,,,,atmosphere;food;service;show,,,1,Excellent evening meal for 2,"Attentive waiter, delicious bread and mixed grill."
+Caru' cu Bere,2025-03,5,Couples,5,3,5,5,food;atmosphere;show,service,,1,Dinner on Saturday with incidents,"Seated behind pillar despite booking, fixed by waiter; rich food."
+Caru' cu Bere,2025-05,4,Friends,,,,,food;atmosphere;show;service,,,1,"Entertaining, good food, an individual","Tour group; allergies handled, tasty set meal."
+Caru' cu Bere,2025-05,5,Friends,5,5,4,5,food;service;atmosphere;show;reservation,noise,,0,Recommended for food and entertainment,"Lively show, great food; ground floor noisier."
+Caru' cu Bere,2025-03,1,Friends,,,,,,service;wait;reservation;value,,1,Bad experience 2,"Rude staff, unclear waitlist, disorganized, high prices."
+Caru' cu Bere,2025-03,3,Couples,,,,,service,atmosphere;noise;value,,0,A BAD BEGINNING,"Dark basement, monotonous music, polite service, poor value."
+Caru' cu Bere,2025-02,1,Couples,,,,,,reservation;service,,0,Possible great experience missed!!!,"Reservation missing, no alternative; left without eating."
+Caru' cu Bere,2025-09,2,Friends,,,,,,food;value;show;noise;atmosphere,,1,Tourist Trap,"Lukewarm overpriced food, too-frequent dancers, loud room."
+Caru' cu Bere,2025-01,3,Friends,,,,,atmosphere;service;drinks,food;value;portion,,1,So much appearance and little,"Beautiful interior, impeccable service, overcooked meat, high prices."
+Caru' cu Bere,2025-12,3,Couples,,2,2,4,atmosphere,service;value;drinks,,1,Disappointed 2,"Cramped table, refused move, overpriced drinks."
+Caru' cu Bere,2025-10,1,Couples,,,,,,food;portion;value,,0,Dry and flavorless food,"Dry chicken and pork, bland sausages; potatoes best part."
+Caru' cu Bere,2025-12,4,Family,3,4,3,4,food;service;atmosphere;show;wait;reservation,value,,1,Entertaining experience!,Reservation avoided wait; good but pricey food.
+Caru' cu Bere,2025-01,5,Couples,5,5,5,5,food;service;atmosphere;show;value,wait;noise,,1,"Fantastic mix of food, entertainment","Food, dancing, beautiful building, attentive waiter; crowded downstairs."
+Caru' cu Bere,2025-11,5,Couples,5,5,5,5,service;food;atmosphere,wait,reservation,1,Great service by Ionut,Praises the knowledgeable server and traditional menu; suggests bar seating improvement and booking ahead to avoid waiting.
+Caru' cu Bere,2025-09,5,Friends,5,5,4,4,food;service;atmosphere,,,0,Excellent restaurant,"Group of sixteen enjoyed dinner and lunch; wide menu, friendly staff, and an attractive historic venue."
+Caru' cu Bere,2025-12,4,Family,5,4,5,5,food;service;value;atmosphere,,,0,Magnificent in every way!,Stunning palace setting and excellent dishes; prices seem high for Romania but match Italian restaurants.
+Caru' cu Bere,2025-10,5,Couples,,,,,atmosphere;food;reservation;show,,,0,Trying to believe!,"Dined on the balcony during a violinist performance; found dishes exquisite and waiters kind, recommends booking early."
+Caru' cu Bere,2026-01,2,Couples,,,,,,wait;food;billing,service,0,It gets better,"Long wait for dishes, overcooked burger, and a high bill; quaint place but would not return."
+Caru' cu Bere,2025-11,5,Family,5,5,5,5,atmosphere;service;food;show;portion,wait,,1,Dinner at Caru’cu bere,"Busy but impressive interior and attentive staff; live entertainment, plentiful tasty food, and advance booking advised."
+Caru' cu Bere,2025-12,5,Couples,,,,,atmosphere;show;food;value,,,0,"Wonderful decorations, entertainment, and good",Festive Christmas decor and dancers involving guests made dinner fun; excellent traditional dishes at honest prices.
+Caru' cu Bere,2026-02,5,Couples,,,,,atmosphere;show;food;service,value,,1,Surprisingly nice,"Accepted pricier tourist rates, yet praised the string quartet, menu, tasty food, and attentive staff."
+Caru' cu Bere,2025-08,3,Family,3,4,3,5,atmosphere,value;food;billing,,0,A typical and characteristic place,"Historic and characteristic venue, but a meal for two felt expensive compared with places offering better food."
+Caru' cu Bere,2025-08,2,Family,,,,,,food;service,,1,Expected much more and disappoints.,"Hard pork steak returned, sour sarmale, and a dismissive manager response; expected much more from this famous restaurant."
+Caru' cu Bere,2025-07,4,Couples,5,3,4,5,food;atmosphere;show,service;billing,,1,"Mulțumesc for the Music, Meh","Enjoyed traditional food and a string quartet, but a rude waiter and a mandatory service fee soured the visit."
+Caru' cu Bere,2025-11,5,Family,5,5,5,5,food;service;atmosphere;show,,,1,Amazing Experience at Caru’ cu,"Attentive server and outstanding pork; dancing made the night unforgettable, and guests joined in."
+Caru' cu Bere,2025-10,5,Couples,,,,,atmosphere;food;reservation;show;drinks,,,1,Unforgettable surroundings,"Stunning venue with house beer and traditional food; indoor tables need advance booking, and papanasi were a favourite."
+Caru' cu Bere,2025-02,4,Couples,,,,,food;value,,atmosphere;reservation,0,Typical Romanian dishes in the,"Central Bucharest spot for typical Romanian dishes; ground and first floors need booking. Good food, reasonable prices."
+Caru' cu Bere,2026-08,5,Couples,,,,,food;service,,atmosphere,1,Must do experience in Bucharest,Breathtakingly beautiful historic dining room and excellent food; server Ionut gave great care. A must-do in Bucharest.
+Caru' cu Bere,2025-05,2,Business,,,,,,billing;value;food,drinks;service,0,"Tourist rip-off, be careful!","Great atmosphere, but a 1-liter beer arrived instead of a half-liter and was ignored; food disappointing; 72 euros paid."
+Caru' cu Bere,2025-05,3,Family,2,4,2,5,atmosphere;show;portion,food;value,,0,Would stay there just for,Lovely building and dance shows make it pleasant; portions are plentiful but quality mediocre and prices above average.
+Caru' cu Bere,2025-04,4,Couples,,,,,atmosphere;service,food;value,,1,Not So Yum!,"Overrated; you pay mainly for ambience and history, food not great, though service was good. Other places better for dinner."
+Caru' cu Bere,2025-05,5,Friends,5,4,5,5,food;service;value;atmosphere;show,wait,,1,Absolute must!,"Stunning place with traditional music and dance; food was brilliant, and a short wait was fine since we drank while waiting."
+Hanu' lui Manuc,2026-08,4,Family,4,4,3,4,food;service;atmosphere;show;portion,value,,0,For a good meal in,"Good meal in a courtyard with live music; large portions, though prices run high."
+Hanu' lui Manuc,2026-08,5,Friends,,,,,food;service;atmosphere;show,,,0,Excellent in all aspects,"Group of six found varied, very good dishes, welcoming staff and great atmosphere."
+Hanu' lui Manuc,2026-08,5,Family,,,,,food;drinks;show;service,,,0,Don't miss it in Bucharest,"Delicious lamb stew, great cocktail, live music and a welcoming waiter."
+Hanu' lui Manuc,2026-06,2,Friends,,,,,,service;noise;value,,0,Poor service let this place,Large group found music too loud and staff hostile; food okay but pricey.
+Hanu' lui Manuc,2026-08,1,Family,,,,,,food,,0,Not tasty at all,Undercooked potatoes and bland platter aimed at tourists.
+Hanu' lui Manuc,2026-05,5,Couples,,,,,food;atmosphere;show;value;wait,,,0,An all round fantastic experience,"Seated quickly without booking; excellent food, lively shows, fair prices."
+Hanu' lui Manuc,2026-05,4,Solo,,,,,atmosphere;show;service,food;portion;wait,,0,"Touristy, but still good.",Idyllic courtyard and friendly service; food average with small portions.
+Hanu' lui Manuc,2026-04,2,Friends,2,4,1,2,service,food;value;atmosphere;show,,0,Nothing typical!,Group of fifteen expected typical Romanian dishes but got a generic set menu and short show.
+Hanu' lui Manuc,2026-06,4,Couples,,,,,atmosphere;show;service;wait,food;value,,0,Nice location.,Lovely central venue with shows; short waits but food seemed reheated and prices above average.
+Hanu' lui Manuc,2026-05,3,Couples,,,,,atmosphere,service;food;value;wait,,0,Very mediocre.,"Beautiful place, but slow service, bland steak and high prices."
+Hanu' lui Manuc,2026-06,5,Family,4,5,4,5,food;service;value;atmosphere,,,0,Family meal.,"Attentive waiter recommended dishes; typical, endearing place."
+Hanu' lui Manuc,2026-08,3,Couples,,,,,food,billing,,0,"Good food, but questionable sales","Quality food, but a complimentary aperitif was charged on the bill."
+Hanu' lui Manuc,2026-04,4,Friends,4,4,4,5,service;atmosphere,food;clean,,0,Great place excellent service,Busy but excellent service; cold lamb chops quickly replaced; cats roam the courtyard.
+Hanu' lui Manuc,2026-05,1,Family,,,,,,food;service;value,,0,Terrible food in a historic,"Undercooked pork, forgotten sides, dry duck and reheated food; expensive."
+Hanu' lui Manuc,2026-04,4,Family,5,5,3,5,food;service;atmosphere;show;portion,value,,0,Go back in time by,Traditional food and old Romanian music; prices high but servers fast.
+Hanu' lui Manuc,2026-08,4,Family,,,,,food;atmosphere;reservation,,,0,Very good.,"Pretty restaurant with typical Romanian food; grilled mici, soups, schnitzel and papanasi enjoyable; booking ahead advised."
+Hanu' lui Manuc,2026-05,5,Solo,,,,,food;atmosphere;show;value,,,0,Authentic and human,"Authentic traditional dishes, reasonable prices, and a skilled blues-jazz band."
+Hanu' lui Manuc,2026-02,1,Friends,,,,,,food;service;wait,,0,Disorganization and Menefreghismo,"Four families with children faced hour-plus waits, cold dishes, inconsistent meat doneness and unhelpful staff."
+Hanu' lui Manuc,2026-06,5,Friends,,,,,atmosphere;food;show;service;portion,,,0,Great atmosphere and food,"Lively atmosphere, traditional music and dancing, delicious food, huge papanasi, great service from a helpful waiter."
+Hanu' lui Manuc,2026-10,2,Solo,,,,,atmosphere,food;value,service,0,Beautiful restaurant but short on,"Beautiful courtyard worth seeing, but food poor, prices high; felt like a tourist trap."
+Hanu' lui Manuc,2026-03,1,Couples,1,3,1,1,value,food;service;noise,,0,Experience not to be redone,"Tasteless trout and tripe soup, loud live music made conversation hard, annoying waiter; price was fair."
+Hanu' lui Manuc,2026-05,3,Friends,,,,,show;atmosphere,food;value,,0,Overrated Experience Despite the,"Live music and setting enjoyable, but average food and high prices fell short of the reputation."
+Hanu' lui Manuc,2026-09,5,Friends,,,,,show;service;food;atmosphere;wait,,,0,Great experience!,"Attentive waiter with accurate suggestions, very quick service, amazing food, live music."
+Hanu' lui Manuc,2026-02,5,Family,5,5,5,5,atmosphere;food;service;show;value,,,0,An amazing experience in a,"Dinner in a beautiful wine cellar; friendly waiter, great traditional food, good value, live music and dancing."
+Hanu' lui Manuc,2026-09,5,Friends,4,5,4,5,service;food;atmosphere;show;value,,,0,Definitely recommended,"Large courtyard, crowded; attentive server, good food, modern and traditional shows."
+Hanu' lui Manuc,2026-01,1,Business,1,1,1,1,,food;service;billing;value,,0,in this restaurant treat the,"Felt targeted: menu mix-up, pressure to order wine early, sturgeon smaller than listed, premium prices."
+Hanu' lui Manuc,2026-06,4,Family,4,5,4,4,food;atmosphere;portion;show;value,,,0,A RESTAURANT WORTH VISITING.,"Pleasant terrace and music; tasty food, large portions, spectacular house bread, reasonable price."
+Hanu' lui Manuc,2025-12,2,Couples,,,,,food,billing;value;service;wait,,0,"We're upset, they've become expensive","Touristy with rising prices; food fine, but unordered extras on the bill, waiter vanished, long wait for check."
+Hanu' lui Manuc,2026-06,5,Family,,,,,food;service,wait,,0,"Great food, but rather long",Family lunch: burger and soups good; pastrami tough and salty; 30-minute wait; staff busy but polite.
+Hanu' lui Manuc,2025-08,5,Couples,,,,,food;service;atmosphere;show;drinks;wait,,,0,What a find! The reviews,"Packed authentic spot with live music; server Romeo great, fast food, tender meat, cold beer."
+Hanu' lui Manuc,2025-08,4,Couples,,,,,food;show,value;service;noise,,0,Characteristic and touristic,"Tender steaks and fresh pita; high prices, crowded, rushed waiters, live show included."
+Hanu' lui Manuc,2025-05,3,Couples,,,,,,food;service,,0,Disappointed,"Okay service; food arrived suspiciously fast, unremarkable, lamb overcooked, stew lukewarm."
+Hanu' lui Manuc,2025-04,5,Couples,,,,,atmosphere;food;service,,,0,Great Courtyard Eating Area,"Lunch in a pretty courtyard; huge burger, soup in bread excellent, very good service."
+Hanu' lui Manuc,2025-05,2,Friends,,,,,show,food;noise,,1,Tourist trap,"Folk dancing fun, but mixed grill bland, dessert overly boozy, group tour gave no menu choice."
+Hanu' lui Manuc,2025-11,5,Friends,5,5,5,5,food;service;value;atmosphere;show,,,0,Eat Outdoors or Inside,"Lentil soup, perfectly grilled trout, live quartet serenade; perfect birthday spot."
+Hanu' lui Manuc,2025-05,3,Couples,,,,,food,service,,0,Combative waitress. Good food.,Waitress pushed other dishes and forgot potatoes; table-side eggplant and the rest very good.
+Hanu' lui Manuc,2025-12,4,Friends,,,,,food;service;atmosphere,noise,,0,Pleasant,"Huge restaurant, fine food, friendly service, somewhat noisy."
+Hanu' lui Manuc,2025-05,5,Friends,,,,,wait;show;atmosphere;food;portion,,,0,Great traditional restaurant,"Got a table without booking after a short wait; live music, big portions; lamb mislabeled as beef."
+Hanu' lui Manuc,2025-09,5,Couples,,,,,food;drinks;atmosphere,,,0,Traditional cuisine,"Charming oldest inn; delicious mici, tasty chickpea soup, local iced beers."
+Hanu' lui Manuc,2025-05,4,Couples,3,4,3,5,atmosphere;service;show;food,,,0,Very nice!,"Large touristy complex; efficient welcome, well-served dishes, good dessert, music and dance at 8:15."
+Hanu' lui Manuc,2026-01,5,Couples,,,,,food;service;value;atmosphere,,,1,Nice and historical restaurant,"Historic gem; mici and platter good, prices reasonable, professional waiter."
+Hanu' lui Manuc,2025-07,5,Couples,,,,,food;atmosphere;show,value,,0,Authentic,"Beautiful garden venue with live music; touristy and a bit pricey, very good food."
+Hanu' lui Manuc,2025-07,4,Couples,,,,,show;food;service;drinks,,,0,Large Viking Ship Tour Lunch,"Group lunch for over 100 guests with singing and dancing; good food, wine and excellent service."
+Hanu' lui Manuc,2025-06,1,Couples,1,2,1,1,,food;value;noise;service,,0,Expensive for what's offered.,"Grill cold and dry, half uneaten; music too loud, staff refused to lower it."
+Hanu' lui Manuc,2025-12,5,Couples,,,,,food;atmosphere,service,,0,Historical,Historic venue with good food and atmosphere; service let it down.
+Hanu' lui Manuc,2025-12,2,Family,,,,,atmosphere,food;service,,0,Good atmosphere but unhelpful wait,Coeliac dietary needs were ignored by an unhelpful waiter despite a good atmosphere.
+Hanu' lui Manuc,2026-04,5,Friends,,,,,food,,,0,Traditional Romanian food,Enjoyable traditional Romanian food.
+Hanu' lui Manuc,2026-04,5,Couples,,,,,food;drinks,noise,,0,Great meat and beer,"Great meat and beer, though the music was loud."
+Hanu' lui Manuc,2026-08,3,Solo,4,3,4,5,food;atmosphere,service,,0,"Very nice ambiance, good food,","Nice ambiance and good food, but the server disappeared for long stretches."
+Hanu' lui Manuc,2025-12,1,Couples,,,,,,food;service;clean,,0,Absolutely shocking meal,"Cold reheated food, a cat at the table and rushed service."
+Hanu' lui Manuc,2026-03,4,Couples,,,,,portion;drinks;atmosphere,,,0,Cool old inn,Huge portions and good house beer in an old inn setting.
+Hanu' lui Manuc,2026-03,5,Friends,,,,,food;service;atmosphere,,,0,Super positive experience,Very positive overall experience.
+Hanu' lui Manuc,2025-12,3,Couples,3,4,4,5,atmosphere,food,,0,Food Review - Disappointed,Bony salmon served lukewarm; setting was pleasant.
+Hanu' lui Manuc,2026-01,5,Couples,5,5,5,5,food;service;value;atmosphere,,,0,Best restaurant in Bucharest,Called it the best restaurant in Bucharest.
+Hanu' lui Manuc,2025-09,1,Friends,,,,,,wait;reservation;food,,0,Regrettable,Long wait despite a reservation and a wrong gluten-free meal.
+Hanu' lui Manuc,2025-10,5,Couples,5,4,5,5,food;atmosphere,service,,0,Dinner in Bucuresti,Enjoyable dinner though the service was hectic.
+Hanu' lui Manuc,2025-11,5,Couples,,,,,atmosphere;drinks,value,,0,Bucharest’s oldest inn lives up,"Oldest inn lives up to its reputation; house beer good, prices high."
+Hanu' lui Manuc,2025-12,1,Solo,4,1,4,1,,service,,0,Traumatic dinner night,Rude waiters made the dinner very unpleasant.
+Hanu' lui Manuc,2025-09,4,Couples,,,,,atmosphere,wait;food,,0,Great if you value atmosphere,Great atmosphere but slow service and cold plates.
+Hanu' lui Manuc,2026-01,5,Friends,,,,,food,,,0,Good restaurant,Good restaurant.
+Hanu' lui Manuc,2025-11,3,Family,,,,,,wait;value,,0,Classic overrated experience,Slow service and overpriced; felt overrated.
+Hanu' lui Manuc,2026-02,5,Family,,,,,food;drinks,,,0,Delicious grill,Delicious grill and complimentary wine.
+Hanu' lui Manuc,2025-10,1,Business,1,1,1,1,,wait;food;billing,,0,After 1.5 hours Waiting time,"Waited 1.5 hours, kebab unavailable, and still charged for drinks."
+Hanu' lui Manuc,2026-06,5,Business,,,,,food;atmosphere,,,0,"Awesome, a wonderful moment!!!",A wonderful moment.
+Hanu' lui Manuc,2025-11,5,Family,,,,,food;atmosphere,,,0,Dinner Hanu'Lui Manuc,Pleasant family dinner.
+Hanu' lui Manuc,2025-11,1,Solo,1,1,1,3,,food;billing;service,,0,food poising,Undercooked kebab caused illness; a tip was added to the bill.
+Hanu' lui Manuc,2025-11,5,Solo,,,,,food,,,0,A taste of Romanian history,Enjoyed the vizier pork knuckle and historic setting.
+Hanu' lui Manuc,2025-10,4,Business,,,,,atmosphere;food,,,0,Restaurant in the Old,Good restaurant in the Old Town.
+Hanu' lui Manuc,2025-09,3,Friends,,,,,,service;wait,,0,Visited 4 times over a,Regular visitor ignored for 15 minutes on the latest visit.
+Hanu' lui Manuc,2026-05,4,Friends,,,,,service,food,,0,Excellent service,Set menu average but service excellent.
+Hanu' lui Manuc,2026-01,1,Couples,,,,,,food,,0,Stay Away!,Tough grilled meat.
+Hanu' lui Manuc,2025-11,4,Couples,,,,,food,value;wait;reservation,,0,Go for the experience not,"Pricey and slow with a 2-hour table limit, but good lamb."
+Hanu' lui Manuc,2025-10,5,Family,,,,,food;atmosphere,,,0,AMAZING FOOD AND ATMOSPHERE.,Excellent lamb knuckle and atmosphere.
+Hanu' lui Manuc,2025-08,3,Couples,5,5,4,4,food,billing,,0,Lunch,Good lunch but an unclear extra charge on the bill.
+Hanu' lui Manuc,2025-10,3,Family,,,,,,service;food,,0,Bad experience,Rude staff and poor vegetarian/gluten-free options.
+Hanu' lui Manuc,2026-04,4,Friends,,,,,atmosphere,value,,0,Historic venue in the center,"Historic venue in the centre, somewhat pricey."
+Hanu' lui Manuc,2025-09,5,Friends,,,,,food;service,,,0,LUNCH WITH FRIENDS,Good lunch with friends.
+Hanu' lui Manuc,2025-02,5,Friends,5,5,5,5,food;service;value;atmosphere,,,0,Great dining experience,Great dining experience.
+Hanu' lui Manuc,2025-08,4,Family,,,,,clean;atmosphere,food,,0,Tourist restaurant,"Touristy with some disappointing dishes, but clean."
+Hanu' lui Manuc,2025-08,1,Family,1,1,1,1,,food,,0,I do not recommend this,Poor burger; does not recommend.
+Hanu' lui Manuc,2026-08,4,Friends,,,,,food;atmosphere,,,0,Tourist lunch,Decent tourist lunch.
+Hanu' lui Manuc,2025-07,4,Friends,4,3,4,5,atmosphere;food,service,,0,definitely a must-do in Bucharest,"A must-do, though waiter pushed wine upsell."
+Hanu' lui Manuc,2025-06,5,Friends,5,5,5,5,food;service;atmosphere,,,0,"Busy, Touristy, but Very Very",Busy and touristy but very good.
+Hanu' lui Manuc,2026-08,5,Family,5,5,5,5,atmosphere;food,,,0,Cosy courtyard,Cosy courtyard and good food.
+Hanu' lui Manuc,2025-05,4,Couples,,,,,food,wait,,0,Great Romanian dinner,Great Romanian dinner but long waits.
+Hanu' lui Manuc,2026-01,3,Couples,,,,,,reservation;wait,,0,Would not stay there again,Seated in a hallway and food an hour late.
+Hanu' lui Manuc,2025-08,2,Couples,,,,,,food;service;clean,,0,Underwhelmed by this tourist trap,"Reheated food, rushed service, cats around."
+Hanu' lui Manuc,2026-06,5,Solo,4,5,3,5,atmosphere;service,,,0,Historic and pleasant space,Historic and pleasant space.
+Hanu' lui Manuc,2026-05,5,Friends,,,,,food;atmosphere,,,0,Old Town Bucharest- Traditional Romanian,Traditional Romanian food in the Old Town.
+Hanu' lui Manuc,2025-03,3,Friends,,,,,atmosphere,food,,1,"Pretty average food, loved the","Greasy, average food but loved the setting."
+Hanu' lui Manuc,2025-02,1,Couples,1,2,1,3,,food;value,,1,No good food at all,Gamey lamb; no good food.
+Hanu' lui Manuc,2025-02,3,Couples,1,3,1,4,,food;billing,,1,One time experience in the,Undercooked food and pressure to tip.
+Hanu' lui Manuc,2025-12,1,Couples,,,,,,reservation,,1,Messy,Seated in the corridor; messy.
+Hanu' lui Manuc,2025-01,4,Couples,,,,,food,billing,,1,Very good but service to,Very good but a tipping dispute with service.
+Hanu' lui Manuc,2025-10,2,Friends,3,2,3,5,,billing;service,,1,Not recommended,Charged for courses never delivered.
+Hanu' lui Manuc,2025-01,5,Family,,,,,food;atmosphere,,,1,Family get together!,Good family get-together.
+Hanu' lui Manuc,2025-02,2,Couples,,,,,,billing;food,,1,Incredibly disappointing,Bread charged and very disappointing.
+Hanu' lui Manuc,2025-04,3,Couples,3,2,3,3,,noise;service,,1,The CaravanSerraglio,Crowded by tour groups; average service.
+Hanu' lui Manuc,2025-01,5,Friends,,,,,food;atmosphere,,,1,Simply authentic!,Simply authentic.
+Hanu' lui Manuc,2025-05,4,Couples,4,5,3,3,food;clean,,,1,Everything delicious and clean top,Everything delicious and clean.
+Hanu' lui Manuc,2025-05,4,Family,,,,,atmosphere,food,,1,"Super location, average food","Super location, average food."
+Hanu' lui Manuc,2025-02,1,Couples,1,2,1,3,,food;value,,1,"Honestly, don't waste your time",Not worth the time.
+Hanu' lui Manuc,2025-03,1,Couples,,,,,,food,,1,Worst breakfast I've ever eaten,Worst breakfast ever eaten.
+Hanu' lui Manuc,2025-05,1,Couples,,1,1,1,,food;service,,1,Extremely disappointed,Extremely disappointed.
+Hanu' lui Manuc,2025-03,5,Friends,,,,,food,,,1,Your group stop,Good stop for a tour group.
+Hanu' lui Manuc,2025-01,5,Couples,,,,,food;wait,,,1,Tasty and speedy!,Tasty lamb chops served quickly.
+Hanu' lui Manuc,2025-10,1,Business,,,,,,noise,,1,To be avoided,Too loud; to be avoided.
+Hanu' lui Manuc,2025-01,2,Friends,,,,,,value;billing,,1,Tourist trap,Bill felt too high; tourist trap.
+Hanu' lui Manuc,2025-02,5,Couples,5,5,5,5,food;service;atmosphere,,,1,An experience to repeat absolutely,An experience to repeat.
+Hanu' lui Manuc,2025-02,1,Couples,,,,,,food;value,,1,Absolutely not!!!,Fatty food and unjustified bill.
+Hanu' lui Manuc,2026-04,5,Couples,,,,,food;atmosphere,,,1,Tradition rewards,Tradition rewarded.
+Hanu' lui Manuc,2025-03,5,Couples,,,,,atmosphere,,,1,Beautiful place! we got there,Beautiful place.
+Hanu' lui Manuc,2025-01,5,Family,5,5,5,5,food,,,1,A place worth trying!!!,A place worth trying.
+Hanu' lui Manuc,2026-01,5,Couples,4,5,4,5,atmosphere;food,,,1,Dining inside the history of,Dining inside a piece of history.
+Hanu' lui Manuc,2025-09,2,Couples,,,,,,food,,1,Not so great experience,Bone found in bean soup.
+Hanu' lui Manuc,2025-09,3,Couples,3,4,3,5,,noise;food,,1,Lunch so-so,"Crowded, lunch so-so."
+Hanu' lui Manuc,2025-10,4,Friends,,,,,show,noise,,1,We must know him,Enjoyed the show though too loud.
+Hanu' lui Manuc,2025-02,3,Couples,,,,,,service,,1,Disappointing and poor service,Ordered wine never arrived; poor service.
+Hanu' lui Manuc,2025-01,5,Couples,,,,,atmosphere,,,1,A must visit,Cellar is a must visit.
+Hanu' lui Manuc,2025-02,3,Couples,,,,,,service;billing,,1,NI,Wrong courses served; watch the tips.
+Hanu' lui Manuc,2025-01,3,Family,,,,,atmosphere;show,food,,1,Chicken schnitzel,Chicken schnitzel was underwhelming and slightly pink; decor and live music were enjoyable.
+Hanu' lui Manuc,2025-01,5,Friends,,,,,food;atmosphere;show;value;service,,,1,"The food was delicious, the","Delicious food, lively live music, affordable prices and prompt service."
+Hanu' lui Manuc,2026-06,4,Friends,,,,,food;service;atmosphere,noise,,0,The music nearly ruined it.,"Excellent food, setting and service, but the live music was far too loud for too long."
+Hanu' lui Manuc,2025-01,1,Couples,,,,,food,reservation;value,,1,FOOD IS NOT EVERYTHING,"Good food but expensive, and a narrow corridor table with no view of the main room."
+Hanu' lui Manuc,2025-01,1,Couples,,,,,,billing;food;value,,1,Trap for tourists,Advertised lunch deal not available; goulash poor and pricey.
+Hanu' lui Manuc,2025-10,1,Couples,,,,,,service;wait;food,,0,"Oh, bad.","Water never delivered, lamb dish unavailable, then served cold after an hour."
