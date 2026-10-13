@@ -11,6 +11,7 @@ Management can pick a predefined question or ask their own (English or Romanian)
 | `index.html` | The full application: a single self-contained page (React 18 + htm from CDN, no build step). |
 | `AGENT_INSTRUCTIONS.md` | The agent's specification — role, data-integrity rules, dashboard views, predefined questions, briefing requirements. |
 | `reference/Old Town Reviews Desk.md` | The original reference dashboard the agent was built from (qualitative findings, platform ratings, sources). |
+| `performance-overview/index.html` | **City Grill Performance Overview** — a separate financial dashboard (Romanian UI): consolidated revenue 2023–2025, average bill, 2026 EUR 100M target, YoY growth, EUR/RON switch at BNR annual averages, sourced data table. Self-contained page (React 18 from CDN, data embedded). |
 
 ## Running it
 
@@ -46,3 +47,12 @@ The written answers and briefing call Claude through the claude.ai artifact runt
 - [Tripadvisor – Hanu' lui Manuc](https://www.tripadvisor.com/Restaurant_Review-g294458-d739908-Reviews-Restaurant_Hanu_Lui_Manuc-Bucharest.html)
 - [RHN – Hanul lui Manuc, a strategic pillar for City Grill](https://rhn.ro/en/hanul-lui-manuc-a-strategic-pillar-for-city-grill/)
 - [Financial Intelligence](https://financialintelligence.ro/?p=24097)
+
+## City Grill Performance Overview (financial dashboard)
+
+Open `performance-overview/index.html` in a browser (or, with GitHub Pages enabled, at `/performance-overview/`). It needs no backend and no claude.ai runtime.
+
+- **Data:** company-reported revenue (FY2023 RON 280M, FY2024 RON 339M, FY2025 EUR 90M consolidated / EUR 75M existing brands), the FY2026 target (EUR 100M / RON 500M+), and average-bill observations, taken from public company releases reproduced in the Romanian business press. Source links are in the page.
+- **Currency:** EUR and RON are converted at the BNR annual average of the same year (2023 4.9464, 2024 4.9746, 2025 5.0415). The 2026 target uses the two values announced by the company; no 2026 average rate exists yet.
+- **Limits:** no group profit, EBITDA, monthly revenue or 2026 actual revenue is public, so none is shown. The 2025 consolidated growth includes acquisitions (Marty Restaurants, Aubergine) and is not organic. The H1 2026 growth (+2%) has an unspecified scope.
+- Independent dashboard built on public data; not an official City Grill Group document. Logo and colours taken from citygrillgroup.ro.
