@@ -46,7 +46,10 @@ python3 tools/build_data.py path/to/city_grill_reviews_coded.csv v1/index.html
 
 ## The AI analyst outside claude.ai
 
-Claude's interpretation of each answer, the routing of free-text questions and the Claude-written briefing use the claude.ai artifact runtime (`window.claude`), which only exists when the page is opened as a claude.ai Artifact. On GitHub Pages or locally, every chart, filter, computed answer, follow-up and the computed briefing still work, and the page says that Claude is not reachable. To add live AI answers to a standalone deployment, route those calls through your own backend that proxies the Anthropic API (never put an API key in the page).
+On claude.ai the page uses Claude directly (`window.claude`). Elsewhere (GitHub Pages, a local file) it has two modes:
+
+1. **Calculated answers (default).** The page reads the restaurant, topic, dish, period and type of question, computes the answer from the reviews and writes it as an analyst would: conclusion first, comparisons, an example review, a recommended action and follow-up questions.
+2. **Claude answers via your own proxy (optional).** Deploy `tools/analyst-proxy-worker.js` as a Cloudflare Worker with your `ANTHROPIC_API_KEY` as a secret, then set `ANALYST_ENDPOINT` in `index.html` to the Worker URL. The page sends the question plus the computed data (~100 KB) and shows Claude's answer; if the proxy fails it falls back to calculated answers. Never put an API key in the page itself.
 
 ## Data limitations
 

@@ -458,17 +458,19 @@ const chipsEl=document.getElementById("chips"), logEl=document.getElementById("l
 PRESET.forEach(q=>{ const b=document.createElement("button"); b.type="button"; b.className="chip"; b.textContent=q; b.addEventListener("click",()=>ask(q)); chipsEl.appendChild(b); });
 function md(s){
   const lines=esc(s).split("\n"); let out="", list=null;
-  for(let l of lines){ l=l.replace(/\*\*(.+?)\*\*/g,"<b>$1</b>"); const m=l.match(/^\s*(?:[-*•]|(\d+)\.)\s+(.*)/);
+  for(let l of lines){ if(l.startsWith("~")){ if(list){ out+=`</${list}>`; list=null; } out+=`<p class="note" style="margin-top:10px">${l.slice(1)}</p>`; continue; } l=l.replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/\*([^*]+?)\*/g,"<i>$1</i>"); const m=l.match(/^\s*(?:[-*•]|(\d+)\.)\s+(.*)/);
     if(m){ const t=m[1]?"ol":"ul"; if(list!==t){ if(list) out+=`</${list}>`; out+=`<${t}>`; list=t; } out+=`<li>${m[2]}</li>`; continue; }
     if(list){ out+=`</${list}>`; list=null; } if(l.trim()) out+=`<p>${l.replace(/^#+\s*/,"")}</p>`; }
   if(list) out+=`</${list}>`; return out;
 }
 function bubble(cls,h){ const d=document.createElement("div"); d.className="msg "+cls; d.innerHTML=h; logEl.appendChild(d); logEl.scrollTop=logEl.scrollHeight; return d; }
 
+// Optional: URL of your own proxy to the Anthropic API (see tools/analyst-proxy-worker.js). Leave empty to use on-page answers outside claude.ai.
+const ANALYST_ENDPOINT="";
 let samplePromise=(async()=>{ try{ return window.claude ? await window.claude.use("sample") : null; }catch(e){ return null; } })();
 let toolsOK=false;
 samplePromise.then(async s=>{ if(s){ try{ const l=await s.limits(); toolsOK=!!(l&&l.tools); }catch(e){} }
-  note.textContent = s ? "Live answers by Claude, grounded in the review data on this page." : "Claude is not reachable here, so answers are calculated on this page: the analyst reads the restaurant, topic, dish, period and type of question, then counts and compares the reviews. Open the page as a claude.ai artifact for Claude-written answers."; });
+  note.textContent = s ? "Live answers by Claude, grounded in the review data on this page." : (ANALYST_ENDPOINT?"Answers by Claude through your analyst proxy; if it is unreachable, answers are calculated on this page.":"Claude is not reachable here, so answers are calculated on this page: the analyst reads the restaurant, topic, dish, period and type of question, then counts and compares the reviews. Open the page as a claude.ai artifact for Claude-written answers."); });
 
 const slim=s=>({reviews:s.reviews,avg_rating:s.avg_rating,stars_1_to_5:s.stars_1_to_5,neg_pct:s.neg_pct,pos_pct:s.pos_pct,themes:s.themes});
 function contextPack(q){
@@ -512,7 +514,13 @@ async function ask(q){
   const a=bubble("a",`<span class="who">Analyst</span><p class="note">Thinking…</p>`);
   btn.disabled=true; [...chipsEl.children].forEach(c=>c.disabled=true);
   const s=await samplePromise;
-  if(!s){ a.innerHTML=`<span class="who">Analyst · calculated on this page</span>`+md(localAnswer(q)); addFollow(a); logEl.scrollTop=logEl.scrollHeight; done(); return; }
+  if(!s&&ANALYST_ENDPOINT){
+    try{ const r=await fetch(ANALYST_ENDPOINT,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({system:rules(),messages:[{role:"user",content:"DATA (computed by this page from the review records):\n"+JSON.stringify(contextPack(q))},{role:"assistant",content:"Understood. I'll answer only from this data."},...history.slice(-6),{role:"user",content:q}]})});
+      const j=r.ok?await r.json():null;
+      if(j&&j.text){ a.innerHTML=`<span class="who">Analyst</span>`+md(j.text); history.push({role:"user",content:q},{role:"assistant",content:j.text.slice(0,2000)}); localAnswer(q); addFollow(a); done(); return; }
+    }catch(e){}
+  }
+  if(!s){ a.innerHTML=`<span class="who">Analyst · calculated on this page</span>`+md(localAnswer(q)); addFollow(a); toTop(a); done(); return; }
   const t0=Date.now(); const tick=setInterval(()=>{ const p=a.querySelector(".note"); if(p&&p.dataset.live!=="0") p.textContent=`${p.dataset.msg||"Thinking…"} ${Math.round((Date.now()-t0)/1000)}s`; },1000);
   const setMsg=m=>{ const p=a.querySelector(".note"); if(p){ p.dataset.msg=m; } };
   const msgs=[{role:"user",content:rules()+"\n\nDATA (computed by this page from the review records):\n"+JSON.stringify(contextPack(q))},...history.slice(-6),{role:"user",content:q}];
@@ -522,7 +530,7 @@ async function ask(q){
     let res;
     try{ res=await run(toolsOK); }
     catch(e){ if(toolsOK&&(e.code==="tools_unavailable"||e.code==="invalid_request")){ toolsOK=false; res=await run(false); } else throw e; }
-    a.innerHTML=`<span class="who">Analyst</span>`+md(res.text);
+    a.innerHTML=`<span class="who">Analyst</span>`+md(res.text); localAnswer(q); addFollow(a);
     history.push({role:"user",content:q},{role:"assistant",content:res.text.slice(0,2000)});
   }catch(e){
     const c=e&&e.code; const why=c==="not_granted"?"Permission to ask Claude was declined. Reload the page to be asked again.":c==="rate_limited"?"Too many requests just now; try again in a minute.":`The live request failed (${esc(c||"error")}).`;
@@ -530,178 +538,247 @@ async function ask(q){
   }
   clearInterval(tick); done();
 }
-function addFollow(a){ if(!lastFollow.length) return; const w=document.createElement("div"); w.className="chips"; w.style.marginTop="8px"; w.innerHTML=`<span class="note" style="width:100%">Follow-up questions:</span>`; lastFollow.forEach(q=>{const b=document.createElement("button"); b.type="button"; b.className="chip"; b.textContent=q; b.onclick=()=>ask(q); w.appendChild(b);}); a.appendChild(w); lastFollow=[]; }
+function toTop(a){ logEl.scrollTop=a.getBoundingClientRect().top-logEl.getBoundingClientRect().top+logEl.scrollTop-8; }
+function addFollow(a){ if(!lastFollow.length) return; const w=document.createElement("div"); w.className="chips"; w.style.marginTop="8px"; w.innerHTML=`<span class="note" style="width:100%">Follow-up questions:</span>`; lastFollow.forEach(q=>{const b=document.createElement("button"); b.type="button"; b.className="chip"; b.textContent=q; b.onclick=()=>ask(q); w.appendChild(b);}); a.appendChild(w); lastFollow=[]; toTop(a); }
 function done(){ btn.disabled=false; [...chipsEl.children].forEach(c=>c.disabled=false); }
-let lastFollow=[];
 // ---------- local analyst: answers computed on this page (used when Claude is not reachable) ----------
-const VN={ccb:"Caru' cu Bere",hlm:"Hanu' lui Manuc"};
+let lastFollow=[];
+const VN={ccb:"Caru' cu Bere",hlm:"Hanu' lui Manuc"}, VS={ccb:"Caru'",hlm:"Manuc"};
 const THEME_RX={
-  food:/food|dish|meal|cook|taste|tasty|menu item|m[aâ]ncare|preparat|gust|m[aâ]ncarea|kitchen|chef|buc[aă]t/i,
+  food:/food|dish|meal|cook|taste|tasty|m[aâ]ncare|preparat|gust|kitchen|chef|buc[aă]t/i,
   service:/service|servic|staff|waiter|waitress|server|ospătar|ospatar|chelner|personal|rude|friendly|servire/i,
   atmosphere:/atmospher|ambian|ambien|decor|interior|setting|building|courtyard|curte|loca[tț]i/i,
   show:/show|music|muzic|danc|dans|l[aă]utar|folk|spectacol/i,
   value:/price|pric|value|expensive|cheap|cost|scump|pre[tț]|money|bani|calitate-pre|overpriced|worth/i,
   wait:/wait|slow|speed|quick|fast|a[sș]tept|lent|durat|delay|întârz|intarz/i,
-  reservation:/reserv|rezerv|book|seat|table|mas[aă]|corridor|hol\b/i,
-  billing:/bill|tip\b|tips|tipping|bac[sș]i|not[aă] de plat|charge|receipt|bon\b|factur|overcharg|card/i,
-  clean:/clean|dirty|hygien|cur[aă][tț]|murdar|cat\b|cats|pisic|toilet|toalet/i,
-  noise:/noise|noisy|loud|crowd|zgomot|g[aă]l[aă]gi|aglomer|group|tour/i,
-  drinks:/drink|beer\b|wine|vin\b|vinul|b[aă]utur|cocktail|țuic|tuic|palinc/i,
-  portion:/portion|por[tț]i|size|huge|small plate|cantitat/i
+  reservation:/reserv|rezerv|book|seat|table|mas[aă]|corridor/i,
+  billing:/bill|tip\b|tips|tipping|bac[sș]i|not[aă] de plat|charge|receipt|factur|overcharg/i,
+  clean:/clean|dirty|hygien|cur[aă][tț]|murdar|\bcats?\b|pisic|toilet|toalet|restroom/i,
+  noise:/noise|noisy|loud|crowd|zgomot|g[aă]l[aă]gi|aglomer|tour group/i,
+  drinks:/drink|beer\b|wine|\bvin\b|vinul|b[aă]utur|cocktail|țuic|tuic|palinc/i,
+  portion:/portion|por[tț]i|size|cantitat/i
 };
+const TNAME={food:"food",service:"service",atmosphere:"the setting",show:"the music and show",value:"value for money",wait:"waiting times",reservation:"reservations and seating",billing:"the bill and tipping",clean:"cleanliness",noise:"noise and crowding",drinks:"drinks",portion:"portion sizes"};
+const ACTION={food:"add temperature and quality checks at the pass, starting with grills, lamb and platters",service:"coach floor staff on handling complaints without arguing and put a manager on the floor at peak times",value:"review prices against portions and make the lunch and set menus visible to every guest",wait:"track order-to-table times at peak hours and adjust kitchen and floor staffing",reservation:"honour booked tables and tell guests before seating them in corridors, balconies or away from the show",billing:"itemise every charge, stop billing items presented as free, and use a neutral tip prompt with a clear no-tip option",noise:"set a volume limit for the show and offer quieter tables on request",clean:"keep cats out of dining areas and add hourly restroom checks",show:"keep the show traditional and audible without drowning out conversation",drinks:"speed up drinks service at busy times",portion:"match portion sizes to what the menu describes",atmosphere:"protect the setting, which is what guests praise most"};
 let lastCtx={};
+const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
+function fracOf(p,w="reviewers"){ const f=frac(p); return /^about (a|half|two)|^almost/.test(f)?`${f} of ${w}`:`${f} ${w}`; }
+function frac(p){ if(p==null) return "–"; return p<.08?"fewer than one in ten":p<.15?"about one in ten":p<.22?"about one in five":p<.29?"about one in four":p<.4?"about a third":p<.6?"about half":p<.7?"about two thirds":p<.85?"about three in four":"almost all"; }
+function times(a,b){ if(!a||!b) return null; const r=a/b; return r>=2.5?`${r.toFixed(1)} times as often as`:r>=1.8?"about twice as often as":null; }
+const P0=x=>Math.round(100*x)+"%";
+const r1=x=>x==null?"–":(+x).toFixed(1), r2=x=>x==null?"–":(+x).toFixed(2);
+const T=(v,f={})=>select({venue:v,source:"T",...f}), G=(v,f={})=>select({venue:v,source:"G",...f});
 function parseQ(q){
-  const s=q.toLowerCase();
-  let v=[]; if(/caru|ccb|\bbere\b(?!.*beer)|stavropoleos/.test(s)) v.push("ccb"); if(/manuc|hanu|hlm|hanul/.test(s)) v.push("hlm");
-  const themes=Object.keys(THEME_RX).filter(k=>THEME_RX[k].test(s.replace(/caru'?\s*cu\s*bere/g," ")));
+  const s=q.toLowerCase(), s2=s.replace(/caru'?\s*cu\s*bere/g," caru ");
+  let v=[]; if(/caru|ccb|stavropoleos/.test(s)) v.push("ccb"); if(/manuc|hanu|hlm/.test(s)) v.push("hlm");
+  let themes=Object.keys(THEME_RX).filter(k=>THEME_RX[k].test(s2));
   if(/loud|noise|noisy|zgomot|g[aă]l[aă]gi/.test(s)&&themes.includes("noise")) themes.sort((a,b)=>(b==="noise")-(a==="noise"));
   const dishes=Object.keys(DISH).filter(k=>DISH[k].test(s.replace(VENRX," ")));
-  const year=(s.match(/\b(2025|2026)\b/g)||[]); const yr=year.length===1?year[0]:null;
+  const yrs=s.match(/\b(2025|2026)\b/g)||[], yr=yrs.length===1?yrs[0]:null;
   const has=rx=>rx.test(s);
   const intent=
-    has(/brief|raport pentru|summary for management|sintez/)?"briefing":
+    has(/brief|sintez|summary for management/)?"briefing":
     has(/other analys|alte analiz|what else|next analys|overlook|ignor|hidden|pattern|tipar/)?"ideas":
     has(/menu price|pre[tț]uri.*meniu|menu.*(chang|histor|evol)|price (chang|histor|increase)|scumpir|comparable menu/)?"menu":
-    has(/trend|chang|evol|over time|from 2025|2025.*2026|în timp|schimbat|frequent|more often|mai des|balance/)?"trend":
-    has(/compar|vs\.?|versus|better|differ|diferen|mai bun|which restaurant|care restaurant/)?"compare":
+    has(/trend|chang|evol|over time|2025.*2026|în timp|schimbat|frequent|more often|mai des|balance|improv|worse|declin/)?"trend":
+    has(/compar|vs\.?|versus|better|differ|diferen|mai bun|which restaurant|care restaurant|practice/)?"compare":
     has(/fix|priorit|first|should management|ce ar trebui|recommend|recomand|improve|îmbun|imbun|action/)?"priorities":
-    has(/waiter|waitress|staff name|ospătari|ospatari|named|nume/)&&!themes.includes("billing")?"staff":
-    has(/reply|respond|răspun|raspun|owner/)?"replies":
+    has(/waiter|waitress|named|ospătari|ospatari|chelneri/)&&!themes.includes("billing")?"staff":
+    has(/reply|replies|respond|răspun|raspun|owner/)?"replies":
     dishes.length||has(/which dish|what dish|dishes|feluri|preparate|ce m[aâ]nc/)?"dishes":
     has(/complain|complaint|critic|negative|bad|worst|problem|reason|plâng|plang|nemul|negativ|motiv/)?"complaints":
     has(/praise|like|love|best|positive|good|laud|apreci|pozitiv|plac/)?"praise":
     themes.length?"theme":"search";
   return {v,themes,dishes,yr,intent,s};
 }
-const T=(v,f={})=>select({venue:v,source:"T",...f}), G=(v,f={})=>select({venue:v,source:"G",...f});
-const r2=x=>x==null?"–":(+x).toFixed(2);
-function themeLine(v,k,yr){
-  const g=G(v,{year:yr}), t=T(v,{year:yr});
-  const gm=g.filter(x=>x.th.includes(k)), tm=t.filter(x=>x.th.includes(k));
-  const gneg=gm.filter(x=>x.r<=2).length, gpos=gm.filter(x=>x.r>=4).length;
-  const tneg=tm.filter(x=>pol(x,k)<0).length, tpos=tm.filter(x=>pol(x,k)>0).length;
-  return {g:g.length,gt:g.filter(x=>x.t).length,gm:gm.length,gpos,gneg,t:t.length,tm:tm.length,tpos,tneg};
-}
-function examples(v,k,sign,n=3,yr){
-  let r=T(v,{year:yr}).filter(x=>!k||(x.th.includes(k)&&(sign<0?pol(x,k)<0:pol(x,k)>0)));
-  if(!k) r=r.filter(x=>sign<0?x.r<=2:x.r>=4);
-  return r.sort((a,b)=>b.d.localeCompare(a.d)).slice(0,n).map(x=>`  - ${x.d}, ${x.r}★: ${x.t}`);
-}
-function topThemes(v,f,which,n=4){
-  const s=summarize(f==="G"?G(v):T(v)).themes;
-  return Object.entries(s).filter(([k,o])=>o[which]>0).sort((a,b)=>b[1][which]-a[1][which]).slice(0,n).map(([k,o])=>`${THEMES[k].toLowerCase()} (${o[which]})`).join(", ")||"none";
-}
-function halfTable(v,k){
-  return HALVES.map(([l,f,t])=>{ const r=T(v,{from:f,to:t}); if(!r.length) return `${l}: no reviews`;
-    const base=`${l}: ${r2(avg(r.map(x=>x.r)))}★, 1–2★ ${fp(pct(r.filter(x=>x.r<=2).length,r.length))}`;
-    const extra=k?`, ${THEMES[k].toLowerCase()} complaints in ${fp(pct(r.filter(x=>x.th.includes(k)&&pol(x,k)<0).length,r.length))} of reviews`:"";
-    return `${base}${extra} (${r.length} ratings)`; }).join("; ");
-}
+// complaint / praise share for a theme among Tripadvisor reviews
+function tstat(v,k,f={}){ const r=T(v,f), m=r.filter(x=>x.th.includes(k)); const c=m.filter(x=>pol(x,k)<0).length, p=m.filter(x=>pol(x,k)>0).length; return {n:r.length,c,p,cs:r.length?c/r.length:null,ps:r.length?p/r.length:null}; }
+function rankThemes(v,which,f={}){ return Object.keys(THEMES).map(k=>({k,...tstat(v,k,f)})).filter(o=>o[which]>0).sort((a,b)=>b[which]-a[which]); }
+function example(v,k,sign,f={}){ const r=T(v,f).filter(x=>k?(x.th.includes(k)&&(sign<0?pol(x,k)<0:pol(x,k)>0)):(sign<0?x.r<=2:x.r>=4)).sort((a,b)=>b.d.localeCompare(a.d)); return r[0]?`*${VS[v]}, ${x2m(r[0].d)}, ${r[0].r}★:* “${r[0].t}”`:null; }
+const MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const x2m=d=>MON[+d.slice(5,7)-1]+" "+d.slice(0,4);
+const list=a=>a.length<=1?a.join(""):a.slice(0,-1).join(", ")+" and "+a[a.length-1];
+const yrAvg=(v,y)=>{const r=T(v,{year:y}); return r.length?avg(r.map(x=>x.r)):null;};
+const negShare=r=>r.length?r.filter(x=>x.r<=2).length/r.length:null;
 function followups(P){
   const k=P.themes[0], f=[];
-  if(P.intent!=="trend") f.push(k?`How have ${THEMES[k].toLowerCase()} complaints changed from 2025 to 2026?`:"How has sentiment changed from 2025 to 2026?");
-  if(P.intent!=="compare") f.push(k?`Compare both restaurants on ${THEMES[k].toLowerCase()}`:"Compare the two restaurants on food, service, atmosphere and value");
-  if(k!=="billing") f.push("What do guests say about the bill and tipping?");
+  if(P.intent!=="trend") f.push(k?`Have complaints about ${TNAME[k]} become more frequent?`:"How has sentiment changed from 2025 to 2026?");
+  if(P.intent!=="compare") f.push(k?`Compare both restaurants on ${TNAME[k]}`:"How do the two restaurants compare on food, service, atmosphere and value?");
+  if(P.intent!=="priorities"&&P.intent!=="briefing") f.push("What should management fix first?");
   if(P.intent!=="dishes") f.push("Which dishes get praised and which get criticised?");
   return f.slice(0,3);
 }
+const SRC_NOTE=()=>`~Calculated on this page from ${fmt(ROWS.filter(x=>x.s==="T").length)} Tripadvisor reviews (visits Jan 2025 – Oct 2026; a reading sample that leans critical) and ${fmt(ROWS.filter(x=>x.s==="G").length)} Google reviews (Aug–Oct 2026 only). Percentages are shares of reviewers in the sample, not of all guests.`;
+
 function localAnswer(q){
-  let P=parseQ(q);
-  // follow-up: reuse previous context when the question is short and names nothing new
-  if(!P.v.length&&!P.themes.length&&!P.dishes.length&&lastCtx.intent&&q.split(/\s+/).length<=6&&P.intent==="search") P={...lastCtx,s:P.s};
-  if(P.v.length&&!P.themes.length&&lastCtx.themes&&q.split(/\s+/).length<=6&&P.intent==="search") P={...lastCtx,v:P.v,intent:lastCtx.intent};
+  let P=parseQ(q); const short=q.trim().split(/\s+/).length<=6;
+  if(short&&!P.themes.length&&!P.dishes.length&&lastCtx.intent&&(P.intent==="search"||P.intent==="theme")) P={...lastCtx,v:P.v.length?P.v:lastCtx.v,s:P.s};
   lastCtx=P;
-  const V=P.v.length?P.v:["ccb","hlm"], k=P.themes[0], yr=P.yr, out=[];
-  const yrTxt=yr?` in ${yr}`:"";
-  const src=`Sources: Google Maps sample (Aug–Oct 2026, stars only define praise/complaint) and Tripadvisor 2025+ reading sample (paraphrased, coded per theme; skews critical).`;
+  const V=P.v.length?P.v:["ccb","hlm"], both=V.length===2, k=P.themes[0], yr=P.yr, F=yr?{year:yr}:{}, out=[];
+  const yt=yr?` in ${yr}`:"";
   switch(P.intent){
-  case "trend":{
-    out.push(`**${k?THEMES[k]+" over time":"Rating trend"}, Tripadvisor sample by half-year of visit.**`);
-    for(const v of V) out.push(`- **${VN[v]}:** ${halfTable(v,k)}.`);
-    for(const v of V){ const a=T(v,{year:"2025"}),b=T(v,{year:"2026"}); out.push(`- ${VN[v]} 2025 → 2026: ${r2(avg(a.map(x=>x.r)))}★ → ${r2(avg(b.map(x=>x.r)))}★ (${a.length} → ${b.length} ratings).`); }
-    out.push(`- Google only covers Aug–Oct 2026, so it cannot show change over time. H2 2026 is partial (Jul–Oct) and Hanu' lui Manuc has few recent Tripadvisor ratings: treat as directional.`);
-    break;}
+
   case "compare":{
-    const ks=P.themes.length?P.themes:["food","service","atmosphere","value"];
-    out.push(`**Caru' cu Bere vs Hanu' lui Manuc${yrTxt}.**`);
-    out.push(`- Google sample: ${r2(avg(G("ccb").map(x=>x.r)))}★ vs ${r2(avg(G("hlm").map(x=>x.r)))}★ (${fmt(G("ccb").length)} / ${fmt(G("hlm").length)} ratings). Tripadvisor 2025+: ${r2(avg(T("ccb",{year:yr}).map(x=>x.r)))}★ vs ${r2(avg(T("hlm",{year:yr}).map(x=>x.r)))}★ (${T("ccb",{year:yr}).length} / ${T("hlm",{year:yr}).length} ratings).`);
-    for(const t of ks){ const a=themeLine("ccb",t,yr), b=themeLine("hlm",t,yr);
-      out.push(`- **${THEMES[t]}:** Tripadvisor praise/complaints ${a.tpos}/${a.tneg} vs ${b.tpos}/${b.tneg} (complaints in ${fp(pct(a.tneg,a.t))} vs ${fp(pct(b.tneg,b.t))} of reviews); Google 1–2★ mentions ${a.gneg} vs ${b.gneg}.`); }
-    const sub=(v,s)=>{const r=T(v,{year:yr}).filter(x=>x.sub&&x.sub[s]); return r.length?`${avg(r.map(x=>x.sub[s])).toFixed(1)}`:"–";};
-    out.push(`- Tripadvisor sub-ratings (food / service / value / atmosphere): Caru' ${["f","s","v","a"].map(s=>sub("ccb",s)).join(" / ")}; Manuc ${["f","s","v","a"].map(s=>sub("hlm",s)).join(" / ")}.`);
+    const ks=(P.themes.length?P.themes:["food","service","atmosphere","value","wait","billing"]);
+    const st=ks.map(t=>({t,a:tstat("ccb",t,F),b:tstat("hlm",t,F)}));
+    const ga=avg(G("ccb").map(x=>x.r)), gb=avg(G("hlm").map(x=>x.r)), ta=avg(T("ccb",F).map(x=>x.r)), tb=avg(T("hlm",F).map(x=>x.r));
+    const diff=st.filter(o=>Math.abs(o.a.cs-o.b.cs)>=.05).sort((x,y)=>Math.abs(y.a.cs-y.b.cs)-Math.abs(x.a.cs-x.b.cs));
+    const ccbWorse=diff.filter(o=>o.a.cs>o.b.cs).map(o=>TNAME[o.t]), hlmWorse=diff.filter(o=>o.b.cs>o.a.cs).map(o=>TNAME[o.t]);
+    if(P.themes.length===1){ const o=st[0], w=o.a.cs>o.b.cs?"ccb":"hlm", b=w==="ccb"?"hlm":"ccb", ws=o[w==="ccb"?"a":"b"].cs, bs=o[w==="ccb"?"b":"a"].cs;
+      out.push(`**${cap(TNAME[k])}: ${Math.abs(ws-bs)<.05?"no real difference between the two":`${VN[w]} has the bigger problem`}${yt}.**`);
+      out.push(`- ${VN.ccb}: ${fracOf(o.a.cs)} complain about ${TNAME[k]} (${o.a.c} of ${o.a.n}); ${o.a.p||"none"} praise it.`);
+      out.push(`- ${VN.hlm}: ${fracOf(o.b.cs)} complain (${o.b.c} of ${o.b.n}); ${o.b.p||"none"} praise it.`);
+      const ex=example(w,k,-1,F); if(ex) out.push(`- ${ex}`);
+      if(ws>=.1) out.push(`**What to do:** at ${VN[w]}, ${ACTION[k]}.`);
+      break; }
+    const sameLeader=(gb>ga)===(tb>ta);
+    out.push(sameLeader?`**${VN[gb>ga?"hlm":"ccb"]} is slightly ahead on both platforms, but the gap is small; the restaurants differ more in what goes wrong.**`:`**Neither restaurant clearly outperforms the other: ${VN[gb>ga?"hlm":"ccb"]} edges ahead on Google, ${VN[ta>tb?"ccb":"hlm"]} on Tripadvisor. They differ in what goes wrong.**`);
+    out.push(`- **Ratings:** Google ${r2(ga)}★ vs ${r2(gb)}★ (Aug–Oct 2026); Tripadvisor sample ${r2(ta)}★ vs ${r2(tb)}★${yt}. Platform-wide both sit at 4.1 on Tripadvisor.`);
+    if(ccbWorse.length) out.push(`- **${VN.ccb}'s weak spots:** ${list(ccbWorse.slice(0,3))}. ${(()=>{const o=diff.find(o=>o.a.cs>o.b.cs); const t=times(o.a.cs,o.b.cs); return `${cap(TNAME[o.t])} complaints come from ${P0(o.a.cs)} of its reviewers vs ${P0(o.b.cs)} at ${VN.hlm}${t?` — ${t} at ${VS.hlm}`:""}.`;})()}`);
+    if(hlmWorse.length) out.push(`- **${VN.hlm}'s weak spots:** ${list(hlmWorse.slice(0,3))}. ${(()=>{const o=diff.find(o=>o.b.cs>o.a.cs); return `${cap(TNAME[o.t])} complaints come from ${P0(o.b.cs)} of its reviewers vs ${P0(o.a.cs)} at ${VN.ccb}.`;})()}`);
+    const shared=st.filter(o=>o.a.p>o.a.c*3&&o.b.p>o.b.c*3).map(o=>TNAME[o.t]);
+    if(shared.length) out.push(`- **Shared strength:** ${list(shared)} — praised far more than criticised at both.`);
+    const sub=(v,s)=>{const r=T(v,F).filter(x=>x.sub&&x.sub[s]); return r.length?avg(r.map(x=>x.sub[s])):null;};
+    out.push(`- **Sub-ratings** (food / service / value / atmosphere): ${VS.ccb} ${["f","s","v","a"].map(s=>r1(sub("ccb",s))).join(" / ")}, ${VS.hlm} ${["f","s","v","a"].map(s=>r1(sub("hlm",s))).join(" / ")}.`);
+    if(P.s.match(/practice|learn|could be investigated|transfer/)) out.push(`**Practice worth transferring:** ${VN[diff[0]&&diff[0].a.cs>diff[0].b.cs?"hlm":"ccb"]} handles ${TNAME[diff[0].t]} better — study how before changing anything at the other venue.`);
+    else if(diff[0]) out.push(`**What to do:** at ${VN[diff[0].a.cs>diff[0].b.cs?"ccb":"hlm"]}, ${ACTION[diff[0].t]}.`);
     break;}
+
+  case "trend":{
+    const res=V.map(v=>{ const a=T(v,{year:"2025"}), b=T(v,{year:"2026"}); return {v,a,b,aa:avg(a.map(x=>x.r)),bb:avg(b.map(x=>x.r)),na:negShare(a),nb:negShare(b),
+      ka:k?tstat(v,k,{year:"2025"}).cs:null,kb:k?tstat(v,k,{year:"2026"}).cs:null,
+      halves:HALVES.map(([l,f,t])=>{const r=T(v,{from:f,to:t}); return {l,n:r.length,a:r.length?avg(r.map(x=>x.r)):null,ng:negShare(r)};})}; });
+    if(k){ const up=res.filter(o=>o.kb>o.ka+.03), down=res.filter(o=>o.kb<o.ka-.03);
+      out.push(`**Complaints about ${TNAME[k]} ${down.length===res.length?"became less frequent":up.length===res.length?"became more frequent":up.length?`rose at ${list(up.map(o=>VN[o.v]))}`:down.length?`fell at ${list(down.map(o=>VN[o.v]))}`:"are roughly unchanged"} between 2025 and 2026.**`);
+      for(const o of res) out.push(`- ${VN[o.v]}: ${P0(o.ka)} of 2025 reviewers → ${P0(o.kb)} in 2026 (${o.a.length} and ${o.b.length} reviews).`);
+    } else {
+      const up=res.filter(o=>o.bb>o.aa+.1);
+      out.push(`**${up.length===res.length?(both?"Both restaurants":VN[V[0]])+" improved from 2025 to 2026":up.length?`${list(up.map(o=>VN[o.v]))} improved from 2025 to 2026`:"Little change between 2025 and 2026"}, though the latest months need watching.**`);
+      for(const o of res){ const best=o.halves.filter(h=>h.n>=10).sort((a,b)=>b.a-a.a)[0], last=o.halves[o.halves.length-1];
+        out.push(`- **${VN[o.v]}:** ${r2(o.aa)}★ → ${r2(o.bb)}★, and the share of 1–2★ reviews fell from ${P0(o.na)} to ${P0(o.nb)}. Best half-year: ${best.l} (${r2(best.a)}★); Jul–Oct 2026 ${last.n?`${r2(last.a)}★ from ${last.n} reviews`:"no reviews"}.`); }
+    }
+    // what drives the latest change
+    for(const o of res){ const prev=HALVES[2], last=HALVES[3]; const ch=Object.keys(THEMES).map(t=>({t,d:(tstat(o.v,t,{from:last[1],to:last[2]}).cs||0)-(tstat(o.v,t,{from:prev[1],to:prev[2]}).cs||0)})).sort((a,b)=>b.d-a.d)[0];
+      const lastH=o.halves[3], prevH=o.halves[2];
+      if(lastH.n>=10&&lastH.a<prevH.a-.15&&ch.d>.05) out.push(`- **Watch ${VN[o.v]}:** ratings dipped from ${r2(prevH.a)}★ (Jan–Jun 2026) to ${r2(lastH.a)}★ (Jul–Oct). Most of the extra complaints are about ${TNAME[ch.t]} (${P0(ch.d+(tstat(o.v,ch.t,{from:prev[1],to:prev[2]}).cs||0))} of reviewers, up from ${P0(tstat(o.v,ch.t,{from:prev[1],to:prev[2]}).cs||0)}).`); }
+    out.push(`- Google only covers Aug–Oct 2026, so the trend comes from Tripadvisor alone; ${VN.hlm} has few recent reviews (${T("hlm",{from:"2026-07"}).length} since July).`);
+    const watch=res.find(o=>o.halves[3].n>=10&&o.halves[3].a<o.halves[2].a-.15);
+    out.push(`**What to do:** ${watch?`find out what changed at ${VN[watch.v]} this summer (staffing, tour groups, prices) before the gains of early 2026 are lost.`:"keep tracking the share of 1–2★ reviews every quarter."}`);
+    break;}
+
   case "complaints":{
-    out.push(`**Main reasons behind negative reviews${k?` about ${THEMES[k].toLowerCase()}`:""}${yrTxt}.**`);
-    for(const v of V){
-      if(k){ const a=themeLine(v,k,yr); out.push(`- **${VN[v]}:** ${a.tneg} of ${a.t} Tripadvisor reviews complain about ${THEMES[k].toLowerCase()} (${fp(pct(a.tneg,a.t))}); on Google ${a.gneg} 1–2★ reviews mention it.`); out.push(...examples(v,k,-1,3,yr)); }
-      else { const n=G(v,{rating:"neg"}).length, tn=T(v,{rating:"neg",year:yr}).length;
-        out.push(`- **${VN[v]}:** Tripadvisor complaint themes ${topThemes(v,"T","complaint")} (${T(v,{year:yr}).length} reviews, ${tn} rated 1–2★). Google 1–2★ (${n} of ${fmt(G(v).length)}): ${topThemes(v,"G","complaint",3)}.`);
-        out.push(...examples(v,null,-1,2,yr)); }
-    }
+    if(k){ const st=V.map(v=>({v,...tstat(v,k,F)}));
+      out.push(`**${cap(fracOf(st[0].cs,VN[st[0].v]+" reviewers"))} complain about ${TNAME[k]}${both?`, against ${frac(st[1].cs)} at ${VN[st[1].v]}`:""}${yt}.**`);
+      for(const o of st){ out.push(`- ${VN[o.v]}: ${o.c} complaints vs ${o.p} compliments among ${o.n} reviews (${P0(o.cs)}).`); const ex=example(o.v,k,-1,F); if(ex) out.push(`- ${ex}`); }
+      const w=st.sort((a,b)=>b.cs-a.cs)[0]; if(w.cs>=.1) out.push(`**What to do:** at ${VN[w.v]}, ${ACTION[k]}.`);
+      break; }
+    const top=Object.fromEntries(V.map(v=>[v,rankThemes(v,"c",F)]));
+    out.push(both?`**Bad reviews at ${VN.ccb} are mostly about ${TNAME[top.ccb[0].k]} and ${TNAME[top.ccb[1].k]}; at ${VN.hlm}, about ${TNAME[top.hlm[0].k]}.**`:`**Bad reviews at ${VN[V[0]]} are mostly about ${TNAME[top[V[0]][0].k]} and ${TNAME[top[V[0]][1].k]}.**`);
+    for(const v of V){ const t=top[v]; out.push(`- **${VN[v]}:** ${t.slice(0,3).map(o=>`${TNAME[o.k]} (${P0(o.cs)} of reviewers)`).join(", ")}; ${TNAME[t[3].k]} follows at ${P0(t[3].cs)}.`); }
+    const bill=V.map(v=>tstat(v,"billing",F)); if(bill.some(o=>o.cs>=.08)) out.push(`- **Billing is the trigger that turns a so-so meal into a 1★ review:** unexplained charges and tip pressure come up in ${list(V.map((v,i)=>`${P0(bill[i].cs)} of ${VS[v]} reviews`))}.`);
+    for(const v of V){ const ex=example(v,top[v][0].k,-1,F); if(ex) out.push(`- ${ex}`); }
+    out.push(`**What to do:** ${V.map(v=>`at ${VN[v]}, ${ACTION[top[v][0].k]}`).join("; ")}.`);
     break;}
+
   case "praise":{
-    out.push(`**What guests praise${k?` about ${THEMES[k].toLowerCase()}`:""}${yrTxt}.**`);
-    for(const v of V){
-      if(k){ const a=themeLine(v,k,yr); out.push(`- **${VN[v]}:** ${a.tpos} Tripadvisor reviews praise ${THEMES[k].toLowerCase()} vs ${a.tneg} complaints; on Google ${a.gpos} 4–5★ reviews mention it.`); out.push(...examples(v,k,1,2,yr)); }
-      else { out.push(`- **${VN[v]}:** Tripadvisor praise themes ${topThemes(v,"T","praise")}; Google 4–5★ themes ${topThemes(v,"G","praise",3)}. ${fp(pct(G(v).filter(x=>x.r>=4).length,G(v).length))} of Google ratings are 4–5★.`); out.push(...examples(v,null,1,2,yr)); }
-    }
+    const top=Object.fromEntries(V.map(v=>[v,rankThemes(v,"p",F)]));
+    const common=top[V[0]].slice(0,2).map(o=>o.k).filter(t=>V.every(v=>top[v].slice(0,3).some(o=>o.k===t)));
+    out.push(`**Guests come for ${list((common.length?common:top[V[0]].slice(0,2).map(o=>o.k)).map(t=>TNAME[t]))}${both&&common.length?" at both restaurants":""}.**`);
+    for(const v of V){ const g=G(v); out.push(`- **${VN[v]}:** ${top[v].slice(0,3).map(o=>`${TNAME[o.k]} (${P0(o.ps)} of reviewers)`).join(", ")}. On Google ${P0(g.filter(x=>x.r>=4).length/g.length)} of ${fmt(g.length)} reviews are 4–5★.`); }
+    for(const v of V){ const ex=example(v,top[v][0].k,1,F); if(ex) out.push(`- ${ex}`); }
+    out.push(`**What to do:** protect these in any change — and use them in replies to unhappy guests.`);
     break;}
+
   case "dishes":{
-    out.push(`**${P.dishes.length?P.dishes.join(", "):"Dishes and drinks"}: what reviews say.**`);
-    for(const v of V){
-      const d=dishCounts(select({venue:v,source:"all"})); const keys=P.dishes.length?P.dishes:Object.keys(d).slice(0,6);
-      const items=keys.filter(x=>d[x]).map(x=>`${x.split(" / ")[0]} ${d[x].mentions} mentions, avg ${d[x].avg_rating}★, ${d[x].neg} at 1–2★`);
-      out.push(`- **${VN[v]}:** ${items.join("; ")||"no mentions in the data"}.`);
-      if(P.dishes.length){ const rx=DISH[P.dishes[0]]; const neg=T(v).filter(x=>rx.test(x.t)&&x.r<=3).slice(0,2); neg.forEach(x=>out.push(`  - ${x.d}, ${x.r}★: ${x.t}`)); }
-    }
-    const best=[], worst=[]; for(const v of V){ const d=dishCounts(select({venue:v,source:"all"})); const e=Object.entries(d).filter(([x,o])=>o.mentions>=8); e.sort((a,b)=>b[1].avg_rating-a[1].avg_rating); if(e.length){ best.push(`${VN[v]}: ${e[0][0].split(" / ")[0]} (${e[0][1].avg_rating}★)`); worst.push(`${VN[v]}: ${e[e.length-1][0].split(" / ")[0]} (${e[e.length-1][1].avg_rating}★)`);} }
-    if(!P.dishes.length) out.push(`- Highest-rated items (8+ mentions): ${best.join("; ")}. Lowest: ${worst.join("; ")}.`);
+    const D=Object.fromEntries(V.map(v=>[v,dishCounts(select({venue:v,source:"all"}))]));
+    if(P.dishes.length){ const d=P.dishes[0], nm=d.split(" / ")[0];
+      const tot=V.reduce((s,v)=>s+(D[v][d]?.mentions||0),0), av=tot?V.reduce((s,v)=>s+(D[v][d]?D[v][d].avg_rating*D[v][d].mentions:0),0)/tot:null;
+      out.push(tot?`**${nm}: ${av>=4.4?"well liked":av>=4?"mostly liked":"a weak spot"} — reviews that mention it average ${r1(av)}★ across ${tot} mentions.**`:`**No reviews in the data mention ${nm}.**`);
+      for(const v of V){ const o=D[v][d]; out.push(o?`- ${VN[v]}: ${o.mentions} mentions, ${r1(o.avg_rating)}★ average, ${o.neg} in 1–2★ reviews.`:`- ${VN[v]}: not mentioned.`);
+        const ex=T(v).filter(x=>DISH[d].test(x.t)).sort((a,b)=>a.r-b.r)[0]; if(ex) out.push(`- *${VS[v]}, ${x2m(ex.d)}, ${ex.r}★:* “${ex.t}”`); }
+      break; }
+    const all=[]; for(const v of V) for(const [d,o] of Object.entries(D[v])) if(o.mentions>=8) all.push({v,d:d.split(" / ")[0],...o});
+    const best=[...all].sort((a,b)=>b.avg_rating-a.avg_rating), worst=[...all].sort((a,b)=>a.avg_rating-b.avg_rating);
+    out.push(`**${best[0].d} is the best-loved item${both?" at both restaurants":""}; ${worst[0].d.toLowerCase()} and ${worst[1].d.toLowerCase()} draw the most criticism.**`);
+    for(const v of V){ const a=all.filter(o=>o.v===v).sort((x,y)=>y.avg_rating-x.avg_rating); out.push(`- **${VN[v]}:** strongest ${a.slice(0,3).map(o=>`${o.d.toLowerCase()} (${r1(o.avg_rating)}★, ${o.mentions} mentions)`).join(", ")}; weakest ${a.slice(-2).reverse().map(o=>`${o.d.toLowerCase()} (${r1(o.avg_rating)}★)`).join(" and ")}.`); }
+    out.push(`- Reviews naming a dish average higher than the restaurant overall, so a dish below 4★ stands out. Bread is often about being charged for it, not its taste.`);
+    { const w=worst.find(o=>o.d!=="Bread"); out.push(`**What to do:** taste-test ${w.d.toLowerCase()} at ${VN[w.v]} (${r1(w.avg_rating)}★ across ${w.mentions} mentions)${worst.slice(0,3).some(o=>o.d==="Bread")?", and state on the menu whether bread is charged":""}.`); }
     break;}
+
   case "staff":{
-    out.push(`**Waiters named in Google reviews.**`);
-    for(const v of V){ const s=summarize(G(v)); out.push(`- **${VN[v]}:** ${fp(s.google_text_naming_waiter_pct)} of text reviews name a waiter; most named ${s.top_waiters.slice(0,5).map(x=>`${x[0]} (${x[1]})`).join(", ")}. ${fmt(s.google_name_only_reviews)} reviews are little more than a name, which suggests staff ask guests for reviews.`); }
+    const s=Object.fromEntries(V.map(v=>[v,summarize(G(v))]));
+    out.push(`**Most Google reviews${both?` at ${VN.hlm}`:""} name a waiter, which suggests guests are asked for reviews at the table.**`);
+    for(const v of V) out.push(`- **${VN[v]}:** ${Math.round(s[v].google_text_naming_waiter_pct)}% of text reviews name someone; ${fmt(s[v].google_name_only_reviews)} are little more than a name. Most named: ${s[v].top_waiters.slice(0,4).map(x=>`${x[0]} (${x[1]})`).join(", ")}.`);
+    out.push(`- That lifts the Google average (4.7–4.8 in the sample) well above Tripadvisor (4.1 platform-wide).`);
+    out.push(`**What to do:** report an "organic" Google rating that excludes name-only reviews, and recognise the most-named staff.`);
     break;}
+
   case "replies":{
-    out.push(`**Owner replies (Google sample).**`);
-    for(const v of V){ const s=summarize(G(v)); out.push(`- **${VN[v]}:** ${fp(s.owner_reply_pct)} of reviews answered; ${fp(s.owner_reply_pct_1_2_star)} of 1–2★ reviews answered.`); }
-    for(const v of V){ const t=T(v); out.push(`- Tripadvisor: ${fp(pct(t.filter(x=>x.o).length,t.length))} of ${VN[v]} reviews in the sample show a management reply.`); }
+    const s=Object.fromEntries(V.map(v=>[v,summarize(G(v))]));
+    out.push(`**Management replies to most Google reviews and to most of the bad ones.**`);
+    for(const v of V) out.push(`- **${VN[v]}:** ${Math.round(s[v].owner_reply_pct)}% of Google reviews answered, including ${Math.round(s[v].owner_reply_pct_1_2_star)}% of 1–2★ ones. On Tripadvisor, ${P0(T(v).filter(x=>x.o).length/T(v).length)} of sampled reviews show a reply.`);
+    out.push(`**What to do:** reply to every 1–3★ Tripadvisor review with specifics; that's where critical tourists read.`);
     break;}
+
   case "menu":{
-    out.push(`**Menu-price history cannot be calculated: there are no dated menus in the data.**`);
-    for(const v of V){ const a=themeLine(v,"value",yr); out.push(`- What reviewers say instead (${VN[v]}): ${a.tneg} Tripadvisor complaints about price/value vs ${a.tpos} praise; value sub-rating ${(()=>{const r=T(v).filter(x=>x.sub&&x.sub.v);return r.length?avg(r.map(x=>x.sub.v)).toFixed(1):"–";})()}.`); }
-    out.push(`- To add it: collect dated menus (e.g. archived menu PDFs or Wayback Machine snapshots of each restaurant's menu page) and compare the same dishes and portion sizes across dates.`);
+    out.push(`**This can't be measured yet: the data has no dated menus, so menu-price changes can't be calculated.**`);
+    for(const v of V){ const o=tstat(v,"value"); const r=T(v).filter(x=>x.sub&&x.sub.v); out.push(`- What guests say instead — ${VN[v]}: ${fracOf(o.cs)} complain about prices (${o.c} of ${o.n}); value sub-rating ${r1(avg(r.map(x=>x.sub.v)))} of 5, the lowest of the four.`); }
+    out.push(`- Even 4–5★ reviewers often add "pricey", so the issue is perceived value, not just price.`);
+    out.push(`**What to do:** collect dated menus (archived PDFs or Wayback Machine snapshots of each menu page) for the same dishes and portions, then check whether value complaints rise after price changes.`);
     break;}
+
   case "priorities": case "briefing":{
-    out.push(`**${P.intent==="briefing"?"Management briefing":"What to fix first"}, ranked by how often guests complain (Tripadvisor 2025+).**`);
-    for(const v of V){ const s=summarize(T(v)).themes; const top=Object.entries(s).sort((a,b)=>b[1].complaint-a[1].complaint).slice(0,3);
-      out.push(`- **${VN[v]}** (${T(v).length} reviews): `+top.map(([t,o],i)=>`${i+1}. ${THEMES[t].toLowerCase()} — ${o.complaint} complaints (${fp(pct(o.complaint,T(v).length))})`).join("; ")+"."); }
-    const bill=V.map(v=>themeLine(v,"billing").tneg).reduce((a,b)=>a+b,0);
-    out.push(`- Billing and tipping: ${bill} complaints (unexplained charges, tip pressure). Quick win: itemised bills and a neutral tip prompt.`);
-    out.push(`- Strengths to protect: ${V.map(v=>`${VN[v]} ${topThemes(v,"T","praise",2)}`).join("; ")}.`);
-    if(P.intent==="briefing") out.push(`- Data limits: Google covers Aug–Oct 2026 only; Tripadvisor is a reading sample that over-represents critical reviews; no menu prices.`);
+    const pairs=[]; for(const v of V) for(const o of rankThemes(v,"c")) pairs.push({v,...o});
+    const ranked=pairs.filter(o=>o.k!=="atmosphere"&&o.k!=="show").sort((a,b)=>b.cs-a.cs).slice(0,3);
+    if(P.intent==="briefing"){
+      const ga=G("ccb"),gb=G("hlm");
+      out.push(`**Management briefing — Caru' cu Bere and Hanu' lui Manuc, Jan 2025 – Oct 2026.**`);
+      out.push(`**Key insights**`);
+      out.push(`- Guests love the setting and show; ${P0(ga.filter(x=>x.r>=4).length/ga.length)} and ${P0(gb.filter(x=>x.r>=4).length/gb.length)} of recent Google reviews are 4–5★, but many of those are waiter-prompted.`);
+      out.push(`- Critical reviews centre on ${TNAME[rankThemes("ccb","c")[0].k]} and ${TNAME[rankThemes("ccb","c")[1].k]} at ${VN.ccb} and on ${TNAME[rankThemes("hlm","c")[0].k]} at ${VN.hlm}.`);
+      out.push(`- Tripadvisor ratings improved from 2025 to 2026 (${r2(yrAvg("ccb","2025"))} → ${r2(yrAvg("ccb","2026"))}★ and ${r2(yrAvg("hlm","2025"))} → ${r2(yrAvg("hlm","2026"))}★).`);
+      out.push(`**Priorities**`);
+    } else out.push(`**Start with ${TNAME[ranked[0].k]} at ${VN[ranked[0].v]}: it's the most common complaint in the data.**`);
+    ranked.forEach((o,i)=>out.push(`${i+1}. **${cap(TNAME[o.k])} at ${VN[o.v]}** — ${fracOf(o.cs)} complain (${o.c} of ${o.n}). ${cap(ACTION[o.k])}.`));
+    const bill=V.map(v=>tstat(v,"billing")); out.push(`- **Quick win:** billing and tipping complaints (${bill.reduce((s,o)=>s+o.c,0)} reviews) are cheap to fix — ${ACTION.billing}.`);
+    if(P.intent==="briefing"){ out.push(`**Limits:** Google covers Aug–Oct 2026 only; the Tripadvisor sample leans critical; no menu prices.`); out.push(`**Next analyses:** dated menu prices vs value complaints; organic vs prompted Google ratings; ratings by party type and season.`); }
     break;}
+
   case "ideas":{
-    out.push(`**Analyses worth running next, based on what this data shows.**`);
-    const h=themeLine("hlm","food"), c=themeLine("ccb","value");
-    out.push(`- **Reheated / cold food at Hanu' lui Manuc:** food is its top complaint (${h.tneg} Tripadvisor reviews). Check kitchen timings and plate temperatures by shift.`);
-    out.push(`- **Value at Caru' cu Bere:** ${c.tneg} value complaints in ${c.t} reviews. Collect dated menus to test whether complaints follow price changes.`);
-    out.push(`- **Organic vs prompted Google ratings:** ${fp(summarize(G("hlm")).google_text_naming_waiter_pct)} of Manuc and ${fp(summarize(G("ccb")).google_text_naming_waiter_pct)} of Caru' Google text reviews name a waiter; compare ratings with and without a name.`);
-    const pa=v=>{const o={}; for(const x of T(v)) if(x.pa) (o[x.pa]=o[x.pa]||[]).push(x.r); return Object.entries(o).filter(([k,a])=>a.length>=10).map(([k,a])=>[k,avg(a),a.length]).sort((a,b)=>a[1]-b[1]);};
-    for(const v of ["ccb","hlm"]){ const p=pa(v); if(p.length>=2) out.push(`- **Party type at ${VN[v]}:** ${p[0][0].toLowerCase()} rate lowest (${r2(p[0][1])}★, ${p[0][2]} ratings) and ${p[p.length-1][0].toLowerCase()} highest (${r2(p[p.length-1][1])}★, ${p[p.length-1][2]}). Check whether seating, noise or set menus differ by party.`); }
+    out.push(`**Three analyses that would sharpen decisions, each prompted by a pattern in this data.**`);
+    const h=tstat("hlm","food"), c=tstat("ccb","value"), sg=summarize(G("hlm"));
+    out.push(`1. **Prompted vs organic Google reviews** — ${Math.round(sg.google_text_naming_waiter_pct)}% of ${VN.hlm}'s Google text reviews name a waiter. Comparing ratings with and without a name would show how much the 4.8★ is inflated.`);
+    out.push(`2. **Value vs dated menu prices** — ${fracOf(c.cs,VN.ccb+" reviewers")} complain about value. Matching complaints to menu changes would show whether price rises or portion/quality drive it.`);
+    out.push(`3. **Food temperature at ${VN.hlm}** — food is its top complaint (${P0(h.cs)} of reviewers), often "reheated" or "lukewarm". Comparing complaints by time of day and group size would show whether it's a peak-hour problem.`);
+    const pa=v=>{const o={}; for(const x of T(v)) if(x.pa) (o[x.pa]=o[x.pa]||[]).push(x.r); return Object.entries(o).filter(([k,a])=>a.length>=15).map(([k,a])=>[k,avg(a)]).sort((a,b)=>a[1]-b[1]);};
+    const p=pa("hlm"); if(p.length>=2) out.push(`- **Easy to overlook:** at ${VN.hlm}, ${p[0][0].toLowerCase()} rate ${r2(p[0][1])}★ vs ${r2(p[p.length-1][1])}★ for ${p[p.length-1][0].toLowerCase()} — worth checking where couples are seated.`);
     break;}
+
   default:{
-    const words=(P.s.match(/[a-zăâîșțéèàüöä]{4,}/g)||[]).filter(w=>!/which|what|about|their|there|would|could|should|between|customers|guests|restaurant|restaurants|management|review|reviews|most|caru|bere|hanu|manuc|despre|care|sunt|este|cele|this|that|with|from|have|does|tell|spun|ceea|pentru/.test(w));
-    if(k){ out.push(`**${THEMES[k]}${yrTxt}.**`); for(const v of V){ const a=themeLine(v,k,yr); out.push(`- **${VN[v]}:** Tripadvisor ${a.tm} of ${a.t} reviews mention it (${a.tpos} praise, ${a.tneg} complaints). Google ${fmt(a.gm)} of ${fmt(a.gt)} text reviews (${fmt(a.gpos)} at 4–5★, ${a.gneg} at 1–2★).`); out.push(...examples(v,k,-1,2,yr)); } break; }
+    if(k){ const st=V.map(v=>({v,...tstat(v,k,F)}));
+      const tone=o=>o.p>o.c*1.5?"praise":o.c>o.p*1.5?"criticise":"mixed";
+      const say=(t,where)=>t==="mixed"?`opinions on ${TNAME[k]} are mixed ${where}`:`guests mostly ${t} ${TNAME[k]} ${where}`;
+      const t0=tone(st[0]), t1=both?tone(st[1]):null, mx=Math.max(...st.map(o=>o.cs||0)), mention=Math.max(...st.map(o=>(o.c+o.p)/o.n));
+      let head=!both?say(t0,`at ${VN[V[0]]}`):t0===t1?say(t0,"at both restaurants"):`${say(t0,`at ${VN.ccb}`)}; at ${VN.hlm}, ${t1==="mixed"?"opinions are mixed":`guests mostly ${t1} it`}`;
+      if(mention<.12) head+=mention<.08?", though it comes up in fewer than one in ten reviews":`, though it comes up in only ${frac(mention)} reviews`;
+      out.push(`**${cap(head)}${yt}.**`);
+      for(const o of st){ const g=G(o.v).filter(x=>x.th.includes(k)); out.push(`- **${VN[o.v]}:** ${o.c} of ${o.n} reviewers complain (${P0(o.cs)}) and ${o.p||"none"} praise it. On Google, ${fmt(g.length)} reviews mention it, ${g.filter(x=>x.r<=2).length} of them 1–2★.`); }
+      for(const o of st){ const ex=example(o.v,k,o.c>=o.p?-1:1,F); if(ex) out.push(`- ${ex}`); }
+      const w=st.sort((a,b)=>b.cs-a.cs)[0]; if(w.cs>=.1) out.push(`**What to do:** at ${VN[w.v]}, ${ACTION[k]}.`);
+      break; }
+    const words=(P.s.match(/[a-zăâîșțéèàüöä]{4,}/g)||[]).filter(w=>!/which|what|about|their|there|would|could|should|between|customers|guests|restaurant|restaurants|management|review|reviews|most|caru|bere|hanu|manuc|despre|care|sunt|este|cele|this|that|with|from|have|does|tell|spun|ceea|pentru|they|them|know/.test(w));
     const stem=words.map(w=>w.slice(0,Math.max(4,w.length-2)));
-    if(stem.length){ out.push(`**Reviews mentioning “${words.join(", ")}”${yrTxt}.**`); let any=0;
-      for(const v of V){ const r=select({venue:v,source:"all",terms:stem,year:yr}).filter(x=>x.t); any+=r.length; if(!r.length){ out.push(`- **${VN[v]}:** no matching reviews.`); continue; }
-        out.push(`- **${VN[v]}:** ${r.length} reviews, average ${r2(avg(r.map(x=>x.r)))}★, ${r.filter(x=>x.r<=2).length} at 1–2★.`);
-        r.filter(x=>x.s==="T").slice(0,2).forEach(x=>out.push(`  - ${x.d}, ${x.r}★: ${x.t}`)); }
-      if(any) break; out.length=0; }
-    out.push(`**Overview.** Ask about a topic (food, service, prices, waiting, bill, music, cleanliness), a dish, a period (2025, 2026) or a restaurant.`);
-    for(const v of V) out.push(`- **${VN[v]}:** Google ${r2(avg(G(v).map(x=>x.r)))}★ (${fmt(G(v).length)} ratings); Tripadvisor 2025+ ${r2(avg(T(v).map(x=>x.r)))}★ (${T(v).length}); top complaints ${topThemes(v,"T","complaint",3)}.`);
+    const hits=V.map(v=>({v,r:select({venue:v,source:"all",terms:stem,...F}).filter(x=>x.t)}));
+    if(stem.length&&hits.some(h=>h.r.length)){
+      const n=hits.reduce((s,h)=>s+h.r.length,0), a=avg(hits.flatMap(h=>h.r.map(x=>x.r))), base=avg(V.flatMap(v=>select({venue:v,source:"all"}).map(x=>x.r)));
+      out.push(`**${n} reviews mention “${words.join(" ")}”; they average ${r2(a)}★, ${a<base-.15?"below":a>base+.15?"above":"close to"} the overall ${r2(base)}★.**`);
+      for(const h of hits) out.push(h.r.length?`- ${VN[h.v]}: ${h.r.length} reviews, ${r2(avg(h.r.map(x=>x.r)))}★, ${h.r.filter(x=>x.r<=2).length} at 1–2★.`:`- ${VN[h.v]}: no matching reviews.`);
+      for(const h of hits){ const x=h.r.filter(x=>x.s==="T").sort((a,b)=>a.r-b.r)[0]; if(x) out.push(`- *${VS[h.v]}, ${x2m(x.d)}, ${x.r}★:* “${x.t}”`); }
+      break; }
+    out.push(`**I couldn't match that to a topic in the reviews.** Try a topic (food, service, prices, waiting, the bill, music, cleanliness), a dish, a year, or ask to compare the restaurants.`);
+    for(const v of V) out.push(`- ${VN[v]}: Google ${r2(avg(G(v).map(x=>x.r)))}★; Tripadvisor sample ${r2(avg(T(v).map(x=>x.r)))}★; main complaint ${TNAME[rankThemes(v,"c")[0].k]}.`);
   }}
-  out.push(`\n${src}`);
+  out.push(SRC_NOTE());
   lastFollow=followups(P);
   return out.join("\n");
 }
