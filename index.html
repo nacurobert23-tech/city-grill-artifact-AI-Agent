@@ -558,18 +558,25 @@ function claudePrompt(q){
     tripadvisor_summary:sum("T"),tripadvisor_by_half_year:Object.fromEntries(HALVES.map(([l,f,t])=>[l,sum("T",{from:f,to:t})])),
     tripadvisor_sub_ratings_avg:Object.fromEntries(["ccb","hlm"].map(v=>[v,Object.fromEntries(["f","s","v","a"].map(k=>{const r=T(v).filter(x=>x.sub&&x.sub[k]); return [{f:"food",s:"service",v:"value",a:"atmosphere"}[k],r.length?+avg(r.map(x=>x.sub[k])).toFixed(2):null];}))])),
     dish_mentions_both_sources:{ccb:dish("ccb"),hlm:dish("hlm")}};
-  return `You are a Customer Reviews Analyst for two Bucharest restaurants run by City Grill Group, Caru' cu Bere (ccb) and Hanu' lui Manuc (hlm), covering Jan 2025 to Oct 2026. Answer ONLY from the data below; never invent numbers. Be concise and specific: lead with the answer in bold, then 3-6 short bullets with evidence (counts, shares, averages, dates, and concrete details from the reviews in your own words). Explain what the numbers mean and what management should do. Mention when a sample is small or the sources cover different periods. Answer in the language of the question (Romanian or English). Use **bold** and "- " bullets only, no tables or headings.
+  return `You are a Customer Reviews Analyst for two Bucharest restaurants run by City Grill Group, Caru' cu Bere and Hanu' lui Manuc. Period: Jan 2025 to Oct 2026. Answer ONLY from the reviews and figures below; never invent anything.
 
-DATA SOURCES: (1) Google Maps sample: ${fmt(ROWS.filter(x=>x.s==="G"&&x.v==="ccb").length)} Caru' cu Bere reviews (30 Sep-13 Oct 2026) and ${fmt(ROWS.filter(x=>x.s==="G"&&x.v==="hlm").length)} Hanu' lui Manuc reviews (11 Aug-13 Oct 2026); themes keyword-coded, praise = 4-5★, complaint = 1-2★; many reviews just name a waiter (likely prompted). (2) Tripadvisor sample: ${fmt(ROWS.length-ROWS.filter(x=>x.s==="G").length)} English reviews with visits Jan 2025-Oct 2026, paraphrased, each theme coded + (praise) or - (complaint); a reading sample that leans critical (avg ~3.5-3.6 vs 4.1 platform-wide). (3) Platform ratings as reported. No dated menu prices exist. Theme arrays are [mentions, praise, complaints].
+HOW TO ANSWER (follow closely):
+- Start with "**Pe scurt:**" / "**In short:**" and a one- or two-sentence conclusion in bold that a manager can act on, then one short plain sentence on how solid the evidence is.
+- Then 3-6 bullets. Organise them by INSIGHT, not by data source: e.g. one bullet per restaurant and opinion ("Caru' cu Bere, price seen as too high", "Hanu' lui Manuc, fair price"), and a final bullet for what both share. Start each bullet with a short bold label.
+- Inside each bullet, give roughly how many reviews say it (one number, e.g. "about 90 reviews" or "a third of reviewers") and then the concrete details from the reviews in your own words: dishes, prices paid, situations, short quoted phrases. Details matter more than statistics.
+- Do not list sub-ratings, star averages, sample periods or source comparisons unless the question asks for them. Keep caveats to one short sentence.
+- Write naturally, like an analyst briefing a manager. Answer in the language of the question (Romanian or English). Use **bold** and "- " bullets only, no tables or headings.
 
-SUMMARIES (computed by the page):
-${JSON.stringify(data)}
+DATA SOURCES (for your judgement, not to recite): Tripadvisor sample of ${fmt(ROWS.length-ROWS.filter(x=>x.s==="G").length)} English reviews (visits Jan 2025-Oct 2026, paraphrased, each theme coded + praise / - complaint; leans critical). Google Maps sample of ${fmt(ROWS.filter(x=>x.s==="G").length)} reviews from Aug-Oct 2026 only (very positive, many just name a waiter). Platform ratings: Caru' cu Bere Google 4.6, Tripadvisor 4.1; Hanu' lui Manuc Google 4.7, Tripadvisor 4.1. No dated menu prices exist.
 
 TRIPADVISOR REVIEWS (${ta.length} most relevant to the question; venue|visit|stars|party|themes|paraphrase):
 ${taRows}
 
 GOOGLE REVIEW EXCERPTS (venue|date|stars|text):
-${gRows}`;
+${gRows}
+
+COUNTS COMPUTED BY THE PAGE (use for "how many"; theme arrays are [mentions, praise, complaints]):
+${JSON.stringify(data)}`;
 }
 function toTop(a){ logEl.scrollTop=a.getBoundingClientRect().top-logEl.getBoundingClientRect().top+logEl.scrollTop-8; }
 function addFollow(a){ if(!lastFollow.length) return; const w=document.createElement("div"); w.className="chips"; w.style.marginTop="8px"; w.innerHTML=`<span class="note" style="width:100%">Follow-up questions:</span>`; lastFollow.forEach(q=>{const b=document.createElement("button"); b.type="button"; b.className="chip"; b.textContent=q; b.onclick=()=>ask(q); w.appendChild(b);}); a.appendChild(w); lastFollow=[]; toTop(a); }
